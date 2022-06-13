@@ -3,11 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
+	  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no viewport-fit=cover">
+	  <script src="./node_modules/amfe-flexible/index.js"></script>
+    <title>kola</title>
   </head>
   <body>
+    <!-- 开启顶部安全区适配 -->
+    <van-nav-bar safe-area-inset-top />
     <div id="app"></div>
+    <!-- 开启底部安全区适配 -->
+    <van-number-keyboard safe-area-inset-bottom />
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
