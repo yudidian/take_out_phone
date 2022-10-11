@@ -7,8 +7,14 @@ import 'amfe-flexible'
 import '@vant/touch-emulator'
 import './style/vant.css'
 import components from '@/components'
+import VueAMap, { initAMapApiLoader } from '@vuemap/vue-amap'
+import '@vuemap/vue-amap/dist/style.css'
+initAMapApiLoader({
+  key: '21ff8a3c52132e33add0ca88b4d58507'
+})
 const app = createApp(App)
 app.use(router)
   .use(store)
   .use(components)
+  .use(VueAMap)
 app.mount('#app')

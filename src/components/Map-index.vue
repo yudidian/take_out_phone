@@ -1,34 +1,26 @@
 <template>
-  <div class="map-content">
-    <Search
-      class="map-search"
-      shape="round"
-      v-model="formattedAddress"
-      placeholder="请输入搜索关键词"
+  <div className="map">
+    <el-amap
+      ref="map"
+      :center="center"
+      :zoom="zoom"
+      @init="init"
     />
-    <div class="map">
-      <el-amap
-        ref="map"
-        :center="center"
-        :zoom="zoom"
-        @init="init"
-      />
-    </div>
-    <div class="address-list">
-      <Cell
-        v-for="item in addressList"
-        :key="item.id"
-        :title="item.address"
-      />
-    </div>
-    <MyLoading :show="show" />
   </div>
+  <div>
+    <van-cell
+      v-for="item in addressList"
+      :key="item"
+      :title="item.address"
+    />
+  </div>
+  <MyLoading :show="show" />
 </template>
 
 <script setup>
 import { ref, reactive, shallowRef, defineEmits } from 'vue'
 import { getDistances } from '@/utils/calculateDistance'
-import { Cell, Search } from 'vant'
+
 const emit = defineEmits(['getDistance'])
 /** 地图实例    （shallowRef：如果有一个对象数据，后续功能不会修改该对象中的属性，而是生新的对象来替换） */
 const myMap = shallowRef(null)
@@ -36,7 +28,7 @@ const show = ref(true)
 /** 地图中心点（默认） */
 const center = reactive([121.59996, 31.197646])
 // 地址列表
-const addressList = ref([])
+let addressList = reactive([])
 // 地图返回的地址信息
 const formattedAddress = ref('')
 /** 地图缩放级别（默认） */
@@ -118,8 +110,7 @@ const getAdd = () => {
     console.log(status, result)
     if (status === 'complete' && result.info === 'OK') {
       if (result && result.regeocode) {
-        addressList.value = result.regeocode.pois
-        console.log(addressList.value)
+        addressList = result.aois
         formattedAddress.value = result.regeocode.formattedAddress
       }
     }
@@ -128,26 +119,12 @@ const getAdd = () => {
 </script>
 
 <style lang="scss" scoped>
-.map-content{
-  position: relative;
-  .map-search{
-  }
-  .map {
-    position: fixed;
-    top: 54px;
-    width: 100vw;
-    height: 350px;
-    :deep(.amap-marker) {
-      width: 20px;
-    }
-  }
-  .address-list{
-    position: absolute;
-    top: 304px;
-    bottom: 50px;
-    overflow-y: auto;
-    height: calc(100vh - 404px);
+.map {
+  width: 100vw;
+  height: 200px;
+
+  :deep(.amap-marker) {
+    width: 20px;
   }
 }
-
 </style>
