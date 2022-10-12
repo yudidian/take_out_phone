@@ -4,11 +4,11 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    component: () => import('@/views/login/login-index.vue')
+    component: () => import('@/views/login/LoginPage.vue')
   },
   {
     path: '/',
-    component: () => import('@/layout/layout-index.vue'),
+    component: () => import('@/layout/LayoutPage.vue'),
     redirect: '/home',
     children: [
       {
@@ -18,7 +18,7 @@ const routes = [
           index: 'home',
           title: '首页'
         },
-        component: () => import('@/views/home/home-index.vue')
+        component: () => import('@/views/home/HomePage.vue')
       },
       {
         path: 'cart',
@@ -36,14 +36,14 @@ const routes = [
           index: 'mine',
           title: '个人中心'
         },
-        component: () => import('@/views/mine/mine-index.vue')
+        component: () => import('@/views/mine/PersonalCenter.vue')
       }
     ]
   },
   {
     path: '/address',
     name: 'Address',
-    component: () => import('@/views/mine/components/address-index.vue')
+    component: () => import('@/views/mine/components/AddressPage.vue')
   },
   {
     path: '/address-add',
@@ -54,7 +54,7 @@ const routes = [
       }
       next()
     },
-    component: () => import('@/views/mine/components/address-add.vue')
+    component: () => import('@/views/mine/components/AddressAdd.vue')
   }
 ]
 

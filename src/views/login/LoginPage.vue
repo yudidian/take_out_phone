@@ -59,7 +59,7 @@
 
 <script setup>
 import { Form, Field, CellGroup, Button, NavBar, Notify, Overlay, Loading } from 'vant'
-import Slider from './components/slider-index.vue'
+import Slider from './components/SliderIndex.vue'
 import { onBeforeUnmount, ref } from 'vue'
 import { sendCode } from '@/api/module/user'
 import { useStore } from 'vuex'

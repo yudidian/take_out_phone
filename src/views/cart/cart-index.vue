@@ -3,7 +3,7 @@
     <Search
       class="map-search"
       shape="round"
-      v-model="formattedAddress"
+      v-model="addressInfo"
       placeholder="请输入搜索关键词"
     />
     <div class="map">
@@ -16,9 +16,11 @@
     </div>
     <div class="address-list">
       <Cell
+        style="width: 100%;"
         v-for="item in addressList"
         :key="item.id"
         :title="item.address"
+        @click="changAddress(item)"
       />
     </div>
     <MyLoading :show="show" />
@@ -26,12 +28,17 @@
 </template>
 
 <script setup>
-import { ref, reactive, shallowRef, defineEmits } from 'vue'
+import { ref, reactive, shallowRef, defineEmits, watch } from 'vue'
 import { getDistances } from '@/utils/calculateDistance'
-import { Cell, Search } from 'vant'
+import { debounce } from '@/utils/common'
+import { Cell, Notify, Search } from 'vant'
 const emit = defineEmits(['getDistance'])
-/** 地图实例    （shallowRef：如果有一个对象数据，后续功能不会修改该对象中的属性，而是生新的对象来替换） */
+/** 地图实例 */
 const myMap = shallowRef(null)
+// 搜索实例
+const MSearch = ref(null)
+// 搜索关键字
+const addressInfo = ref('')
 const show = ref(true)
 /** 地图中心点（默认） */
 const center = reactive([121.59996, 31.197646])
@@ -41,11 +48,46 @@ const addressList = ref([])
 const formattedAddress = ref('')
 /** 地图缩放级别（默认） */
 const zoom = ref(15)
+
+// 监听搜索信息变化
+watch(addressInfo, () => {
+  debounce(MSearch.value.search(addressInfo.value, (state, res) => {
+    if (state === 'complete' && res.info === 'OK') {
+      addressList.value = res.tips.map((item) => {
+        return {
+          ...item,
+          address: item.name
+        }
+      })
+    }
+  }), 500)
+})
+// 初始化数据
 const init = (map) => {
   const AMap = window.AMap
   myMap.value = map
   getUserPosition(AMap)
   show.value = false
+  mapSearch(AMap)
+}
+// 点击地址时触发
+const changAddress = (item) => {
+  addressInfo.value = item.address
+  center[0] = item.location.lng
+  center[1] = item.location.lat
+  computedLine(item.location.lat, item.location.lng)
+  addMarker(window.AMap)
+}
+// 搜索功能
+const mapSearch = (AMap) => {
+  AMap.plugin(['AMap.AutoComplete'], function () {
+    const PlaceSearchOptions = { // 设置PlaceSearch属性
+      pageSize: 10, // 每页结果数,默认10
+      pageIndex: 1, // 请求页码，默认1
+      extensions: 'base' // 返回信息详略，默认为base（基本信息）
+    }
+    MSearch.value = new AMap.AutoComplete(PlaceSearchOptions) // 构造PlaceSearch类
+  })
 }
 // 计算两地距离
 const computedLine = (lat2, lng2, lat1 = 121.59996, lng1 = 31.197646) => {
@@ -99,7 +141,8 @@ const getUserPosition = AMap => {
     }
 
     function onError (err) {
-      console.log('获取位置失败:', err)
+      // 危险通知
+      Notify({ type: 'danger', message: err })
     }
   })
 }
@@ -115,11 +158,9 @@ const getAdd = () => {
   })
   const [lng, lat] = center
   geocoder.getAddress([lng, lat], function (status, result) {
-    console.log(status, result)
     if (status === 'complete' && result.info === 'OK') {
       if (result && result.regeocode) {
         addressList.value = result.regeocode.pois
-        console.log(addressList.value)
         formattedAddress.value = result.regeocode.formattedAddress
       }
     }
@@ -136,17 +177,18 @@ const getAdd = () => {
     position: fixed;
     top: 54px;
     width: 100vw;
-    height: 350px;
+    height: 250px;
     :deep(.amap-marker) {
       width: 20px;
     }
   }
   .address-list{
+    width: 100%;
     position: absolute;
     top: 304px;
     bottom: 50px;
     overflow-y: auto;
-    height: calc(100vh - 404px);
+    height: calc(100vh - 354px);
   }
 }
 

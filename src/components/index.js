@@ -1,4 +1,4 @@
-import MyLoading from '@/components/My-loading.vue'
+import MyLoading from '@/components/MyLoading.vue'
 import MyDialog from '@/components/My-dialog.vue'
 export default {
   install (app) {

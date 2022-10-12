@@ -2,11 +2,18 @@
   <header>
     <div class="main">
       <div class="go-mine">
-        <img src="../../assets/image/user.png">
+        <img
+          src="../../assets/image/user.png"
+          @click="$router.push('/mine')"
+          alt="kola"
+        >
       </div>
       <div class="title">
         <div class="title-logo">
-          <img src="@/assets/image/logo.png">
+          <img
+            src="@/assets/image/logo.png"
+            alt="logo"
+          >
         </div>
         <div class="title-name">
           <h3>kola</h3>
@@ -48,7 +55,8 @@
           :key="item.id"
           :desc="item.description"
           :title="item.name"
-          :thumb="`http://localhost:8080/download?fileName=${item.image}`"
+          :thumb="IMG_URL+item.image"
+          @click="toDetails(item)"
         >
           <template #price>
             <span>￥{{ (item.price / 100) }}</span>
@@ -75,17 +83,19 @@
       </ConfigProvider>
     </div>
   </main>
-  <my-loading :show="isLoading" />
-  <my-dialog
+  <MyLoading :show="isLoading" />
+  <TasteSelection
     :dish="dish"
     :show="showDialog"
   />
 </template>
 
 <script setup>
+import TasteSelection from './component/TasteSelection.vue'
 import { getCategory, getDish } from '@/api/module/homeIndex'
 import { onMounted, ref, watch } from 'vue'
 import { Card, Button, ConfigProvider } from 'vant'
+const IMG_URL = import.meta.env.VITE_LOCAL_SERVE_IMGE_URL
 const dishList = ref([])
 const defaultIndex = ref(0)
 const categoryList = ref([])
@@ -103,6 +113,11 @@ const unWatch = watch(() => categoryList.value, (val) => {
   getDishById(val[0].id)
   unWatch()
 })
+// 跳转详情页
+const toDetails = (item) => {
+  console.log(item)
+}
+
 // 获取菜单列表
 const sendCategory = async () => {
   const res = await getCategory()
