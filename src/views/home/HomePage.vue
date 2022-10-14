@@ -18,20 +18,23 @@
         <div class="title-name">
           <h3>kola</h3>
           <ul class="description">
-            <li class="description-item">
-              距离1.5k
-            </li>
-            <li class="description-item">
-              距离1.5k
-            </li>
-            <li class="description-item">
-              距离1.5k
+            <li
+              class="description-item"
+              @click="getDistance"
+            >
+              <Icon
+                name="location-o"
+                v-if="distance === 0"
+              >
+                点击获取距离
+              </Icon>
+              <span v-else>距离kola外卖店:{{ distance.toFixed(2) }}km</span>
             </li>
           </ul>
         </div>
       </div>
       <p class="intro">
-        xxxxxxxxxxxxxxxx
+        当前位置:{{ formattedAddress }}
       </p>
     </div>
   </header>
@@ -72,12 +75,12 @@
               选择规格
             </Button>
             <Button
+              icon="plus"
+              type="primary"
               size="mini"
               round
               v-else
-            >
-              加入购物车
-            </Button>
+            />
           </template>
         </Card>
       </ConfigProvider>
@@ -92,9 +95,11 @@
 
 <script setup>
 import TasteSelection from './component/TasteSelection.vue'
-import { getCategory, getDish } from '@/api/module/homeIndex'
+import useMap from '@/hooks/useMap'
+import { getCategory, getDish, getSetmeal } from '@/api/module/homeIndex'
 import { onMounted, ref, watch } from 'vue'
-import { Card, Button, ConfigProvider } from 'vant'
+import { Card, Button, ConfigProvider, Icon } from 'vant'
+const AMap = window.AMap
 const IMG_URL = import.meta.env.VITE_LOCAL_SERVE_IMGE_URL
 const dishList = ref([])
 const defaultIndex = ref(0)
@@ -102,8 +107,16 @@ const categoryList = ref([])
 const isLoading = ref(false)
 const dish = ref([])
 const showDialog = ref(false)
+const { getUserPosition, computedLine, distance, center, getAddress, formattedAddress } = useMap(AMap)
 onMounted(() => {
   sendCategory()
+})
+watch(center, () => {
+  if (center[0] && center[1]) {
+    const AMap = window.AMap
+    computedLine(center[0], center[1])
+    getAddress(AMap, center)
+  }
 })
 const themeVars = {
   cardPriceColor: '#f60101',
@@ -117,7 +130,13 @@ const unWatch = watch(() => categoryList.value, (val) => {
 const toDetails = (item) => {
   console.log(item)
 }
-
+// 获取距离
+const getDistance = () => {
+  const AMap = window.AMap
+  AMap && AMap.plugin('AMap.Geolocation', function () {
+    getUserPosition(AMap)
+  })
+}
 // 获取菜单列表
 const sendCategory = async () => {
   const res = await getCategory()
@@ -125,17 +144,27 @@ const sendCategory = async () => {
 }
 // 点击菜单列表处理
 const changeCategory = (item, index) => {
+  console.log(item)
   defaultIndex.value = index
   if (item.type === 1) {
     getDishById(item.id)
   } else {
-    console.log(123)
+    getSetmealById(item.id)
   }
 }
 // 根据菜单id 获取对应菜品信息
 const getDishById = async (categoryId) => {
   isLoading.value = true
   const res = await getDish({
+    categoryId
+  })
+  dishList.value = res.info
+  isLoading.value = false
+}
+// 根据菜单id 获取对应套餐信息
+const getSetmealById = async (categoryId) => {
+  isLoading.value = true
+  const res = await getSetmeal({
     categoryId
   })
   dishList.value = res.info
@@ -169,7 +198,7 @@ header{
   .intro{
     padding: 4px 10px;
     color: #969696;
-    font-size: 14px;
+    font-size: 12px;
   }
   .main{
     position: absolute;
@@ -201,7 +230,6 @@ header{
         }
       }
       .title-name{
-        flex: auto;
         display: flex;
         flex-direction: column;
         padding-left: 6px;

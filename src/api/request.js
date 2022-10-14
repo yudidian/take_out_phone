@@ -10,6 +10,8 @@ request.interceptors.request.use(config => {
   const token = localStorage.getItem('token')
   if (token) {
     config.headers.token = token
+  } else {
+    router.replace('/login')
   }
   return config
 }, error => {

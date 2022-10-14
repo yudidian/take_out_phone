@@ -13,3 +13,10 @@ export const getDish = (params) => {
     params
   })
 }
+export const getSetmeal = (params) => {
+  return request({
+    url: '/setmeal/list',
+    method: 'GET',
+    params
+  })
+}
