@@ -1,0 +1,37 @@
+{
+  "id": "3706024",
+  "name": "take_out_phone",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "9855911",
+      "name": "收藏",
+      "font_class": "shoucang",
+      "unicode": "e613",
+      "unicode_decimal": 58899
+    },
+    {
+      "icon_id": "12439749",
+      "name": "收藏",
+      "font_class": "shoucang1",
+      "unicode": "e646",
+      "unicode_decimal": 58950
+    },
+    {
+      "icon_id": "16391901",
+      "name": "收藏",
+      "font_class": "shoucang2",
+      "unicode": "e639",
+      "unicode_decimal": 58937
+    },
+    {
+      "icon_id": "30441",
+      "name": "back",
+      "font_class": "back",
+      "unicode": "e679",
+      "unicode_decimal": 59001
+    }
+  ]
+}

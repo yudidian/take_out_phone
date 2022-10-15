@@ -86,7 +86,6 @@
       </ConfigProvider>
     </div>
   </main>
-  <MyLoading :show="isLoading" />
   <TasteSelection
     :dish="dish"
     :show="showDialog"
@@ -98,13 +97,14 @@ import TasteSelection from './component/TasteSelection.vue'
 import useMap from '@/hooks/useMap'
 import { getCategory, getDish, getSetmeal } from '@/api/module/homeIndex'
 import { onMounted, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { Card, Button, ConfigProvider, Icon } from 'vant'
+const router = useRouter()
 const AMap = window.AMap
 const IMG_URL = import.meta.env.VITE_LOCAL_SERVE_IMGE_URL
 const dishList = ref([])
 const defaultIndex = ref(0)
 const categoryList = ref([])
-const isLoading = ref(false)
 const dish = ref([])
 const showDialog = ref(false)
 const { getUserPosition, computedLine, distance, center, getAddress, formattedAddress } = useMap(AMap)
@@ -128,7 +128,15 @@ const unWatch = watch(() => categoryList.value, (val) => {
 })
 // 跳转详情页
 const toDetails = (item) => {
-  console.log(item)
+  router.push({
+    name: 'goodsDetail',
+    params: {
+      id: item.id
+    },
+    query: {
+      title: item.name
+    }
+  })
 }
 // 获取距离
 const getDistance = () => {
@@ -144,7 +152,6 @@ const sendCategory = async () => {
 }
 // 点击菜单列表处理
 const changeCategory = (item, index) => {
-  console.log(item)
   defaultIndex.value = index
   if (item.type === 1) {
     getDishById(item.id)
@@ -154,21 +161,17 @@ const changeCategory = (item, index) => {
 }
 // 根据菜单id 获取对应菜品信息
 const getDishById = async (categoryId) => {
-  isLoading.value = true
   const res = await getDish({
     categoryId
   })
   dishList.value = res.info
-  isLoading.value = false
 }
 // 根据菜单id 获取对应套餐信息
 const getSetmealById = async (categoryId) => {
-  isLoading.value = true
   const res = await getSetmeal({
     categoryId
   })
   dishList.value = res.info
-  isLoading.value = false
 }
 const chooseFlavors = (val) => {
   showDialog.value = true

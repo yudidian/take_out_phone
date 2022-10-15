@@ -57,7 +57,7 @@ const routes = [
     component: () => import('@/views/mine/components/AddressAdd.vue')
   },
   {
-    path: '/goods/detail',
+    path: '/goods/detail/:id',
     name: 'goodsDetail',
     component: () => import('@/views/goodsDetail/GoodsDetail.vue')
   }

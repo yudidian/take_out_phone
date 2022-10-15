@@ -1,3 +1,4 @@
+@import "reset.scss";
 /* 禁用iPhone中Safari的字号自动调整 */
 html {
     -webkit-text-size-adjust: 100%;
@@ -92,7 +93,7 @@ input{
     overflow : hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    /* -webkit-line-clamp: 2; */
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
 }
 /* 移动端点击a链接出现蓝色背景问题解决 */

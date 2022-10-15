@@ -1,9 +1,9 @@
 <template>
-  <teleport
-    to="body"
-    v-if="props.show"
-  >
-    <div class="wrapper">
+  <transition name="fade">
+    <div
+      class="wrapper"
+      v-if="props.show"
+    >
       <div class="content">
         <p class="title">
           {{ props.title }}
@@ -43,13 +43,23 @@
           </button>
         </footer>
       </div>
+      <div
+        class="cancel"
+        @click="$emit('hide', false)"
+      >
+        <Icon
+          name="close"
+          size="40"
+        />
+      </div>
     </div>
-  </teleport>
+  </transition>
 </template>
 
 <script setup>
 import { watch, ref } from 'vue'
-
+import { Icon } from 'vant'
+defineEmits(['hide'])
 const props = defineProps({
   title: {
     type: String,
@@ -94,6 +104,22 @@ const addCart = () => {
 </script>
 
 <style scoped lang="scss">
+/* 进入之前和离开后的样式 */
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+/* 离开和进入过程中的样式 */
+.fade-enter-active,
+.fade-leave-active {
+  /* 添加过渡动画 */
+  transition: opacity 0.5s ease;
+}
+/* 进入之后和离开之前的样式 */
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+}
 .wrapper{
   position: fixed;
   top: 0;
@@ -101,6 +127,7 @@ const addCart = () => {
   width: 100vw;
   height: 100Vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: rgba(124, 122, 122, 0.5);
@@ -173,6 +200,10 @@ const addCart = () => {
         background-color: #FFB200;
       }
     }
+  }
+  .cancel{
+    margin-top: 10px;
+    color: #9f9f9f;
   }
 }
 </style>

@@ -1,8 +1,8 @@
 import MyLoading from '@/components/MyLoading.vue'
-import MyDialog from '@/components/My-dialog.vue'
+import TasteSelection from '@/components/TasteSelection.vue'
 export default {
   install (app) {
     app.component('MyLoading', MyLoading)
-      .component('MyDialog', MyDialog)
+      .component('TasteSelection', TasteSelection)
   }
 }

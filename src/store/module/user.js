@@ -22,7 +22,7 @@ export default {
       if (res.code === 1) {
         commit('setToken', res.info)
         localStorage.setItem('token', res.info.token)
-        localStorage.setItem('userId', res.info.id)
+        localStorage.setItem('userId', res.info.userId)
         await router.replace('/')
         Notify({
           type: 'success',

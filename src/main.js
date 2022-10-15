@@ -9,6 +9,7 @@ import './style/vant.css'
 import components from '@/components'
 import VueAMap, { initAMapApiLoader } from '@vuemap/vue-amap'
 import '@vuemap/vue-amap/dist/style.css'
+import '@/assets/font/iconfont.css'
 initAMapApiLoader({
   key: '21ff8a3c52132e33add0ca88b4d58507'
 })
