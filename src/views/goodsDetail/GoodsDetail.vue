@@ -68,45 +68,56 @@
             />
           </div>
         </div>
-        <TabNav />
+        <TabNav :id="goodsInfo.id" />
       </div>
     </CellGroup>
+    <CartBottom :amount="cartInfo.amount" />
   </div>
   <TasteSelection
     title="选择规格"
     @hide="showDialog = $event"
     :dish="goodsInfo"
+    :dish-type="$route.query.type"
     :show="showDialog"
+    @change-handler="getCartList"
   />
 </template>
 
 <script setup>
-import { Notify, Button, CellGroup } from 'vant'
-import { onMounted, ref } from 'vue'
+import { Button, CellGroup, Notify } from 'vant'
+import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import TabNav from './component/TabNav.vue'
-import { sendGoodsInfo, sendChangeFavorites, sendGetFavorites } from '@/api/module/goods'
+import CartBottom from './component/CartBottom.vue'
+import { sendChangeFavorites, sendGetFavorites, sendGoodsInfo } from '@/api/module/goods'
+import { useCart } from '@/hooks/useCart'
 const IMG_URL = import.meta.env.VITE_LOCAL_SERVE_IMGE_URL
 const store = useStore()
 const route = useRoute()
+const { cartInfo, getCartList } = useCart()
 // 商品信息
 const goodsInfo = ref({})
 // 是否收藏
 const isFavorites = ref(false)
 // 是否显示口味列表
 const showDialog = ref(false)
+// 购物车列表数据
 onMounted(async () => {
-  const res = await Promise.allSettled([sendGoodsInfo(route.params.id), sendGetFavorites(route.params.id)])
+  const res = await Promise.allSettled([sendGoodsInfo(route.params.id), sendGetFavorites(route.params.id), getCartList()])
   setGoodsInfo(res)
+})
+// 监听cartList 改变
+watch(() => cartInfo.cartList, (value) => {
+  console.log(value)
 })
 // 处理商品信息
 const setGoodsInfo = (res) => {
-  const first = res[0].value
-  const last = res[1].value
-  if (first.code === 1 && last.code === 1) {
-    goodsInfo.value = first.info
-    isFavorites.value = last.data.isFavorites
+  const goods = res[0].value
+  const favorites = res[1].value
+  if (goods.code === 1 && favorites.code === 1) {
+    goodsInfo.value = goods.info
+    isFavorites.value = favorites.data.isFavorites
   } else {
     Notify({
       type: 'danger',
@@ -209,6 +220,7 @@ const changeFavorites = async () => {
           .number{
             font-size: 18px;
             color: #f33131;
+            font-weight: 900;
           }
         }
       }

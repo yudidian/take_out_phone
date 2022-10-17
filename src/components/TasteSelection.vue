@@ -2,7 +2,7 @@
   <transition name="fade">
     <div
       class="wrapper"
-      v-if="props.show"
+      v-if="show"
     >
       <div class="content">
         <p class="title">
@@ -58,8 +58,12 @@
 
 <script setup>
 import { watch, ref } from 'vue'
-import { Icon } from 'vant'
-defineEmits(['hide'])
+import { sendAddCart } from '@/api/module/goods.js'
+import { Icon, Notify } from 'vant'
+const emit = defineEmits(['hide', 'changeHandler'])
+watch(() => props.show, (value) => {
+  show.value = value
+})
 const props = defineProps({
   title: {
     type: String,
@@ -72,9 +76,14 @@ const props = defineProps({
   dish: {
     type: Object,
     default: () => {}
+  },
+  dishType: {
+    type: String,
+    default: '1'
   }
 })
 const Cpflavors = ref([])
+const show = ref(false)
 const unWatch = watch(() => props.dish, (val) => {
   Cpflavors.value = val.flavors.map(item => {
     return JSON.parse(item.value).map(v => {
@@ -90,7 +99,7 @@ const chooseHandler = (item, j, index) => {
   console.log(Cpflavors.value[j][index].active)
   Cpflavors.value[j][index].active = true
 }
-const addCart = () => {
+const addCart = async () => {
   const flavorList = []
   Cpflavors.value.forEach(item => {
     item.forEach(f => {
@@ -99,7 +108,32 @@ const addCart = () => {
       }
     })
   })
-  console.log(flavorList)
+  const data = {
+    name: props.dish.name,
+    dishFlavor: flavorList.toString(),
+    number: 1,
+    amount: props.dish.price,
+    image: props.dish.image
+  }
+  if (props.dishType === '1') {
+    data.dishId = props.dish.id
+  } else {
+    data.setmealId = props.dish.id
+  }
+  const res = await sendAddCart(data)
+  show.value = false
+  if (res.code === 1) {
+    Notify({
+      type: 'success',
+      message: '添加成功'
+    })
+    emit('changeHandler')
+  } else {
+    Notify({
+      type: 'danger',
+      message: '添加失败'
+    })
+  }
 }
 </script>
 
@@ -202,8 +236,8 @@ const addCart = () => {
     }
   }
   .cancel{
-    margin-top: 10px;
-    color: #9f9f9f;
+    margin-top: 20px;
+    color: #3a3a3a;
   }
 }
 </style>

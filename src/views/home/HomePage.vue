@@ -89,6 +89,7 @@
   <TasteSelection
     :dish="dish"
     :show="showDialog"
+    :dish-type="dishType"
   />
 </template>
 
@@ -103,6 +104,7 @@ const router = useRouter()
 const AMap = window.AMap
 const IMG_URL = import.meta.env.VITE_LOCAL_SERVE_IMGE_URL
 const dishList = ref([])
+const dishType = ref(1)
 const defaultIndex = ref(0)
 const categoryList = ref([])
 const dish = ref([])
@@ -134,7 +136,8 @@ const toDetails = (item) => {
       id: item.id
     },
     query: {
-      title: item.name
+      title: item.name,
+      type: dishType.value
     }
   })
 }
@@ -153,6 +156,7 @@ const sendCategory = async () => {
 // 点击菜单列表处理
 const changeCategory = (item, index) => {
   defaultIndex.value = index
+  dishType.value = item.type
   if (item.type === 1) {
     getDishById(item.id)
   } else {

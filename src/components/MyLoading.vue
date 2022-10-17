@@ -1,7 +1,7 @@
 <template>
   <Overlay
     :show="props.show"
-    z-index="999"
+    z-index="99999999"
   >
     <template #default>
       <div class="loading-wrapper">
