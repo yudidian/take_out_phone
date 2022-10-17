@@ -1,64 +1,66 @@
 <template>
-  <NavBar
-    title="登录"
-  />
-  <Form @submit="onSubmit">
-    <CellGroup inset>
-      <Field
-        v-model="form.phone"
-        :label-width="60"
-        name="用户名"
-        label="用户名"
-        placeholder="用户名"
-        :rules="[{ required: true, message: '请填写用户名' }]"
-      >
-        <template #button>
-          <Button
-            size="small"
-            type="primary"
-            ref="code"
-            block
-            @click="sendCodeHandler"
-          >
-            发送验证码
-          </Button>
-        </template>
-      </Field>
-      <Field
-        v-model="form.code"
-        :label-width="60"
-        name="验证码"
-        label="验证码"
-        placeholder="验证码"
-        :rules="[{ required: true, message: '请填验证码' },{validator,message: '验证码为6位'}]"
-      />
-    </CellGroup>
-    <div style="margin: 16px;">
-      <Button
-        round
-        block
-        type="primary"
-        native-type="submit"
-      >
-        登录
-      </Button>
+  <div class="content">
+    <div class="title">
+      Kola
     </div>
-  </Form>
-  <Slider
-    v-if="isSlider"
-    @checkFlag="checkFlagHandler"
-  />
-  <Overlay :show="show">
-    <template #default>
-      <div class="loading-warpper">
-        <Loading :size="30" />
+    <Form @submit="onSubmit">
+      <CellGroup inset>
+        <Field
+          v-model="form.phone"
+          :label-width="60"
+          name="用户名"
+          label="用户名"
+          placeholder="用户名"
+          :rules="[{ required: true, message: '请填写用户名' }]"
+        >
+          <template #button>
+            <Button
+              size="small"
+              type="primary"
+              ref="code"
+              block
+              @click="sendCodeHandler"
+            >
+              发送验证码
+            </Button>
+          </template>
+        </Field>
+        <Field
+          v-model="form.code"
+          :label-width="60"
+          name="验证码"
+          label="验证码"
+          placeholder="验证码"
+          :rules="[{ required: true, message: '请填验证码' },{validator,message: '验证码为6位'}]"
+        />
+      </CellGroup>
+      <div style="margin: 16px;">
+        <Button
+          round
+          block
+          type="primary"
+          native-type="submit"
+        >
+          登录
+        </Button>
       </div>
-    </template>
-  </Overlay>
+    </Form>
+    <Slider
+      v-if="isSlider"
+      @checkFlag="checkFlagHandler"
+    />
+    <Overlay :show="show">
+      <template #default>
+        <div class="loading-warpper">
+          <Loading :size="30" />
+        </div>
+      </template>
+    </Overlay>
+  </div>
 </template>
 
 <script setup>
-import { Form, Field, CellGroup, Button, NavBar, Notify, Overlay, Loading } from 'vant'
+import { Form, Field, CellGroup, Button, Notify, Overlay, Loading } from 'vant'
 import Slider from './components/SliderIndex.vue'
 import { onBeforeUnmount, ref } from 'vue'
 import { sendCode } from '@/api/module/user'
@@ -127,20 +129,69 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped lang="scss">
-.van-form{
-  margin-top: 20px;
-  .van-cell-group{
-    .van-field{
-      :deep(.van-field__label){
-        display: flex;
-        align-items: center;
+.content{
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: url("src/assets/image/veer-402681504.jpg") no-repeat;
+  background-size: cover;
+  &::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    backdrop-filter: blur(5px);
+    z-index: 1;
+  }
+}
+.title{
+    position: absolute;
+    top: 25%;
+    z-index: 9;
+    width: 100%;
+    height: 40px;
+    text-align: center;
+    font-size: 36px;
+    font-weight: 900;
+    animation: tracking-in-contract 2.5s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
+  }
+  .van-form{
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    z-index: 9;
+    width: 100%;
+    height: 120px;
+    transform: translate(-50%,-50%);
+    margin-top: 20px;
+    .van-cell-group{
+      .van-field{
+        :deep(.van-field__label){
+          display: flex;
+          align-items: center;
+        }
       }
     }
   }
-}
-.van-overlay{
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  .van-overlay{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+@keyframes tracking-in-contract {
+  0% {
+    letter-spacing: 1em;
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.6;
+  }
+  100% {
+    letter-spacing: normal;
+    opacity: 1;
+  }
 }
 </style>
