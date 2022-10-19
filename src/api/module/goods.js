@@ -59,3 +59,10 @@ export const sendDeleteCartOne = (data) => {
     data
   })
 }
+// 删除菜品
+export const sendGetDishDescription = (id) => {
+  return request({
+    url: `/goods/description/${id}`,
+    method: 'get'
+  })
+}

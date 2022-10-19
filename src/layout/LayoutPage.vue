@@ -1,5 +1,16 @@
 <template>
-  <RouterView />
+  <RouterView v-slot="{ Component }">
+    <keep-alive>
+      <component
+        :is="Component"
+        v-if="$route.meta.keepAlive"
+      />
+    </keep-alive>
+    <component
+      :is="Component"
+      v-if="!$route.meta.keepAlive"
+    />
+  </RouterView>
   <Tabbar
     v-model="active"
     router
@@ -31,11 +42,14 @@
 <script setup>
 import { Tabbar, TabbarItem } from 'vant'
 import { useRoute } from 'vue-router'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 const active = ref('home')
 const route = useRoute()
+watch(route, (val) => {
+  active.value = val.name
+})
 onMounted(() => {
-  active.value = route.meta.index
+  active.value = route.name
 })
 const tabChangeHandler = (val) => {
   active.value = val

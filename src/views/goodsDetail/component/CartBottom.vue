@@ -1,5 +1,8 @@
 <template>
-  <div class="cart-bottom">
+  <div
+    class="cart-bottom"
+    @click="$router.push('/cart')"
+  >
     <div class="logo">
       <svg
         class="icon"
@@ -11,13 +14,12 @@
     <div class="price">
       ￥{{ amount.toFixed(2) }}
     </div>
-    <div class="Settlement">
-      去结算>
-    </div>
+    <Icon name="arrow" />
   </div>
 </template>
 
 <script setup>
+import { Icon } from 'vant'
 defineProps({
   amount: {
     type: Number,
@@ -28,13 +30,11 @@ defineProps({
 
 <style scoped lang="scss">
 .cart-bottom {
-  width: 90%;
-  height: 40px;
-  margin-left: 5%;
-  background-color: #5b5b5b;
-  border-radius: 30px;
+  width: 100%;
+  height: 48px;
+  background-color: #ffffff;
   position: absolute;
-  bottom: 22px;
+  bottom: 0;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -49,7 +49,8 @@ defineProps({
   }
   .price{
     width: 100px;
-    margin-left: 20px;
+    margin-left: auto;
+    margin-right: 10px;
     color: red;
   }
   .Settlement {

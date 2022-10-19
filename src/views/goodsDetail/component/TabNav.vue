@@ -15,31 +15,31 @@
         <li class="wrapper-item">
           <span class="left">掌柜描述</span>
           <p class="right">
-            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            {{ descriptionInfo.description }}
           </p>
         </li>
         <li class="wrapper-item">
           <span class="left">主料</span>
           <p class="right">
-            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            {{ descriptionInfo.mainMeterial }}
           </p>
         </li>
         <li class="wrapper-item">
           <span class="left">制作方式</span>
           <p class="right">
-            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            {{ descriptionInfo.productionMethod }}
           </p>
         </li>
         <li class="wrapper-item">
           <span class="left">数量</span>
           <p class="right">
-            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            {{ descriptionInfo.count }}
           </p>
         </li>
         <li class="wrapper-item">
           <span class="left">口味</span>
           <p class="right">
-            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            {{ descriptionInfo.taste }}
           </p>
         </li>
       </ul>
@@ -53,7 +53,12 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 const props = defineProps({
   id: {
+    required: true,
     type: String
+  },
+  descriptionInfo: {
+    type: Object,
+    required: true
   }
 })
 const router = useRouter()

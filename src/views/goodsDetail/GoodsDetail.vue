@@ -68,7 +68,10 @@
             />
           </div>
         </div>
-        <TabNav :id="goodsInfo.id" />
+        <TabNav
+          :id="goodsInfo.id"
+          :description-info="descriptionInfo"
+        />
       </div>
     </CellGroup>
     <CartBottom :amount="cartInfo.amount" />
@@ -90,12 +93,14 @@ import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import TabNav from './component/TabNav.vue'
 import CartBottom from './component/CartBottom.vue'
-import { sendChangeFavorites, sendGetFavorites, sendGoodsInfo } from '@/api/module/goods'
+import { sendChangeFavorites, sendGetFavorites, sendGoodsInfo, sendGetDishDescription } from '@/api/module/goods'
 import { useCart } from '@/hooks/useCart'
 const IMG_URL = import.meta.env.VITE_LOCAL_SERVE_IMGE_URL
 const store = useStore()
 const route = useRoute()
 const { cartInfo, getCartList } = useCart()
+// 商品描述信息
+const descriptionInfo = ref({})
 // 商品信息
 const goodsInfo = ref({})
 // 是否收藏
@@ -104,7 +109,7 @@ const isFavorites = ref(false)
 const showDialog = ref(false)
 // 购物车列表数据
 onMounted(async () => {
-  const res = await Promise.allSettled([sendGoodsInfo(route.params.id), sendGetFavorites(route.params.id), getCartList()])
+  const res = await Promise.allSettled([sendGoodsInfo(route.params.id), sendGetFavorites(route.params.id), getCartList(), sendGetDishDescription(route.params.id)])
   setGoodsInfo(res)
 })
 // 监听cartList 改变
@@ -114,9 +119,11 @@ watch(() => cartInfo.cartList, (value) => {
 // 处理商品信息
 const setGoodsInfo = (res) => {
   const goods = res[0].value
+  const description = res[0].value
   const favorites = res[1].value
-  if (goods.code === 1 && favorites.code === 1) {
+  if (goods.code === 1 && favorites.code === 1 && description.code === 1) {
     goodsInfo.value = goods.info
+    descriptionInfo.value = description.info
     isFavorites.value = favorites.data.isFavorites
   } else {
     Notify({
@@ -214,7 +221,7 @@ const changeFavorites = async () => {
           .sort{
             color: #9f9f9f;
             font-size: 18px;
-            transform: scale(0.5);
+            transform: scale(0.6);
             margin-left: -10px;
           }
           .number{
