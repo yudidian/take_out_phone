@@ -86,7 +86,7 @@
   />
 </template>
 
-<script setup>
+<script setup name="GoodsDetail">
 import { Button, CellGroup, Notify } from 'vant'
 import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'

@@ -3,11 +3,13 @@
     <keep-alive>
       <component
         :is="Component"
+        :key="$route.name"
         v-if="$route.meta.keepAlive"
       />
     </keep-alive>
     <component
       :is="Component"
+      :key="$route.name"
       v-if="!$route.meta.keepAlive"
     />
   </RouterView>
@@ -39,7 +41,7 @@
     </TabbarItem>
   </Tabbar>
 </template>
-<script setup>
+<script setup name="LayoutPage">
 import { Tabbar, TabbarItem } from 'vant'
 import { useRoute } from 'vue-router'
 import { onMounted, ref, watch } from 'vue'

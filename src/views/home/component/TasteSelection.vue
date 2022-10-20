@@ -47,7 +47,7 @@
   </teleport>
 </template>
 
-<script setup>
+<script setup name="TasteSelection">
 import { watch, ref } from 'vue'
 
 const props = defineProps({

@@ -47,7 +47,7 @@
     </Form>
     <Slider
       v-if="isSlider"
-      @checkFlag="checkFlagHandler"
+      @check-flag="checkFlagHandler"
     />
     <Overlay :show="show">
       <template #default>
@@ -59,7 +59,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup name="LoginPage">
 import { Form, Field, CellGroup, Button, Notify, Overlay, Loading } from 'vant'
 import Slider from './components/SliderIndex.vue'
 import { onBeforeUnmount, ref } from 'vue'

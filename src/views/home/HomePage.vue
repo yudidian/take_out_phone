@@ -93,7 +93,7 @@
   />
 </template>
 
-<script setup>
+<script setup name="HomePage">
 import TasteSelection from './component/TasteSelection.vue'
 import useMap from '@/hooks/useMap'
 import { getCategory, getDish, getSetmeal } from '@/api/module/homeIndex'

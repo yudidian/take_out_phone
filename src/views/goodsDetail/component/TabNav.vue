@@ -47,7 +47,7 @@
   </CellGroup>
 </template>
 
-<script setup>
+<script setup name="TabNav">
 import { CellGroup } from 'vant'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'

@@ -36,3 +36,11 @@ export const getAddress = (id) => {
     method: 'get'
   })
 }
+// 修改地址
+export const sendUpdateAddress = (data) => {
+  return request({
+    url: '/address',
+    method: 'put',
+    data
+  })
+}

@@ -1,6 +1,6 @@
 <template>
   <NavBar
-    title="新增地址"
+    :title="$route.query.id ? '编辑地址':'新增地址'"
     left-text="返回"
     left-arrow
     @click-left="$router.back()"
@@ -45,11 +45,11 @@
   <my-loading :show="isLoading" />
 </template>
 
-<script setup>
+<script setup name="AddressAdd">
 import { useRouter, useRoute } from 'vue-router'
 import { AddressEdit, NavBar, Radio, RadioGroup, Toast } from 'vant'
 import { onMounted, ref } from 'vue'
-import { addAddress, getAddress } from '@/api/module/address'
+import { addAddress, getAddress, sendUpdateAddress } from '@/api/module/address'
 import { areaList } from '@vant/area-data'
 const checked = ref('无')
 onMounted(() => {
@@ -63,22 +63,30 @@ const router = useRouter()
 const addAddressEdit = ref(null)
 const searchResult = ref([])
 const addressInfo = ref({})
+// 保存
 const onSave = async (content) => {
-  const info = {}
-  info.consignee = content.name
-  info.phone = content.tel
-  info.provinceName = content.province
-  info.cityName = content.city
-  info.districtCode = content.areaCode
-  info.districtName = content.county
-  info.detail = content.addressDetail
-  info.label = checked.value
-  const res = await addAddress(info)
+  const info = {
+    consignee: content.name,
+    phone: content.tel,
+    provinceName: content.province,
+    cityName: content.city,
+    districtCode: content.areaCode,
+    districtName: content.county,
+    detail: content.addressDetail,
+    label: checked.value
+  }
+  let res
+  if (route.query.id) {
+    info.id = content.id
+    res = await sendUpdateAddress(info)
+  } else {
+    res = await addAddress(info)
+  }
   if (res.code === 1) {
-    Toast.success('添加成功')
+    Toast.success(res.msg)
     router.back()
   } else {
-    Toast.fail('添加失败')
+    Toast.fail(res.msg)
   }
 }
 const onChangeDetail = (val) => {
@@ -98,6 +106,7 @@ const getAddressById = async (id) => {
   isLoading.value = true
   const res = await getAddress(id)
   addressInfo.value = {
+    id: res.info.id,
     name: res.info.consignee,
     tel: res.info.phone,
     province: res.info.provinceName,

@@ -1,3 +1,5 @@
+$main-color: #FFC200;
+
 @mixin text-warp($line) {
   overflow : hidden;
   text-overflow: ellipsis;

@@ -18,7 +18,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup name="CartBottom">
 import { Icon } from 'vant'
 defineProps({
   amount: {

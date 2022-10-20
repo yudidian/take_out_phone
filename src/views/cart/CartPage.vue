@@ -14,7 +14,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup name="CartPage">
 import { SubmitBar, NavBar } from 'vant'
 import { ref } from 'vue'
 const price = ref(0)

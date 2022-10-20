@@ -11,7 +11,7 @@
   </Overlay>
 </template>
 
-<script setup>
+<script setup name="MyLogin">
 import { Overlay, Loading } from 'vant'
 const props = defineProps({
   show: {

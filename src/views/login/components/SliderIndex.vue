@@ -31,7 +31,7 @@
   </teleport>
 </template>
 
-<script setup>
+<script setup name="SliderIndex">
 import { onMounted, ref } from 'vue'
 
 const icon = ref(null)

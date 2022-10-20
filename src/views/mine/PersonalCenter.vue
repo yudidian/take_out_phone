@@ -59,7 +59,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup name="PersonalCenter">
 import { CellGroup, Cell } from 'vant'
 </script>
 

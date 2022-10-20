@@ -33,7 +33,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup name="CartList">
 import { Button, Card, Cell, CellGroup, Dialog, Notify } from 'vant'
 import { sendAddCart, sendDeleteCartOne, sendGetCartList, sendLessCartCount } from '@/api/module/goods.js'
 import { computed, onMounted, ref } from 'vue'
@@ -65,6 +65,7 @@ const addOrLessHandler = async (item, flag, index) => {
       const res = await sendLessCartCount(item)
       if (res.code === 1) {
         cartInfoList.value[index] = res.info
+        emits('getPrice', price)
       } else {
         Notify({
           type: 'danger',
@@ -121,7 +122,7 @@ const getCartList = async () => {
 <style scoped lang="scss">
 .cart-wrapper {
   overflow-y: auto;
-  height: calc(100vh - 50px);
+  height: calc(100vh - 96px);
   .cart-item {
     position: relative;
     height: 88px;

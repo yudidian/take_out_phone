@@ -8,8 +8,8 @@
   <AddressList
     :switchable="false"
     :list="addressList"
-    default-tag-text="默认地址"
-    @add="$router.push('/address-add')"
+    default-tag-text="默认"
+    @add="$router.push('/address/add')"
     @edit="onEdit"
   >
     <template #item-bottom="score">
@@ -31,14 +31,13 @@
       </Cell>
     </template>
   </AddressList>
-  <my-loading :show="isLoading" />
 </template>
-<script setup>
+<script setup name="AddressPage">
 import {
   AddressList,
   NavBar,
   Cell,
-  Switch
+  Switch, Notify
 } from 'vant'
 import { useRouter } from 'vue-router'
 import { onMounted, ref } from 'vue'
@@ -47,13 +46,23 @@ onMounted(() => {
   sendAddressList()
 })
 const router = useRouter()
-const isLoading = ref(false)
 const addressList = ref([])
 const onEdit = (item) => {
-  router.push(`/address-add?id=${item.id}`)
+  router.push({
+    name: 'AddressAdd',
+    query: {
+      id: item.id
+    }
+  })
 }
 const sendAddressList = async () => {
   const res = await getAddressList()
+  if (res.code !== 1) {
+    return Notify({
+      type: 'danger',
+      message: res.msg
+    })
+  }
   res.info.forEach(item => {
     addressList.value.push({
       id: item.id,
@@ -65,13 +74,11 @@ const sendAddressList = async () => {
   })
 }
 const setDefaultHandler = async (val) => {
-  isLoading.value = true
   const res = await setDefaultAddress(val)
   if (res.code === 1) {
     addressList.value = []
     await sendAddressList()
   }
-  isLoading.value = false
 }
 </script>
 

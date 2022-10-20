@@ -56,7 +56,7 @@
   </transition>
 </template>
 
-<script setup>
+<script setup name="TasteSelection">
 import { watch, ref } from 'vue'
 import { sendAddCart } from '@/api/module/goods.js'
 import { Icon, Notify } from 'vant'

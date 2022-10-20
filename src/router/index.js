@@ -48,8 +48,8 @@ const routes = [
     component: () => import('@/views/mine/components/AddressPage.vue')
   },
   {
-    path: '/address-add',
-    name: 'Address-add',
+    path: '/address/add',
+    name: 'AddressAdd',
     beforeEnter: (to, from, next) => {
       if (from.path !== '/address') {
         next('/address')
@@ -59,6 +59,15 @@ const routes = [
     component: () => import('@/views/mine/components/AddressAdd.vue')
   },
   {
+    path: '/address/choose',
+    name: 'AddressChoose',
+    component: () => import('@/views/Settlement/component/AddressChoose.vue'),
+    meta: {
+      title: '地址选择',
+      keepAlive: true
+    }
+  },
+  {
     path: '/goods/detail/:id',
     name: 'goodsDetail',
     component: () => import('@/views/goodsDetail/GoodsDetail.vue')
@@ -66,7 +75,11 @@ const routes = [
   {
     path: '/settlement',
     name: 'settlement',
-    component: () => import('@/views/Settlement/SettlementPage.vue')
+    component: () => import('@/views/Settlement/SettlementPage.vue'),
+    meta: {
+      title: '提交订单',
+      keepAlive: true
+    }
   }
 ]
 

@@ -27,7 +27,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup name="MapPage">
 import { ref, reactive, shallowRef, defineEmits, watch } from 'vue'
 import { getDistances } from '@/utils/calculateDistance'
 import { debounce } from '@/utils/common'
