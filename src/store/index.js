@@ -1,25 +1,25 @@
-import { createStore } from 'vuex'
-import getters from './getters'
-import user from './module/user'
+import { createStore } from "vuex";
+import getters from "./getters";
+import user from "./module/user";
 export default createStore({
   namespace: true,
-  state () {
+  state() {
     return {
-      showLoading: false
-    }
+      showLoading: false,
+    };
   },
   mutations: {
-    setShowLoading (state, value) {
-      state.showLoading = value
-    }
+    setShowLoading(state, value) {
+      state.showLoading = value;
+    },
   },
   actions: {
-    changShowLoading ({ commit }, value) {
-      commit('setShowLoading', value)
-    }
+    changShowLoading({ commit }, value) {
+      commit("setShowLoading", value);
+    },
   },
   getters,
   modules: {
-    user
-  }
-})
+    user,
+  },
+});

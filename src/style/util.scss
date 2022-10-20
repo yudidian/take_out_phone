@@ -1,7 +1,7 @@
-$main-color: #FFC200;
+$main-color: #ffc200;
 
 @mixin text-warp($line) {
-  overflow : hidden;
+  overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: $line;

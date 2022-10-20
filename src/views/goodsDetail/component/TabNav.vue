@@ -3,10 +3,10 @@
     <div class="content">
       <ul class="header-tab">
         <li
-          v-for="(item,index) in headerTab"
+          v-for="(item, index) in headerTab"
           :key="index"
           :class="active === index ? 'tab active' : 'tab'"
-          @click="changeActive(item,index)"
+          @click="changeActive(item, index)"
         >
           {{ item }}
         </li>
@@ -48,33 +48,33 @@
 </template>
 
 <script setup name="TabNav">
-import { CellGroup } from 'vant'
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { CellGroup } from "vant";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 const props = defineProps({
   id: {
     required: true,
-    type: String
+    type: String,
   },
   descriptionInfo: {
     type: Object,
-    required: true
-  }
-})
-const router = useRouter()
-const active = ref(0)
-const headerTab = ['详情', '评价']
+    required: true,
+  },
+});
+const router = useRouter();
+const active = ref(0);
+const headerTab = ["详情", "评价"];
 const changeActive = (item, index) => {
-  active.value = index
+  active.value = index;
   if (index === 1) {
     router.push({
-      name: '',
+      name: "",
       query: {
-        id: props.id
-      }
-    })
+        id: props.id,
+      },
+    });
   }
-}
+};
 </script>
 
 <style scoped lang="scss">
@@ -92,7 +92,7 @@ const changeActive = (item, index) => {
       transition: border-bottom-color 0.5s;
     }
     .active {
-      border-bottom: 4px solid #FFC200;
+      border-bottom: 4px solid #ffc200;
     }
   }
   .description-wrapper {
@@ -100,17 +100,17 @@ const changeActive = (item, index) => {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    .wrapper-item{
+    .wrapper-item {
       display: flex;
       height: 40px;
       align-items: center;
       justify-content: space-between;
-      .left{
+      .left {
         width: 70px;
         font-size: 12px;
         color: #9f9f9f;
       }
-      .right{
+      .right {
         font-size: 12px;
         width: 240px;
         word-break: break-word;

@@ -1,9 +1,6 @@
 <template>
   <transition name="fade">
-    <div
-      class="wrapper"
-      v-if="show"
-    >
+    <div class="wrapper" v-if="show">
       <div class="content">
         <p class="title">
           {{ props.title }}
@@ -11,20 +8,18 @@
         <div class="flavors">
           <div
             class="flavors-name"
-            v-for="(flavor,f) in props.dish.flavors"
+            v-for="(flavor, f) in props.dish.flavors"
             :key="flavor.id"
           >
             <p class="name">
               {{ flavor.name }}
             </p>
-            <ul
-              class="flavors-content"
-            >
+            <ul class="flavors-content">
               <li
-                :class="item.active ? 'flavors-item active': 'flavors-item'"
-                v-for="(item,index) in Cpflavors[f]"
+                :class="item.active ? 'flavors-item active' : 'flavors-item'"
+                v-for="(item, index) in Cpflavors[f]"
                 :key="item.value"
-                @click="chooseHandler(item,f,index)"
+                @click="chooseHandler(item, f, index)"
               >
                 {{ item.value }}
               </li>
@@ -32,109 +27,102 @@
           </div>
         </div>
         <footer>
-          <span class="price">
-            ￥{{ props.dish.price / 100 }}
-          </span>
-          <button
-            class="btn"
-            @click="addCart"
-          >
-            加入购物车
-          </button>
+          <span class="price"> ￥{{ props.dish.price / 100 }} </span>
+          <button class="btn" @click="addCart">加入购物车</button>
         </footer>
       </div>
-      <div
-        class="cancel"
-        @click="$emit('hide', false)"
-      >
-        <Icon
-          name="close"
-          size="40"
-        />
+      <div class="cancel" @click="$emit('hide', false)">
+        <Icon name="close" size="40" />
       </div>
     </div>
   </transition>
 </template>
 
 <script setup name="TasteSelection">
-import { watch, ref } from 'vue'
-import { sendAddCart } from '@/api/module/goods.js'
-import { Icon, Notify } from 'vant'
-const emit = defineEmits(['hide', 'changeHandler'])
-watch(() => props.show, (value) => {
-  show.value = value
-})
+import { watch, ref } from "vue";
+import { sendAddCart } from "@/api/module/goods.js";
+import { Icon, Notify } from "vant";
+const emit = defineEmits(["hide", "changeHandler"]);
+watch(
+  () => props.show,
+  (value) => {
+    show.value = value;
+  }
+);
 const props = defineProps({
   title: {
     type: String,
-    default: () => '自定义标题'
+    default: () => "自定义标题",
   },
   show: {
     type: Boolean,
-    default: () => false
+    default: () => false,
   },
   dish: {
     type: Object,
-    default: () => {}
+    default: () => {},
   },
   dishType: {
     type: String,
-    default: '1'
+    default: "1",
+  },
+});
+const Cpflavors = ref([]);
+const show = ref(false);
+const unWatch = watch(
+  () => props.dish,
+  (val) => {
+    Cpflavors.value = val.flavors.map((item) => {
+      return JSON.parse(item.value).map((v) => {
+        return {
+          value: v,
+          active: false,
+        };
+      });
+    });
+    unWatch();
   }
-})
-const Cpflavors = ref([])
-const show = ref(false)
-const unWatch = watch(() => props.dish, (val) => {
-  Cpflavors.value = val.flavors.map(item => {
-    return JSON.parse(item.value).map(v => {
-      return {
-        value: v,
-        active: false
-      }
-    })
-  })
-  unWatch()
-})
+);
 const chooseHandler = (item, j, index) => {
-  console.log(Cpflavors.value[j][index].active)
-  Cpflavors.value[j][index].active = true
-}
+  console.log(Cpflavors.value[j][index].active);
+  Cpflavors.value[j][index].active = true;
+};
 const addCart = async () => {
-  const flavorList = []
-  Cpflavors.value.forEach(item => {
-    item.forEach(f => {
+  const flavorList = [];
+  Cpflavors.value.forEach((item) => {
+    item.forEach((f) => {
       if (f.active) {
-        flavorList.push(f.value)
+        flavorList.push(f.value);
       }
-    })
-  })
+    });
+  });
   const data = {
     name: props.dish.name,
     dishFlavor: flavorList.toString(),
     number: 1,
     amount: props.dish.price,
-    image: props.dish.image
-  }
-  if (props.dishType === '1') {
-    data.dishId = props.dish.id
+    image: props.dish.image,
+  };
+  if (props.dishType === "1") {
+    data.dishId = props.dish.id;
   } else {
-    data.setmealId = props.dish.id
+    data.setmealId = props.dish.id;
   }
-  const res = await sendAddCart(data)
-  show.value = false
+  const res = await sendAddCart(data);
+  show.value = false;
   if (res.code === 1) {
     Notify({
-      type: 'success',
-      message: '添加成功'
-    })
-    emit('changeHandler')
+      type: "success",
+      message: "添加成功",
+    });
+    emit("changeHandler");
   } else {
     Notify({
-      type: 'danger',
-      message: '添加失败'
-    })
+      type: "danger",
+      message: "添加失败",
+    });
   }
-}
+};
 </script>
 
 <style scoped lang="scss">
@@ -154,68 +142,68 @@ const addCart = async () => {
 .fade-leave-from {
   opacity: 1;
 }
-.wrapper{
+.wrapper {
   position: fixed;
   top: 0;
   z-index: 99999;
   width: 100vw;
-  height: 100Vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: rgba(124, 122, 122, 0.5);
-  .content{
+  .content {
     position: relative;
     width: 90vw;
     min-height: 200px;
     background-color: #ffffff;
     border-radius: 4px;
     box-shadow: 0 1px 8px #7e7d7d;
-    .title{
+    .title {
       padding: 5px 0;
       font-weight: 900;
       font-size: 18px;
       text-align: center;
     }
-    .flavors{
+    .flavors {
       font-size: 14px;
-      .flavors-name{
+      .flavors-name {
         display: flex;
         flex-direction: column;
-        .name{
+        .name {
           text-indent: 2em;
           margin-bottom: 4px;
         }
-        .flavors-content{
+        .flavors-content {
           display: flex;
           padding-left: 2em;
           margin-bottom: 4px;
-          .flavors-item{
+          .flavors-item {
             width: 60px;
             height: 25px;
             background-color: #ffffff;
-            border: 1px solid #FFB200;
+            border: 1px solid #ffb200;
             margin-right: 10px;
             border-radius: 4px;
             text-align: center;
             line-height: 25px;
             font-weight: 700;
           }
-          .active{
-            background-color: #FFB200;
+          .active {
+            background-color: #ffb200;
           }
         }
       }
     }
-    footer{
+    footer {
       position: relative;
       bottom: 10px;
       display: flex;
       align-items: center;
       justify-content: flex-start;
       margin-top: 20px;
-      .price{
+      .price {
         width: 30px;
         height: 30px;
         padding: 0 10px;
@@ -223,7 +211,7 @@ const addCart = async () => {
         font-size: 16px;
         font-weight: 900;
       }
-      .btn{
+      .btn {
         width: 120px;
         height: 30px;
         border-radius: 15px;
@@ -231,11 +219,11 @@ const addCart = async () => {
         border: none;
         font-size: 14px;
         margin-left: 160px;
-        background-color: #FFB200;
+        background-color: #ffb200;
       }
     }
   }
-  .cancel{
+  .cancel {
     margin-top: 20px;
     color: #3a3a3a;
   }
