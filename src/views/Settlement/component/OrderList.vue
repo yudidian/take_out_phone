@@ -44,9 +44,24 @@
     inset
     class="cell-item"
   >
+    <Cell
+      title="购物车列表"
+    />
     <Cell class="cart-list">
       <CartList @get-price="$emit('getPrice',$event)" />
     </Cell>
+  </CellGroup>
+  <CellGroup inset>
+    <Field
+      v-model="sendInfo.remark"
+      rows="2"
+      autosize
+      label="备注"
+      type="textarea"
+      maxlength="50"
+      placeholder="请输入备注"
+      show-word-limit
+    />
   </CellGroup>
   <ActionSheet
     v-model:show="showSheet"
@@ -58,7 +73,7 @@
 </template>
 
 <script setup name="OrderList">
-import { CellGroup, Cell, Icon, ActionSheet } from 'vant'
+import { CellGroup, Cell, Icon, ActionSheet, Field } from 'vant'
 import { getDefaultAddress } from '@/api/module/address'
 import { onMounted, ref, getCurrentInstance, onBeforeUnmount, reactive } from 'vue'
 const { proxy } = getCurrentInstance()
@@ -71,6 +86,7 @@ const actions = [
 // 要发送给服务器的数据
 const sendInfo = reactive({
   addressBookId: '',
+  remark: '', // 备注
   payMethod: 1 // 1 微信 2 支付宝
 })
 // 用户地址信息
@@ -107,6 +123,9 @@ const getUserDefaultAddress = async () => {
     }
   }
 }
+defineExpose({
+  sendInfo
+})
 </script>
 
 <style scoped lang="scss">
@@ -154,7 +173,7 @@ const getUserDefaultAddress = async () => {
 }
 .cart-list{
   width: 100%;
-  height: 360px;
+  height: 260px;
   :deep(>.van-cell__value){
     overflow-y: auto;
     .cart-wrapper{
