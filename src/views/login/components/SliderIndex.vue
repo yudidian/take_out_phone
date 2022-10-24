@@ -1,11 +1,25 @@
 <template>
   <teleport to="body">
     <div class="content">
-      <div id="box" onselectstart="return false;">
-        <div class="bgColor" ref="bgColor" />
-        <div class="txt" ref="txt">滑动解锁</div>
+      <div
+        id="box"
+        onselectstart="return false;"
+      >
+        <div
+          class="bgColor"
+          ref="bgColor"
+        />
+        <div
+          class="txt"
+          ref="txt"
+        >
+          滑动解锁
+        </div>
         <!--给i标签添加上相应字体图标的类名即可-->
-        <div class="slider" ref="icon">
+        <div
+          class="slider"
+          ref="icon"
+        >
           <i class="iconfont icon-double-right" />
         </div>
       </div>
@@ -14,44 +28,44 @@
 </template>
 
 <script setup name="SliderIndex">
-import { onMounted, ref } from "vue";
+import { onMounted, ref } from 'vue'
 
-const icon = ref(null);
-const txt = ref(null);
-const bgColor = ref(null);
+const icon = ref(null)
+const txt = ref(null)
+const bgColor = ref(null)
 
-const start = ref(0);
-const txtWith = ref(0);
-const moveWith = ref(0);
+const start = ref(0)
+const txtWith = ref(0)
+const moveWith = ref(0)
 
-const emits = defineEmits(["checkFlag"]);
+const emits = defineEmits(['checkFlag'])
 onMounted(() => {
-  txtWith.value = txt.value.clientWidth;
-  icon.value.addEventListener("touchstart", (e) => {
-    start.value = e.targetTouches[0].pageX;
-  });
-  icon.value.addEventListener("touchmove", (e) => {
-    moveWith.value = e.targetTouches[0].pageX;
+  txtWith.value = txt.value.clientWidth
+  icon.value.addEventListener('touchstart', (e) => {
+    start.value = e.targetTouches[0].pageX
+  })
+  icon.value.addEventListener('touchmove', (e) => {
+    moveWith.value = e.targetTouches[0].pageX
     if (moveWith.value > txtWith.value) {
-      icon.value.style.left = txtWith.value - icon.value.clientWidth + "px";
-      bgColor.value.style.width = txtWith.value - icon.value.clientWidth + "px";
-      bgColor.value.style.backgroundColor = "red";
-      txt.value.innerText = "验证成功";
+      icon.value.style.left = txtWith.value - icon.value.clientWidth + 'px'
+      bgColor.value.style.width = txtWith.value - icon.value.clientWidth + 'px'
+      bgColor.value.style.backgroundColor = 'red'
+      txt.value.innerText = '验证成功'
     } else {
-      icon.value.style.left = e.targetTouches[0].pageX - start.value + "px";
-      bgColor.value.style.width = e.targetTouches[0].pageX - start.value + "px";
+      icon.value.style.left = e.targetTouches[0].pageX - start.value + 'px'
+      bgColor.value.style.width = e.targetTouches[0].pageX - start.value + 'px'
     }
-  });
-  icon.value.addEventListener("touchend", (e) => {
+  })
+  icon.value.addEventListener('touchend', (e) => {
     if (moveWith.value < txtWith.value) {
-      icon.value.style.left = 0 + "px";
-      bgColor.value.style.width = 40 + "px";
-      emits("checkFlag", false);
+      icon.value.style.left = 0 + 'px'
+      bgColor.value.style.width = 40 + 'px'
+      emits('checkFlag', false)
     } else {
-      emits("checkFlag", true);
+      emits('checkFlag', true)
     }
-  });
-});
+  })
+})
 </script>
 
 <style scoped>

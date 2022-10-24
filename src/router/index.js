@@ -1,96 +1,96 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
   {
-    path: "/login",
-    name: "login",
-    component: () => import("@/views/login/LoginPage.vue"),
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/login/LoginPage.vue')
   },
   {
-    path: "/",
-    component: () => import("@/layout/LayoutPage.vue"),
-    redirect: "/home",
+    path: '/',
+    component: () => import('@/layout/LayoutPage.vue'),
+    redirect: '/home',
     children: [
       {
-        path: "home",
-        name: "home",
+        path: 'home',
+        name: 'home',
         meta: {
-          index: "home",
-          title: "首页",
-          keepAlive: true,
+          index: 'home',
+          title: '首页',
+          keepAlive: true
         },
-        component: () => import("@/views/home/HomePage.vue"),
+        component: () => import('@/views/home/HomePage.vue')
       },
       {
-        path: "cart",
-        name: "cart",
+        path: 'cart',
+        name: 'cart',
         meta: {
-          index: "cart",
-          title: "购物车",
+          index: 'cart',
+          title: '购物车'
         },
-        component: () => import("@/views/cart/CartPage.vue"),
+        component: () => import('@/views/cart/CartPage.vue')
       },
       {
-        path: "mine",
-        name: "mine",
+        path: 'mine',
+        name: 'mine',
         meta: {
-          index: "mine",
-          title: "个人中心",
-          keepAlive: true,
+          index: 'mine',
+          title: '个人中心',
+          keepAlive: true
         },
-        component: () => import("@/views/mine/PersonalCenter.vue"),
-      },
-    ],
-  },
-  {
-    path: "/address",
-    name: "Address",
-    component: () => import("@/views/mine/components/AddressPage.vue"),
-  },
-  {
-    path: "/address/add",
-    name: "AddressAdd",
-    beforeEnter: (to, from, next) => {
-      if (from.path !== "/address") {
-        next("/address");
+        component: () => import('@/views/mine/PersonalCenter.vue')
       }
-      next();
-    },
-    component: () => import("@/views/mine/components/AddressAdd.vue"),
+    ]
   },
   {
-    path: "/address/choose",
-    name: "AddressChoose",
-    component: () => import("@/views/Settlement/component/AddressChoose.vue"),
+    path: '/address',
+    name: 'Address',
+    component: () => import('@/views/mine/components/AddressPage.vue')
+  },
+  {
+    path: '/address/add',
+    name: 'AddressAdd',
+    beforeEnter: (to, from, next) => {
+      if (from.path !== '/address') {
+        next('/address')
+      }
+      next()
+    },
+    component: () => import('@/views/mine/components/AddressAdd.vue')
+  },
+  {
+    path: '/address/choose',
+    name: 'AddressChoose',
+    component: () => import('@/views/Settlement/component/AddressChoose.vue'),
     meta: {
-      title: "地址选择",
-      keepAlive: true,
-    },
+      title: '地址选择',
+      keepAlive: true
+    }
   },
   {
-    path: "/goods/detail/:id",
-    name: "goodsDetail",
-    component: () => import("@/views/goodsDetail/GoodsDetail.vue"),
+    path: '/goods/detail/:id',
+    name: 'goodsDetail',
+    component: () => import('@/views/goodsDetail/GoodsDetail.vue')
   },
   {
-    path: "/settlement",
-    name: "settlement",
-    component: () => import("@/views/Settlement/SettlementPage.vue"),
+    path: '/settlement',
+    name: 'settlement',
+    component: () => import('@/views/Settlement/SettlementPage.vue'),
     meta: {
-      title: "提交订单",
-      keepAlive: true,
-    },
-  },
-];
+      title: '提交订单',
+      keepAlive: true
+    }
+  }
+]
 
 const myRouter = createRouter({
   history: createWebHashHistory(),
-  routes,
-});
+  routes
+})
 myRouter.beforeEach((to, from, next) => {
   if (to.meta.title) {
-    document.title = to.meta.title;
+    document.title = to.meta.title
   }
-  next();
-});
-export default myRouter;
+  next()
+})
+export default myRouter

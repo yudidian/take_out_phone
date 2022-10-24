@@ -1,5 +1,8 @@
 <template>
-  <teleport to="body" v-if="props.show">
+  <teleport
+    to="body"
+    v-if="props.show"
+  >
     <div class="wrapper">
       <div class="content">
         <p class="title">
@@ -28,7 +31,12 @@
         </div>
         <footer>
           <span class="price"> ￥{{ props.dish.price / 100 }} </span>
-          <button class="btn" @click="addCart">加入购物车</button>
+          <button
+            class="btn"
+            @click="addCart"
+          >
+            加入购物车
+          </button>
         </footer>
       </div>
     </div>
@@ -36,23 +44,23 @@
 </template>
 
 <script setup name="TasteSelection">
-import { watch, ref } from "vue";
+import { watch, ref } from 'vue'
 
 const props = defineProps({
   title: {
     type: String,
-    default: () => "自定义标题",
+    default: () => '自定义标题'
   },
   show: {
     type: Boolean,
-    default: () => false,
+    default: () => false
   },
   dish: {
     type: Object,
-    default: () => {},
-  },
-});
-const Cpflavors = ref([]);
+    default: () => {}
+  }
+})
+const Cpflavors = ref([])
 const unWatch = watch(
   () => props.dish,
   (val) => {
@@ -60,28 +68,28 @@ const unWatch = watch(
       return JSON.parse(item.value).map((v) => {
         return {
           value: v,
-          active: false,
-        };
-      });
-    });
-    unWatch();
+          active: false
+        }
+      })
+    })
+    unWatch()
   }
-);
+)
 const chooseHandler = (item, j, index) => {
-  console.log(Cpflavors.value[j][index].active);
-  Cpflavors.value[j][index].active = true;
-};
+  console.log(Cpflavors.value[j][index].active)
+  Cpflavors.value[j][index].active = true
+}
 const addCart = () => {
-  const flavorList = [];
+  const flavorList = []
   Cpflavors.value.forEach((item) => {
     item.forEach((f) => {
       if (f.active) {
-        flavorList.push(f.value);
+        flavorList.push(f.value)
       }
-    });
-  });
-  console.log(flavorList);
-};
+    })
+  })
+  console.log(flavorList)
+}
 </script>
 
 <style scoped lang="scss">

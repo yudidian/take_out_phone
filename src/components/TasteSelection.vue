@@ -1,6 +1,9 @@
 <template>
   <transition name="fade">
-    <div class="wrapper" v-if="show">
+    <div
+      class="wrapper"
+      v-if="show"
+    >
       <div class="content">
         <p class="title">
           {{ props.title }}
@@ -28,47 +31,58 @@
         </div>
         <footer>
           <span class="price"> ￥{{ props.dish.price / 100 }} </span>
-          <button class="btn" @click="addCart">加入购物车</button>
+          <button
+            class="btn"
+            @click="addCart"
+          >
+            加入购物车
+          </button>
         </footer>
       </div>
-      <div class="cancel" @click="$emit('hide', false)">
-        <Icon name="close" size="40" />
+      <div
+        class="cancel"
+        @click="$emit('hide', false)"
+      >
+        <Icon
+          name="close"
+          size="40"
+        />
       </div>
     </div>
   </transition>
 </template>
 
 <script setup name="TasteSelection">
-import { watch, ref } from "vue";
-import { sendAddCart } from "@/api/module/goods.js";
-import { Icon, Notify } from "vant";
-const emit = defineEmits(["hide", "changeHandler"]);
+import { watch, ref } from 'vue'
+import { sendAddCart } from '@/api/module/goods.js'
+import { Icon, Notify } from 'vant'
+const emit = defineEmits(['hide', 'changeHandler'])
 watch(
   () => props.show,
   (value) => {
-    show.value = value;
+    show.value = value
   }
-);
+)
 const props = defineProps({
   title: {
     type: String,
-    default: () => "自定义标题",
+    default: () => '自定义标题'
   },
   show: {
     type: Boolean,
-    default: () => false,
+    default: () => false
   },
   dish: {
     type: Object,
-    default: () => {},
+    default: () => {}
   },
   dishType: {
     type: String,
-    default: "1",
-  },
-});
-const Cpflavors = ref([]);
-const show = ref(false);
+    default: '1'
+  }
+})
+const Cpflavors = ref([])
+const show = ref(false)
 const unWatch = watch(
   () => props.dish,
   (val) => {
@@ -76,53 +90,53 @@ const unWatch = watch(
       return JSON.parse(item.value).map((v) => {
         return {
           value: v,
-          active: false,
-        };
-      });
-    });
-    unWatch();
+          active: false
+        }
+      })
+    })
+    unWatch()
   }
-);
+)
 const chooseHandler = (item, j, index) => {
-  console.log(Cpflavors.value[j][index].active);
-  Cpflavors.value[j][index].active = true;
-};
+  console.log(Cpflavors.value[j][index].active)
+  Cpflavors.value[j][index].active = true
+}
 const addCart = async () => {
-  const flavorList = [];
+  const flavorList = []
   Cpflavors.value.forEach((item) => {
     item.forEach((f) => {
       if (f.active) {
-        flavorList.push(f.value);
+        flavorList.push(f.value)
       }
-    });
-  });
+    })
+  })
   const data = {
     name: props.dish.name,
     dishFlavor: flavorList.toString(),
     number: 1,
     amount: props.dish.price,
-    image: props.dish.image,
-  };
-  if (props.dishType === "1") {
-    data.dishId = props.dish.id;
-  } else {
-    data.setmealId = props.dish.id;
+    image: props.dish.image
   }
-  const res = await sendAddCart(data);
-  show.value = false;
+  if (props.dishType === '1') {
+    data.dishId = props.dish.id
+  } else {
+    data.setmealId = props.dish.id
+  }
+  const res = await sendAddCart(data)
+  show.value = false
   if (res.code === 1) {
     Notify({
-      type: "success",
-      message: "添加成功",
-    });
-    emit("changeHandler");
+      type: 'success',
+      message: '添加成功'
+    })
+    emit('changeHandler')
   } else {
     Notify({
-      type: "danger",
-      message: "添加失败",
-    });
+      type: 'danger',
+      message: '添加失败'
+    })
   }
-};
+}
 </script>
 
 <style scoped lang="scss">

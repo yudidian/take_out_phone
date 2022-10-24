@@ -48,33 +48,33 @@
 </template>
 
 <script setup name="TabNav">
-import { CellGroup } from "vant";
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { CellGroup } from 'vant'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 const props = defineProps({
   id: {
     required: true,
-    type: String,
+    type: String
   },
   descriptionInfo: {
     type: Object,
-    required: true,
-  },
-});
-const router = useRouter();
-const active = ref(0);
-const headerTab = ["详情", "评价"];
+    required: true
+  }
+})
+const router = useRouter()
+const active = ref(0)
+const headerTab = ['详情', '评价']
 const changeActive = (item, index) => {
-  active.value = index;
+  active.value = index
   if (index === 1) {
     router.push({
-      name: "",
+      name: '',
       query: {
-        id: props.id,
-      },
-    });
+        id: props.id
+      }
+    })
   }
-};
+}
 </script>
 
 <style scoped lang="scss">

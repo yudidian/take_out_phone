@@ -1,35 +1,58 @@
 <template>
   <div class="wrapper">
     <header>
-      <p class="title">个人中心</p>
+      <p class="title">
+        个人中心
+      </p>
       <div class="user">
         <div class="img-wrapper">
-          <img src="@/assets/image/headPage.png" />
+          <img src="@/assets/image/headPage.png">
         </div>
         <span class="user-name">小喽啰</span>
-        <img src="@/assets/image/women.png" class="user-icon" />
+        <img
+          src="@/assets/image/women.png"
+          class="user-icon"
+        >
       </div>
     </header>
     <article>
       <section>
         <CellGroup inset>
-          <Cell icon="guide-o" title="地址管理" is-link to="/address" />
-          <Cell icon="records" title="历史订单" is-link />
+          <Cell
+            icon="guide-o"
+            title="地址管理"
+            is-link
+            to="/address"
+          />
+          <Cell
+            icon="records"
+            title="历史订单"
+            is-link
+          />
         </CellGroup>
       </section>
       <section>
         <CellGroup inset>
           <Cell title="最新订单">
             <template #label>
-              <div class="content">xxxxxxxxxxxxxx</div>
-              <p class="description">共0件商品，实付0￥</p>
+              <div class="content">
+                xxxxxxxxxxxxxx
+              </div>
+              <p class="description">
+                共0件商品，实付0￥
+              </p>
             </template>
           </Cell>
         </CellGroup>
       </section>
       <section>
-        <CellGroup inset class="btn-exit">
-          <button class="exit-out">退出登录</button>
+        <CellGroup
+          inset
+          class="btn-exit"
+        >
+          <button class="exit-out">
+            退出登录
+          </button>
         </CellGroup>
       </section>
     </article>
@@ -37,7 +60,7 @@
 </template>
 
 <script setup name="PersonalCenter">
-import { CellGroup, Cell } from "vant";
+import { CellGroup, Cell } from 'vant'
 </script>
 
 <style scoped lang="scss">

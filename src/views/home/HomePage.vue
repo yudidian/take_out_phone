@@ -6,17 +6,26 @@
           src="../../assets/image/user.png"
           @click="$router.push('/mine')"
           alt="kola"
-        />
+        >
       </div>
       <div class="title">
         <div class="title-logo">
-          <img src="@/assets/image/logo.png" alt="logo" />
+          <img
+            src="@/assets/image/logo.png"
+            alt="logo"
+          >
         </div>
         <div class="title-name">
           <h3>kola</h3>
           <ul class="description">
-            <li class="description-item" @click="getDistance">
-              <Icon name="location-o" v-if="distance === 0">
+            <li
+              class="description-item"
+              @click="getDistance"
+            >
+              <Icon
+                name="location-o"
+                v-if="distance === 0"
+              >
                 点击获取距离
               </Icon>
               <span v-else>距离kola外卖店:{{ distance.toFixed(2) }}km</span>
@@ -24,7 +33,9 @@
           </ul>
         </div>
       </div>
-      <p class="intro">当前位置:{{ formattedAddress }}</p>
+      <p class="intro">
+        当前位置:{{ formattedAddress }}
+      </p>
     </div>
   </header>
   <main>
@@ -63,114 +74,124 @@
             >
               选择规格
             </Button>
-            <Button icon="plus" type="primary" size="mini" round v-else />
+            <Button
+              icon="plus"
+              type="primary"
+              size="mini"
+              round
+              v-else
+            />
           </template>
         </Card>
       </ConfigProvider>
     </div>
   </main>
-  <TasteSelection :dish="dish" :show="showDialog" :dish-type="dishType" />
+  <TasteSelection
+    :dish="dish"
+    :show="showDialog"
+    :dish-type="dishType"
+  />
 </template>
 
 <script setup name="HomePage">
-import TasteSelection from "./component/TasteSelection.vue";
-import useMap from "@/hooks/useMap";
-import { getCategory, getDish, getSetmeal } from "@/api/module/homeIndex";
-import { onMounted, ref, watch } from "vue";
-import { useRouter } from "vue-router";
-import { Card, Button, ConfigProvider, Icon } from "vant";
-const router = useRouter();
-const AMap = window.AMap;
-const IMG_URL = import.meta.env.VITE_LOCAL_SERVE_IMGE_URL;
-const dishList = ref([]);
-const dishType = ref(1);
-const defaultIndex = ref(0);
-const categoryList = ref([]);
-const dish = ref([]);
-const showDialog = ref(false);
+import TasteSelection from './component/TasteSelection.vue'
+import useMap from '@/hooks/useMap'
+import { getCategory, getDish, getSetmeal } from '@/api/module/homeIndex'
+import { onMounted, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { Card, Button, ConfigProvider, Icon } from 'vant'
+const router = useRouter()
+const AMap = window.AMap
+const IMG_URL = import.meta.env.VITE_LOCAL_SERVE_IMGE_URL
+const dishList = ref([])
+const dishType = ref(1)
+const defaultIndex = ref(0)
+const categoryList = ref([])
+const dish = ref([])
+const showDialog = ref(false)
 const {
   getUserPosition,
   computedLine,
   distance,
   center,
   getAddress,
-  formattedAddress,
-} = useMap(AMap);
+  formattedAddress
+} = useMap(AMap)
 onMounted(() => {
-  sendCategory();
-});
+  sendCategory()
+})
 watch(center, () => {
   if (center[0] && center[1]) {
-    const AMap = window.AMap;
-    computedLine(center[0], center[1]);
-    getAddress(AMap, center);
+    const AMap = window.AMap
+    computedLine(center[0], center[1])
+    getAddress(AMap, center)
   }
-});
+})
 const themeVars = {
-  cardPriceColor: "#f60101",
-  cardPriceFontSize: "18px",
-};
+  cardPriceColor: '#f60101',
+  cardPriceFontSize: '18px'
+}
 const unWatch = watch(
   () => categoryList.value,
   (val) => {
-    getDishById(val[0].id);
-    unWatch();
+    getDishById(val[0].id)
+    unWatch()
   }
-);
+)
 // 跳转详情页
 const toDetails = (item) => {
   router.push({
-    name: "goodsDetail",
+    name: 'goodsDetail',
     params: {
-      id: item.id,
+      id: item.id
     },
     query: {
       title: item.name,
-      type: dishType.value,
-    },
-  });
-};
+      type: dishType.value
+    }
+  })
+}
 // 获取距离
 const getDistance = () => {
-  const AMap = window.AMap;
+  const AMap = window.AMap
   AMap &&
-    AMap.plugin("AMap.Geolocation", function () {
-      getUserPosition(AMap);
-    });
-};
+    AMap.plugin('AMap.Geolocation', function () {
+      getUserPosition(AMap)
+    })
+}
 // 获取菜单列表
 const sendCategory = async () => {
-  const res = await getCategory();
-  categoryList.value = res.info;
-};
+  const res = await getCategory()
+  categoryList.value = res.info
+}
 // 点击菜单列表处理
 const changeCategory = (item, index) => {
-  defaultIndex.value = index;
-  dishType.value = item.type;
+  defaultIndex.value = index
+  dishType.value = item.type
   if (item.type === 1) {
-    getDishById(item.id);
+    getDishById(item.id)
   } else {
-    getSetmealById(item.id);
+    getSetmealById(item.id)
   }
-};
+}
 // 根据菜单id 获取对应菜品信息
 const getDishById = async (categoryId) => {
   const res = await getDish({
-    categoryId,
-  });
-  dishList.value = res.info;
-};
+    categoryId
+  })
+  dishList.value = res.info
+}
 // 根据菜单id 获取对应套餐信息
 const getSetmealById = async (categoryId) => {
   const res = await getSetmeal({
-    categoryId,
-  });
-  dishList.value = res.info;
-};
+    categoryId
+  })
+  dishList.value = res.info
+}
 const chooseFlavors = (val) => {
-  showDialog.value = true;
-  dish.value = val;
-};
+  showDialog.value = true
+  dish.value = val
+}
 </script>
 
 <style scoped lang="scss">

@@ -1,5 +1,8 @@
 <template>
-  <Overlay :show="props.show" z-index="99999999">
+  <Overlay
+    :show="props.show"
+    z-index="99999999"
+  >
     <template #default>
       <div class="loading-wrapper">
         <Loading :size="30" />
@@ -9,13 +12,13 @@
 </template>
 
 <script setup name="MyLogin">
-import { Overlay, Loading } from "vant";
+import { Overlay, Loading } from 'vant'
 const props = defineProps({
   show: {
     type: Boolean,
-    default: () => false,
-  },
-});
+    default: () => false
+  }
+})
 </script>
 
 <style scoped lang="scss">

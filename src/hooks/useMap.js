@@ -1,16 +1,16 @@
-import { Notify } from "vant";
-import { reactive, ref } from "vue";
-import { getDistances } from "@/utils/calculateDistance";
+import { Notify } from 'vant'
+import { reactive, ref } from 'vue'
+import { getDistances } from '@/utils/calculateDistance'
 
 const useMap = (AMap) => {
   // 用户经纬度
-  const center = reactive([]);
+  const center = reactive([])
   // 两地距离
-  const distance = ref(0);
+  const distance = ref(0)
   // 地址列表
-  const addressList = ref([]);
+  const addressList = ref([])
   // 当前位置
-  const formattedAddress = ref("");
+  const formattedAddress = ref('')
   /** 地图加载完成后 （根据经纬度获取地址） */
   const getUserPosition = (AMap) => {
     // 异步加载插件
@@ -26,44 +26,44 @@ const useMap = (AMap) => {
       //  定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
       zoomToAccuracy: true,
       //  定位按钮的排放位置,  RB表示右下
-      position: "RB",
-    });
+      position: 'RB'
+    })
     Geolocation.getCurrentPosition((status, result) => {
-      if (status === "complete") {
-        const { position } = result;
-        center[0] = position.lng;
-        center[1] = position.lat;
+      if (status === 'complete') {
+        const { position } = result
+        center[0] = position.lng
+        center[1] = position.lat
       } else {
         // 危险通知
-        Notify({ type: "danger", message: "获取失败" });
+        Notify({ type: 'danger', message: '获取失败' })
       }
-    });
-  };
+    })
+  }
   const getAddress = (AMap, center) => {
     AMap &&
-      AMap.plugin("AMap.Geocoder", function () {
+      AMap.plugin('AMap.Geocoder', function () {
         const geocoder = new AMap.Geocoder({
           radius: 1000,
-          extensions: "all",
-        });
-        const [lng, lat] = center;
+          extensions: 'all'
+        })
+        const [lng, lat] = center
         geocoder.getAddress([lng, lat], function (status, result) {
-          if (status === "complete" && result.info === "OK") {
+          if (status === 'complete' && result.info === 'OK') {
             if (result && result.regeocode) {
-              addressList.value = result.regeocode.pois;
-              formattedAddress.value = result.regeocode.formattedAddress;
+              addressList.value = result.regeocode.pois
+              formattedAddress.value = result.regeocode.formattedAddress
             }
           }
-        });
-      });
-  };
+        })
+      })
+  }
   // 根据两地经纬度计算两地之间的距离
   // 计算两地距离
   const computedLine = (lat2, lng2, lat1 = 121.59996, lng1 = 31.197646) => {
-    console.log(lat2, lng2);
-    const res = getDistances(lat2, lng2, lat1, lng1);
-    distance.value = res.distance;
-  };
+    console.log(lat2, lng2)
+    const res = getDistances(lat2, lng2, lat1, lng1)
+    distance.value = res.distance
+  }
   return {
     distance,
     addressList,
@@ -71,7 +71,7 @@ const useMap = (AMap) => {
     center,
     getUserPosition,
     getAddress,
-    computedLine,
-  };
-};
-export default useMap;
+    computedLine
+  }
+}
+export default useMap
