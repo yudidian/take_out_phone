@@ -1,6 +1,26 @@
 <template>
   <div class="cart-wrapper">
-    <CellGroup inset>
+    <Empty
+      v-if="cartInfoList.length <= 0"
+      image="https://fastly.jsdelivr.net/npm/@vant/assets/custom-empty-image.png"
+      image-size="80"
+      description="空空如也"
+    >
+      <Button
+        style="width: 170px"
+        round
+        type="danger"
+        size="large"
+        class="bottom-button"
+        @click="$router.push('/home')"
+      >
+        去选购
+      </Button>
+    </Empty>
+    <CellGroup
+      inset
+      v-else
+    >
       <Cell
         style="background-color: #ffffff"
         v-for="(item, index) in cartInfoList"
@@ -34,16 +54,15 @@
 </template>
 
 <script setup name="CartList">
-import { Button, Card, Cell, CellGroup, Dialog, Notify } from 'vant'
+import { Button, Card, Cell, CellGroup, Dialog, Notify, Empty } from 'vant'
 import {
   sendAddCart,
   sendDeleteCartOne,
   sendGetCartList,
   sendLessCartCount
 } from '@/api/module/goods.js'
-import { computed, onMounted, ref } from 'vue'
-
-const emits = defineEmits(['getPrice'])
+import { computed, onMounted, ref, watch } from 'vue'
+const emits = defineEmits(['getPrice', 'getCartLength'])
 const IMG_URL = import.meta.env.VITE_LOCAL_SERVE_IMGE_URL
 // 购物车列表
 const cartInfoList = ref([])
@@ -51,9 +70,13 @@ onMounted(() => {
   getCartList()
 })
 const price = computed(() => {
-  return cartInfoList.value.reduce((pre, item) => {
-    return pre + item.number * item.amount
-  }, 0)
+  if (cartInfoList.value.length > 0) {
+    return cartInfoList.value.reduce((pre, item) => {
+      return pre + item.number * item.amount
+    }, 0)
+  } else {
+    return 0
+  }
 })
 // 商品数量加减
 const addOrLessHandler = async (item, flag, index) => {
@@ -70,7 +93,7 @@ const addOrLessHandler = async (item, flag, index) => {
       const res = await sendLessCartCount(item)
       if (res.code === 1) {
         cartInfoList.value[index] = res.info
-        emits('getPrice', price)
+        emits('getPrice', price.value)
       } else {
         Notify({
           type: 'danger',
@@ -85,6 +108,7 @@ const addOrLessHandler = async (item, flag, index) => {
         const res = await sendDeleteCartOne(item)
         if (res.code === 1) {
           cartInfoList.value.splice(index, 1)
+          emits('getPrice', price.value)
         } else {
           Notify({
             type: 'danger',
@@ -93,13 +117,12 @@ const addOrLessHandler = async (item, flag, index) => {
         }
       })
     }
-    emits('getPrice', price)
   } else {
     // 加操作
     const res = await sendAddCart(item)
     if (res.code === 1) {
       cartInfoList.value[index] = res.info
-      emits('getPrice', price)
+      emits('getPrice', price.value)
     } else {
       Notify({
         type: 'danger',
@@ -122,6 +145,10 @@ const getCartList = async () => {
     })
   }
 }
+watch(cartInfoList, (val) => {
+  console.log(val.length)
+  emits('getCartLength', val.length)
+}, { deep: true })
 </script>
 
 <style scoped lang="scss">

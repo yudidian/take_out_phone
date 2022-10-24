@@ -52,10 +52,6 @@ import { CellGroup } from 'vant'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 const props = defineProps({
-  id: {
-    required: true,
-    type: String
-  },
   descriptionInfo: {
     type: Object,
     required: true

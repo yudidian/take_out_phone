@@ -68,10 +68,7 @@
             />
           </div>
         </div>
-        <TabNav
-          :id="goodsInfo.id"
-          :description-info="descriptionInfo"
-        />
+        <TabNav :description-info="descriptionInfo" />
       </div>
     </CellGroup>
     <CartBottom :amount="cartInfo.amount" />

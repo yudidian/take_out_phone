@@ -27,6 +27,13 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   (res) => {
     store.dispatch('changShowLoading', false)
+    if (res.data.msg === 'token过期') {
+      Notify({
+        message: res.data.msg,
+        type: 'warning'
+      })
+      router.replace('/login')
+    }
     return res.data
   },
   (error) => {

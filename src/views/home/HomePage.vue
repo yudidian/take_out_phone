@@ -16,7 +16,7 @@
           >
         </div>
         <div class="title-name">
-          <h3>kola</h3>
+          <h3>koala</h3>
           <ul class="description">
             <li
               class="description-item"
@@ -59,7 +59,7 @@
           :desc="item.description"
           :title="item.name"
           :thumb="IMG_URL + item.image"
-          @click="toDetails(item)"
+          @click.stop="toDetails(item,$event)"
         >
           <template #price>
             <span>￥{{ item.price / 100 }}</span>
@@ -70,6 +70,7 @@
               size="mini"
               round
               v-if="item.flavors"
+              data-flag="no"
               @click="chooseFlavors(item)"
             >
               选择规格
@@ -78,6 +79,7 @@
               icon="plus"
               type="primary"
               size="mini"
+              data-flag="no"
               round
               v-else
             />
@@ -86,15 +88,9 @@
       </ConfigProvider>
     </div>
   </main>
-  <TasteSelection
-    :dish="dish"
-    :show="showDialog"
-    :dish-type="dishType"
-  />
 </template>
 
 <script setup name="HomePage">
-import TasteSelection from './component/TasteSelection.vue'
 import useMap from '@/hooks/useMap'
 import { getCategory, getDish, getSetmeal } from '@/api/module/homeIndex'
 import { onMounted, ref, watch } from 'vue'
@@ -139,7 +135,7 @@ const unWatch = watch(
   }
 )
 // 跳转详情页
-const toDetails = (item) => {
+const toDetails = (item, e) => {
   router.push({
     name: 'goodsDetail',
     params: {
