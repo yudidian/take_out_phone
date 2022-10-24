@@ -1,7 +1,19 @@
-# Vue 3 + Vite
+## 格式化
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+```text
+# eslint 检测代码
+npm run lint:eslint
 
-## Recommended IDE Setup
+# prettier 格式化代码
+npm run lint:prettier
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+# stylelint 格式化样式
+lint:stylelint
+```
+
+## commit
+
+```text
+# 提交代码（提交前会自动执行 lint:lint-staged 命令）
+npm run commit
+```

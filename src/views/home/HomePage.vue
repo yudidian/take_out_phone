@@ -6,26 +6,17 @@
           src="../../assets/image/user.png"
           @click="$router.push('/mine')"
           alt="kola"
-        >
+        />
       </div>
       <div class="title">
         <div class="title-logo">
-          <img
-            src="@/assets/image/logo.png"
-            alt="logo"
-          >
+          <img src="@/assets/image/logo.png" alt="logo" />
         </div>
         <div class="title-name">
           <h3>kola</h3>
           <ul class="description">
-            <li
-              class="description-item"
-              @click="getDistance"
-            >
-              <Icon
-                name="location-o"
-                v-if="distance === 0"
-              >
+            <li class="description-item" @click="getDistance">
+              <Icon name="location-o" v-if="distance === 0">
                 点击获取距离
               </Icon>
               <span v-else>距离kola外卖店:{{ distance.toFixed(2) }}km</span>
@@ -33,9 +24,7 @@
           </ul>
         </div>
       </div>
-      <p class="intro">
-        当前位置:{{ formattedAddress }}
-      </p>
+      <p class="intro">当前位置:{{ formattedAddress }}</p>
     </div>
   </header>
   <main>
@@ -43,9 +32,9 @@
       <ul class="type-list">
         <li
           :class="index !== defaultIndex ? 'type-item' : 'type-item active'"
-          v-for="(item,index) in categoryList"
+          v-for="(item, index) in categoryList"
           :key="item.id"
-          @click="changeCategory(item,index)"
+          @click="changeCategory(item, index)"
         >
           {{ item.name }}
         </li>
@@ -58,11 +47,11 @@
           :key="item.id"
           :desc="item.description"
           :title="item.name"
-          :thumb="IMG_URL+item.image"
+          :thumb="IMG_URL + item.image"
           @click="toDetails(item)"
         >
           <template #price>
-            <span>￥{{ (item.price / 100) }}</span>
+            <span>￥{{ item.price / 100 }}</span>
           </template>
           <template #num>
             <Button
@@ -74,161 +63,162 @@
             >
               选择规格
             </Button>
-            <Button
-              icon="plus"
-              type="primary"
-              size="mini"
-              round
-              v-else
-            />
+            <Button icon="plus" type="primary" size="mini" round v-else />
           </template>
         </Card>
       </ConfigProvider>
     </div>
   </main>
-  <TasteSelection
-    :dish="dish"
-    :show="showDialog"
-    :dish-type="dishType"
-  />
+  <TasteSelection :dish="dish" :show="showDialog" :dish-type="dishType" />
 </template>
 
 <script setup name="HomePage">
-import TasteSelection from './component/TasteSelection.vue'
-import useMap from '@/hooks/useMap'
-import { getCategory, getDish, getSetmeal } from '@/api/module/homeIndex'
-import { onMounted, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
-import { Card, Button, ConfigProvider, Icon } from 'vant'
-const router = useRouter()
-const AMap = window.AMap
-const IMG_URL = import.meta.env.VITE_LOCAL_SERVE_IMGE_URL
-const dishList = ref([])
-const dishType = ref(1)
-const defaultIndex = ref(0)
-const categoryList = ref([])
-const dish = ref([])
-const showDialog = ref(false)
-const { getUserPosition, computedLine, distance, center, getAddress, formattedAddress } = useMap(AMap)
+import TasteSelection from "./component/TasteSelection.vue";
+import useMap from "@/hooks/useMap";
+import { getCategory, getDish, getSetmeal } from "@/api/module/homeIndex";
+import { onMounted, ref, watch } from "vue";
+import { useRouter } from "vue-router";
+import { Card, Button, ConfigProvider, Icon } from "vant";
+const router = useRouter();
+const AMap = window.AMap;
+const IMG_URL = import.meta.env.VITE_LOCAL_SERVE_IMGE_URL;
+const dishList = ref([]);
+const dishType = ref(1);
+const defaultIndex = ref(0);
+const categoryList = ref([]);
+const dish = ref([]);
+const showDialog = ref(false);
+const {
+  getUserPosition,
+  computedLine,
+  distance,
+  center,
+  getAddress,
+  formattedAddress,
+} = useMap(AMap);
 onMounted(() => {
-  sendCategory()
-})
+  sendCategory();
+});
 watch(center, () => {
   if (center[0] && center[1]) {
-    const AMap = window.AMap
-    computedLine(center[0], center[1])
-    getAddress(AMap, center)
+    const AMap = window.AMap;
+    computedLine(center[0], center[1]);
+    getAddress(AMap, center);
   }
-})
+});
 const themeVars = {
-  cardPriceColor: '#f60101',
-  cardPriceFontSize: '18px'
-}
-const unWatch = watch(() => categoryList.value, (val) => {
-  getDishById(val[0].id)
-  unWatch()
-})
+  cardPriceColor: "#f60101",
+  cardPriceFontSize: "18px",
+};
+const unWatch = watch(
+  () => categoryList.value,
+  (val) => {
+    getDishById(val[0].id);
+    unWatch();
+  }
+);
 // 跳转详情页
 const toDetails = (item) => {
   router.push({
-    name: 'goodsDetail',
+    name: "goodsDetail",
     params: {
-      id: item.id
+      id: item.id,
     },
     query: {
       title: item.name,
-      type: dishType.value
-    }
-  })
-}
+      type: dishType.value,
+    },
+  });
+};
 // 获取距离
 const getDistance = () => {
-  const AMap = window.AMap
-  AMap && AMap.plugin('AMap.Geolocation', function () {
-    getUserPosition(AMap)
-  })
-}
+  const AMap = window.AMap;
+  AMap &&
+    AMap.plugin("AMap.Geolocation", function () {
+      getUserPosition(AMap);
+    });
+};
 // 获取菜单列表
 const sendCategory = async () => {
-  const res = await getCategory()
-  categoryList.value = res.info
-}
+  const res = await getCategory();
+  categoryList.value = res.info;
+};
 // 点击菜单列表处理
 const changeCategory = (item, index) => {
-  defaultIndex.value = index
-  dishType.value = item.type
+  defaultIndex.value = index;
+  dishType.value = item.type;
   if (item.type === 1) {
-    getDishById(item.id)
+    getDishById(item.id);
   } else {
-    getSetmealById(item.id)
+    getSetmealById(item.id);
   }
-}
+};
 // 根据菜单id 获取对应菜品信息
 const getDishById = async (categoryId) => {
   const res = await getDish({
-    categoryId
-  })
-  dishList.value = res.info
-}
+    categoryId,
+  });
+  dishList.value = res.info;
+};
 // 根据菜单id 获取对应套餐信息
 const getSetmealById = async (categoryId) => {
   const res = await getSetmeal({
-    categoryId
-  })
-  dishList.value = res.info
-}
+    categoryId,
+  });
+  dishList.value = res.info;
+};
 const chooseFlavors = (val) => {
-  showDialog.value = true
-  dish.value = val
-}
+  showDialog.value = true;
+  dish.value = val;
+};
 </script>
 
 <style scoped lang="scss">
-header{
+header {
   position: relative;
   width: 100%;
   height: 152px;
   background-image: url("../../assets/image/mainBg.png");
   background-repeat: no-repeat;
   background-size: contain;
-  .go-mine{
+  .go-mine {
     position: absolute;
     top: -26%;
     left: 1%;
     width: 28px;
     height: 28px;
-    img{
+    img {
       width: 100%;
       height: 100%;
     }
   }
-  .intro{
+  .intro {
     padding: 4px 10px;
     color: #969696;
     font-size: 12px;
   }
-  .main{
+  .main {
     position: absolute;
     left: 50%;
     top: 50%;
-    transform:translate(-50%,-10%);
+    transform: translate(-50%, -10%);
     width: 90%;
     height: 120px;
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     border-radius: 4px;
     box-shadow: 0 1px 10px #646363;
-    .title{
+    .title {
       display: flex;
       padding: 10px;
       align-items: center;
       border-bottom: 1px solid #efefef;
-      .title-logo{
+      .title-logo {
         position: relative;
         width: 39px;
         height: 39px;
         overflow: hidden;
         border-radius: 4px;
-        img{
+        img {
           position: absolute;
           top: -9px;
           left: -9px;
@@ -236,15 +226,15 @@ header{
           height: 150%;
         }
       }
-      .title-name{
+      .title-name {
         display: flex;
         flex-direction: column;
         padding-left: 6px;
-        h3{
+        h3 {
           font-size: 18px;
           font-weight: 700;
         }
-        .description{
+        .description {
           display: flex;
           justify-content: space-between;
           font-size: 12px;
@@ -253,27 +243,27 @@ header{
     }
   }
 }
-main{
+main {
   width: 100%;
   height: calc(100vh - 240px);
   display: flex;
   margin-top: 40px;
-  .type{
+  .type {
     width: 100px;
     background-color: #ffffff;
     display: flex;
     flex-direction: column;
     font-size: 14px;
     overflow-y: scroll;
-    .type-item{
+    .type-item {
       padding: 10px 0 10px 10px;
       margin-bottom: 4px;
     }
-    .active{
-      border-left: 4px solid #FFC600;
+    .active {
+      border-left: 4px solid #ffc600;
     }
   }
-  .dish{
+  .dish {
     flex: calc(100vw - 100px);
     font-size: 16px;
     background-color: #f3f5f3;

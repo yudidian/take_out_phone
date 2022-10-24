@@ -13,11 +13,7 @@
     @edit="onEdit"
   >
     <template #item-bottom="score">
-      <Cell
-        class="set-default"
-        center
-        title="设置为默认地址"
-      >
+      <Cell class="set-default" center title="设置为默认地址">
         <template #right-icon>
           <Switch
             :model-value="score.isDefault"
@@ -33,57 +29,53 @@
   </AddressList>
 </template>
 <script setup name="AddressPage">
-import {
-  AddressList,
-  NavBar,
-  Cell,
-  Switch, Notify
-} from 'vant'
-import { useRouter } from 'vue-router'
-import { onMounted, ref } from 'vue'
-import { getAddressList, setDefaultAddress } from '@/api/module/address'
+import { AddressList, NavBar, Cell, Switch, Notify } from "vant";
+import { useRouter } from "vue-router";
+import { onMounted, ref } from "vue";
+import { getAddressList, setDefaultAddress } from "@/api/module/address";
 onMounted(() => {
-  sendAddressList()
-})
-const router = useRouter()
-const addressList = ref([])
+  sendAddressList();
+});
+const router = useRouter();
+const addressList = ref([]);
 const onEdit = (item) => {
   router.push({
-    name: 'AddressAdd',
+    name: "AddressAdd",
     query: {
-      id: item.id
-    }
-  })
-}
+      id: item.id,
+    },
+  });
+};
 const sendAddressList = async () => {
-  const res = await getAddressList()
+  const res = await getAddressList();
   if (res.code !== 1) {
     return Notify({
-      type: 'danger',
-      message: res.msg
-    })
+      type: "danger",
+      message: res.msg,
+    });
   }
-  res.info.forEach(item => {
+  res.info.forEach((item) => {
     addressList.value.push({
       id: item.id,
       name: item.consignee,
       tel: item.phone,
-      address: item.provinceName + item.cityName + item.districtName + item.detail,
-      isDefault: item.isDefault === 1
-    })
-  })
-}
+      address:
+        item.provinceName + item.cityName + item.districtName + item.detail,
+      isDefault: item.isDefault === 1,
+    });
+  });
+};
 const setDefaultHandler = async (val) => {
-  const res = await setDefaultAddress(val)
+  const res = await setDefaultAddress(val);
   if (res.code === 1) {
-    addressList.value = []
-    await sendAddressList()
+    addressList.value = [];
+    await sendAddressList();
   }
-}
+};
 </script>
 
 <style scoped lang="scss">
-.set-default{
+.set-default {
   margin-top: 20px;
 }
 </style>

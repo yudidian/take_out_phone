@@ -35,7 +35,7 @@
     class="cell-item"
   >
     <Cell
-      :title="sendInfo.payMethod === 1 ? '微信支付': '支付宝支付'"
+      :title="sendInfo.payMethod === 1 ? '微信支付' : '支付宝支付'"
       is-link
       @click="showSheet = true"
     />
@@ -48,7 +48,7 @@
       title="购物车列表"
     />
     <Cell class="cart-list">
-      <CartList @get-price="$emit('getPrice',$event)" />
+      <CartList @get-price="$emit('getPrice', $event)" />
     </Cell>
   </CellGroup>
   <CellGroup inset>
@@ -116,7 +116,11 @@ const getUserDefaultAddress = async () => {
   if (res.code === 1) {
     sendInfo.addressBookId = res.info.id
     userAddress.value = {
-      address: res.info.provinceName + res.info.cityName + res.info.districtName + res.info.detail,
+      address:
+        res.info.provinceName +
+        res.info.cityName +
+        res.info.districtName +
+        res.info.detail,
       name: res.info.consignee,
       tel: res.info.phone,
       id: res.info.id
@@ -130,59 +134,59 @@ defineExpose({
 
 <style scoped lang="scss">
 @import "@/style/util.scss";
-.address-wrapper{
+.address-wrapper {
   height: auto;
-  header{
-    .address-title{
+  header {
+    .address-title {
       padding: 6px;
       font-size: 14px;
       border-bottom: 3px solid $main-color;
     }
   }
-  .address-info{
+  .address-info {
     width: 100%;
     margin-top: 10px;
     display: flex;
     align-items: center;
-    .left{
+    .left {
       width: 90%;
       padding-left: 10px;
-      .user-info{
+      .user-info {
         display: flex;
         height: 30px;
         align-items: center;
-        .user-name{
+        .user-name {
           font-size: 24px;
           font-weight: 400;
           margin-right: 20px;
         }
-        .user-phone{
+        .user-phone {
           font-size: 20px;
           font-weight: 400;
         }
       }
-      .address-detail{
+      .address-detail {
         word-break: break-word;
         font-size: 12px;
       }
     }
-    .right{
+    .right {
       font-size: 20px;
     }
   }
 }
-.cart-list{
+.cart-list {
   width: 100%;
   height: 260px;
   :deep(>.van-cell__value){
     overflow-y: auto;
-    .cart-wrapper{
+    .cart-wrapper {
       overflow: hidden;
       height: calc(100vh - 80px);
     }
   }
 }
-.cell-item{
+.cell-item {
   margin-bottom: 4px;
 }
 </style>

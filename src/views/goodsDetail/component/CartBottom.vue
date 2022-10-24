@@ -1,31 +1,23 @@
 <template>
-  <div
-    class="cart-bottom"
-    @click="$router.push('/cart')"
-  >
+  <div class="cart-bottom" @click="$router.push('/cart')">
     <div class="logo">
-      <svg
-        class="icon"
-        aria-hidden="true"
-      >
+      <svg class="icon" aria-hidden="true">
         <use xlink:href="#icon-lahuoche" />
       </svg>
     </div>
-    <div class="price">
-      ￥{{ amount.toFixed(2) }}
-    </div>
+    <div class="price">￥{{ amount.toFixed(2) }}</div>
     <Icon name="arrow" />
   </div>
 </template>
 
 <script setup name="CartBottom">
-import { Icon } from 'vant'
+import { Icon } from "vant";
 defineProps({
   amount: {
     type: Number,
-    default: 0
-  }
-})
+    default: 0,
+  },
+});
 </script>
 
 <style scoped lang="scss">
@@ -42,12 +34,12 @@ defineProps({
     width: 54px;
     height: 54px;
     font-size: 54px;
-    .icon{
+    .icon {
       margin-bottom: 14px;
       margin-left: 18px;
     }
   }
-  .price{
+  .price {
     width: 100px;
     margin-left: auto;
     margin-right: 10px;
