@@ -24,3 +24,31 @@ export const register = (data) => {
     data
   })
 }
+// 获取用户信息
+export const sendGetUserInfo = () => {
+  return request({
+    url: '/user',
+    method: 'get'
+  })
+}
+// 上传头像
+export const sendUploadImage = (formData) => {
+  return request.post('/upload', formData, {
+    'Content-type': 'multipart/form-data'
+  })
+}
+// 上传头像
+export const sendUploadUserInfo = (data) => {
+  return request({
+    method: 'PUT',
+    url: '/user',
+    data
+  })
+}
+// 获取用户最新订单
+export const sendGetNewOrders = () => {
+  return request({
+    method: 'get',
+    url: '/orders/latest'
+  })
+}

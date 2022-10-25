@@ -180,9 +180,10 @@ defineExpose({
   height: 260px;
   :deep(>.van-cell__value){
     overflow-y: auto;
+    height: auto;
     .cart-wrapper {
       overflow: hidden;
-      height: calc(100vh - 80px);
+      height: auto;
     }
   }
 }

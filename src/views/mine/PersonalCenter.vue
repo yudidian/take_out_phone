@@ -1,17 +1,34 @@
 <template>
   <div class="wrapper">
-    <header>
+    <header @click="$router.push('/user/setting')">
       <p class="title">
         个人中心
       </p>
       <div class="user">
         <div class="img-wrapper">
-          <img src="@/assets/image/headPage.png">
+          <img
+            alt="用户头像"
+            v-if="!userInfo.avatar"
+            src="@/assets/image/headPage.png"
+          >
+          <img
+            alt="用户头像"
+            v-else
+            :src="BASE_IMGE_URL + userInfo.avatar"
+          >
         </div>
-        <span class="user-name">小喽啰</span>
+        <span class="user-name">{{ userInfo.name }}</span>
         <img
-          src="@/assets/image/women.png"
+          v-if="userInfo.sex === '1'"
+          src="@/assets/image/woman.png"
           class="user-icon"
+          alt="用户头像"
+        >
+        <img
+          v-else
+          src="@/assets/image/man.png"
+          class="user-icon"
+          alt="用户头像"
         >
       </div>
     </header>
@@ -28,6 +45,7 @@
             icon="records"
             title="历史订单"
             is-link
+            to="/history/orders"
           />
         </CellGroup>
       </section>
@@ -60,7 +78,28 @@
 </template>
 
 <script setup name="PersonalCenter">
-import { CellGroup, Cell } from 'vant'
+import { CellGroup, Cell, Toast } from 'vant'
+import { onMounted, ref } from 'vue'
+import { sendGetNewOrders, sendGetUserInfo } from '@/api/module/user'
+const BASE_IMGE_URL = import.meta.env.VITE_LOCAL_SERVE_IMGE_URL
+const userInfo = ref({})
+onMounted(() => {
+  getUserInfo()
+  getNewOrders()
+})
+const getNewOrders = async () => {
+  const res = await sendGetNewOrders()
+  console.log(res)
+}
+const getUserInfo = async () => {
+  const res = await sendGetUserInfo()
+  console.log(res)
+  if (res.code === 1) {
+    userInfo.value = res.info
+  } else {
+    Toast.fail('用户信息获取失败')
+  }
+}
 </script>
 
 <style scoped lang="scss">
@@ -97,8 +136,8 @@ import { CellGroup, Cell } from 'vant'
         font-size: 16px;
       }
       .user-icon {
-        width: 16px;
-        height: 16px;
+        width: 30px;
+        height: 30px;
       }
     }
   }

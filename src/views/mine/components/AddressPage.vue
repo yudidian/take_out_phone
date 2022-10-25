@@ -1,36 +1,38 @@
 <template>
-  <NavBar
-    title="地址详情"
-    left-text="返回"
-    left-arrow
-    @click-left="$router.back()"
-  />
-  <AddressList
-    :switchable="false"
-    :list="addressList"
-    default-tag-text="默认"
-    @add="$router.push('/address/add')"
-    @edit="onEdit"
-  >
-    <template #item-bottom="score">
-      <Cell
-        class="set-default"
-        center
-        title="设置为默认地址"
-      >
-        <template #right-icon>
-          <Switch
-            :model-value="score.isDefault"
-            @update:model-value="score.isDefault"
-            size="20"
-            active-color="#ee0a24"
-            inactive-color="#dcdee0"
-            @click="setDefaultHandler(score.id)"
-          />
-        </template>
-      </Cell>
-    </template>
-  </AddressList>
+  <section>
+    <NavBar
+      title="地址详情"
+      left-text="返回"
+      left-arrow
+      @click-left="$router.back()"
+    />
+    <AddressList
+      :switchable="false"
+      :list="addressList"
+      default-tag-text="默认"
+      @add="$router.push('/address/add')"
+      @edit="onEdit"
+    >
+      <template #item-bottom="score">
+        <Cell
+          class="set-default"
+          center
+          title="设置为默认地址"
+        >
+          <template #right-icon>
+            <Switch
+              :model-value="score.isDefault"
+              @update:model-value="score.isDefault"
+              size="20"
+              active-color="#ee0a24"
+              inactive-color="#dcdee0"
+              @click="setDefaultHandler(score.id)"
+            />
+          </template>
+        </Cell>
+      </template>
+    </AddressList>
+  </section>
 </template>
 <script setup name="AddressPage">
 import { AddressList, NavBar, Cell, Switch, Notify } from 'vant'

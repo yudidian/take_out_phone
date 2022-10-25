@@ -15,7 +15,7 @@ const routes = [
         path: 'home',
         name: 'home',
         meta: {
-          index: 'home',
+          index: 1,
           title: '首页',
           keepAlive: true
         },
@@ -25,7 +25,7 @@ const routes = [
         path: 'cart',
         name: 'cart',
         meta: {
-          index: 'cart',
+          index: 2,
           title: '购物车'
         },
         component: () => import('@/views/cart/CartPage.vue')
@@ -34,7 +34,7 @@ const routes = [
         path: 'mine',
         name: 'mine',
         meta: {
-          index: 'mine',
+          index: 3,
           title: '个人中心',
           keepAlive: true
         },
@@ -45,11 +45,19 @@ const routes = [
   {
     path: '/address',
     name: 'Address',
+    meta: {
+      index: 5,
+      title: '地址管理'
+    },
     component: () => import('@/views/mine/components/AddressPage.vue')
   },
   {
     path: '/address/add',
     name: 'AddressAdd',
+    meta: {
+      index: 6,
+      title: '地址编辑'
+    },
     beforeEnter: (to, from, next) => {
       if (from.path !== '/address') {
         next('/address')
@@ -63,6 +71,7 @@ const routes = [
     name: 'AddressChoose',
     component: () => import('@/views/Settlement/component/AddressChoose.vue'),
     meta: {
+      index: 7,
       title: '地址选择',
       keepAlive: true
     }
@@ -70,6 +79,11 @@ const routes = [
   {
     path: '/goods/detail/:id',
     name: 'goodsDetail',
+    meta: {
+      index: 8,
+      title: '商品详情',
+      keepAlive: true
+    },
     component: () => import('@/views/goodsDetail/GoodsDetail.vue')
   },
   {
@@ -78,7 +92,28 @@ const routes = [
     component: () => import('@/views/Settlement/SettlementPage.vue'),
     meta: {
       title: '提交订单',
-      keepAlive: true
+      keepAlive: true,
+      index: 9
+    }
+  },
+  {
+    path: '/user/setting',
+    name: 'userSetting',
+    component: () => import('@/views/mine/UserSetting/UserSetting.vue'),
+    meta: {
+      title: '用户信息编辑',
+      keepAlive: true,
+      index: 10
+    }
+  },
+  {
+    path: '/history/orders',
+    name: 'historyOrders',
+    component: () => import('@/views/mine/HistoryOrders/HistoryOrders.vue'),
+    meta: {
+      title: '历史订单',
+      keepAlive: true,
+      index: 10
     }
   }
 ]

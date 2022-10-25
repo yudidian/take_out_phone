@@ -1,45 +1,47 @@
 <template>
-  <RouterView v-slot="{ Component }">
-    <keep-alive>
+  <section>
+    <RouterView v-slot="{ Component }">
+      <keep-alive>
+        <component
+          :is="Component"
+          :key="$route.name"
+          v-if="$route.meta.keepAlive"
+        />
+      </keep-alive>
       <component
         :is="Component"
         :key="$route.name"
-        v-if="$route.meta.keepAlive"
+        v-if="!$route.meta.keepAlive"
       />
-    </keep-alive>
-    <component
-      :is="Component"
-      :key="$route.name"
-      v-if="!$route.meta.keepAlive"
-    />
-  </RouterView>
-  <Tabbar
-    v-model="active"
-    router
-    @change="tabChangeHandler"
-  >
-    <TabbarItem
-      name="home"
-      to="/home"
-      icon="home-o"
+    </RouterView>
+    <Tabbar
+      v-model="active"
+      router
+      @change="tabChangeHandler"
     >
-      首页
-    </TabbarItem>
-    <TabbarItem
-      name="cart"
-      to="/cart"
-      icon="cart-o"
-    >
-      购物车
-    </TabbarItem>
-    <TabbarItem
-      name="mine"
-      icon="user-o"
-      to="/mine"
-    >
-      我的
-    </TabbarItem>
-  </Tabbar>
+      <TabbarItem
+        name="home"
+        to="/home"
+        icon="home-o"
+      >
+        首页
+      </TabbarItem>
+      <TabbarItem
+        name="cart"
+        to="/cart"
+        icon="cart-o"
+      >
+        购物车
+      </TabbarItem>
+      <TabbarItem
+        name="mine"
+        icon="user-o"
+        to="/mine"
+      >
+        我的
+      </TabbarItem>
+    </Tabbar>
+  </section>
 </template>
 <script setup name="LayoutPage">
 import { Tabbar, TabbarItem } from 'vant'

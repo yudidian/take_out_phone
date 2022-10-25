@@ -1,10 +1,12 @@
 <template>
   <router-view v-slot="{ Component }">
     <keep-alive :include="includeRouter">
-      <component
-        :is="Component"
-        :key="$route.name"
-      />
+      <transition name="router_animate">
+        <component
+          :is="Component"
+          :key="$route.name"
+        />
+      </transition>
     </keep-alive>
   </router-view>
   <MyLoading :show="store.getters.showLoading" />
@@ -26,3 +28,12 @@ watch(route, (value) => {
   }
 })
 </script>
+
+<style scoped>
+.router_animate-enter-active {
+  animation: slideInLeft 0.5s;
+}
+.router_animate-leave-active {
+  animation: slideOutLeft 0.3s;
+}
+</style>
