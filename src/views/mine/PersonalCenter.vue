@@ -36,11 +36,22 @@
       <section>
         <CellGroup inset>
           <Cell
-            icon="shop-collect-o"
-            title="待收货"
             is-link
-            to="/address"
-          />
+            to="/pendingReceipt"
+          >
+            <template #title>
+              <Badge
+                :content="50"
+                max="20"
+              >
+                <Icon
+                  name="shop-collect-o"
+                  size="16"
+                />
+                <span class="custom-title">待收货</span>
+              </Badge>
+            </template>
+          </Cell>
           <Cell
             icon="records"
             title="历史订单"
@@ -73,7 +84,7 @@
 </template>
 
 <script setup name="PersonalCenter">
-import { CellGroup, Cell, Toast, Icon } from 'vant'
+import { CellGroup, Cell, Toast, Icon, Badge } from 'vant'
 import { onMounted, ref } from 'vue'
 import { sendGetNewOrders, sendGetUserInfo } from '@/api/module/user'
 import LatestOrder from './components/LatestOrder.vue'
