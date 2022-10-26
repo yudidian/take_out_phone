@@ -31,9 +31,9 @@ watch(route, (value) => {
 
 <style scoped>
 .router_animate-enter-active {
-  animation: slideInLeft 0.5s;
+  animation: slideInLeft 0.2s;
 }
 .router_animate-leave-active {
-  animation: slideOutLeft 0.3s;
+  animation: slideOutLeft 0.2s;
 }
 </style>

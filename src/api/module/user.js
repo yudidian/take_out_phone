@@ -52,3 +52,11 @@ export const sendGetNewOrders = () => {
     url: '/orders/latest'
   })
 }
+// 获取用户最新订单
+export const sendGetHistoryOrders = (params) => {
+  return request({
+    method: 'get',
+    url: '/orders/list',
+    params
+  })
+}

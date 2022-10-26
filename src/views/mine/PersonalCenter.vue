@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <header @click="$router.push('/user/setting')">
+    <header>
       <p class="title">
         个人中心
       </p>
@@ -36,8 +36,8 @@
       <section>
         <CellGroup inset>
           <Cell
-            icon="guide-o"
-            title="地址管理"
+            icon="shop-collect-o"
+            title="待收货"
             is-link
             to="/address"
           />
@@ -51,45 +51,44 @@
       </section>
       <section>
         <CellGroup inset>
-          <Cell title="最新订单">
+          <Cell
+            title="最新订单"
+            style="height: 280px"
+          >
             <template #label>
-              <div class="content">
-                xxxxxxxxxxxxxx
-              </div>
-              <p class="description">
-                共0件商品，实付0￥
-              </p>
+              <LatestOrder :latest-order-list="latestOrderList" />
             </template>
           </Cell>
         </CellGroup>
       </section>
       <section>
-        <CellGroup
-          inset
+        <Icon
+          name="setting-o"
           class="btn-exit"
-        >
-          <button class="exit-out">
-            退出登录
-          </button>
-        </CellGroup>
+          @click="$router.push('/setting')"
+        />
       </section>
     </article>
   </div>
 </template>
 
 <script setup name="PersonalCenter">
-import { CellGroup, Cell, Toast } from 'vant'
+import { CellGroup, Cell, Toast, Icon } from 'vant'
 import { onMounted, ref } from 'vue'
 import { sendGetNewOrders, sendGetUserInfo } from '@/api/module/user'
+import LatestOrder from './components/LatestOrder.vue'
 const BASE_IMGE_URL = import.meta.env.VITE_LOCAL_SERVE_IMGE_URL
 const userInfo = ref({})
+const latestOrderList = ref([])
 onMounted(() => {
   getUserInfo()
   getNewOrders()
 })
 const getNewOrders = async () => {
   const res = await sendGetNewOrders()
-  console.log(res)
+  if (res.code === 1) {
+    latestOrderList.value = res.info
+  }
 }
 const getUserInfo = async () => {
   const res = await sendGetUserInfo()
@@ -152,14 +151,11 @@ const getUserInfo = async () => {
         text-align: right;
       }
       .btn-exit {
-        display: flex;
-        justify-content: center;
+        position: absolute;
+        top: 17px;
+        right: 4px;
+        width: 40px;
         height: 40px;
-        .exit-out {
-          background-color: #fff;
-          border: none;
-          font-size: 16px;
-        }
       }
     }
   }

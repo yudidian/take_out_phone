@@ -107,13 +107,23 @@ const routes = [
     }
   },
   {
+    path: '/setting',
+    name: 'setting',
+    component: () => import('@/views/Setting/SettingPage.vue'),
+    meta: {
+      title: '用户设置',
+      keepAlive: true,
+      index: 11
+    }
+  },
+  {
     path: '/history/orders',
     name: 'historyOrders',
     component: () => import('@/views/mine/HistoryOrders/HistoryOrders.vue'),
     meta: {
       title: '历史订单',
       keepAlive: true,
-      index: 10
+      index: 12
     }
   }
 ]
