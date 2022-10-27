@@ -41,8 +41,8 @@
           >
             <template #title>
               <Badge
-                :content="50"
-                max="20"
+                :content="orderSize"
+                max="99"
               >
                 <Icon
                   name="shop-collect-o"
@@ -86,21 +86,25 @@
 <script setup name="PersonalCenter">
 import { CellGroup, Cell, Toast, Icon, Badge } from 'vant'
 import { onMounted, ref } from 'vue'
-import { sendGetNewOrders, sendGetUserInfo } from '@/api/module/user'
+import { sendGetNewOrders, sendGetUserInfo, sendPendingReceipt } from '@/api/module/user'
 import LatestOrder from './components/LatestOrder.vue'
 const BASE_IMGE_URL = import.meta.env.VITE_LOCAL_SERVE_IMGE_URL
 const userInfo = ref({})
 const latestOrderList = ref([])
+const orderSize = ref(0)
 onMounted(() => {
   getUserInfo()
   getNewOrders()
+  getPendingReceipt()
 })
+// 获取最新订单
 const getNewOrders = async () => {
   const res = await sendGetNewOrders()
   if (res.code === 1) {
     latestOrderList.value = res.info
   }
 }
+// 获取用户信息
 const getUserInfo = async () => {
   const res = await sendGetUserInfo()
   console.log(res)
@@ -108,6 +112,15 @@ const getUserInfo = async () => {
     userInfo.value = res.info
   } else {
     Toast.fail('用户信息获取失败')
+  }
+}
+// 获取待收货数量
+const getPendingReceipt = async () => {
+  const res = await sendPendingReceipt()
+  if (res.code === 1) {
+    orderSize.value = res.data.size
+  } else {
+    Toast.fail('信息获取失败')
   }
 }
 </script>

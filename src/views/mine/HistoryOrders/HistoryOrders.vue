@@ -11,7 +11,14 @@
       finished-text="没有更多了"
       @load="onLoad"
     >
+      <Empty
+        image="/src/assets/image/empty.png"
+        image-size="80"
+        description="空空如也~"
+        v-if="orderList.length === 0"
+      />
       <CellGroup
+        v-else
         inset
         class="history-wrapper"
         v-for="item in orderList"
@@ -94,7 +101,7 @@
 </template>
 
 <script name="HistoryOrders" setup>
-import { NavBar, List, Icon, Toast, Image, CellGroup, Cell } from 'vant'
+import { NavBar, List, Icon, Toast, Image, CellGroup, Cell, Empty } from 'vant'
 import { ref } from 'vue'
 import useClipboard from 'vue-clipboard3'
 import { sendGetHistoryOrders } from '@/api/module/user'
@@ -112,7 +119,8 @@ const onLoad = () => {
 const getHistoryOrders = async (page, pageSize) => {
   const res = await sendGetHistoryOrders({
     page,
-    pageSize
+    pageSize,
+    state: 4
   })
   loading.value = false
   if (res.code === 1) {

@@ -125,6 +125,16 @@ const routes = [
       keepAlive: true,
       index: 12
     }
+  },
+  {
+    path: '/pendingReceipt',
+    name: 'pendingReceipt',
+    component: () => import('@/views/mine/PendingReceipt/PendingReceipt.vue'),
+    meta: {
+      title: '待收货',
+      keepAlive: true,
+      index: 14
+    }
   }
 ]
 

@@ -60,3 +60,26 @@ export const sendGetHistoryOrders = (params) => {
     params
   })
 }
+// 获取用户待收货数量
+export const sendPendingReceipt = () => {
+  return request({
+    method: 'get',
+    url: '/orders/unfinished'
+  })
+}
+// 取消或确认订单
+export const sendConfirmOrCancelOrders = (params) => {
+  return request({
+    method: 'get',
+    url: '/orders/confirmOrCancel',
+    params
+  })
+}
+// 获取订单状态
+export const sendGetOrderStates = (params) => {
+  return request({
+    method: 'get',
+    url: '/orders/state',
+    params
+  })
+}
