@@ -82,7 +82,7 @@ const routes = [
     meta: {
       index: 8,
       title: '商品详情',
-      keepAlive: true
+      keepAlive: false
     },
     component: () => import('@/views/goodsDetail/GoodsDetail.vue')
   },
@@ -92,7 +92,7 @@ const routes = [
     component: () => import('@/views/Settlement/SettlementPage.vue'),
     meta: {
       title: '提交订单',
-      keepAlive: true,
+      keepAlive: false,
       index: 9
     }
   },
@@ -102,7 +102,7 @@ const routes = [
     component: () => import('@/views/mine/UserSetting/UserSetting.vue'),
     meta: {
       title: '用户信息编辑',
-      keepAlive: true,
+      keepAlive: false,
       index: 10
     }
   },
@@ -112,7 +112,7 @@ const routes = [
     component: () => import('@/views/Setting/SettingPage.vue'),
     meta: {
       title: '用户设置',
-      keepAlive: true,
+      keepAlive: false,
       index: 11
     }
   },
@@ -122,7 +122,7 @@ const routes = [
     component: () => import('@/views/mine/HistoryOrders/HistoryOrders.vue'),
     meta: {
       title: '历史订单',
-      keepAlive: true,
+      keepAlive: false,
       index: 12
     }
   },
@@ -132,8 +132,18 @@ const routes = [
     component: () => import('@/views/mine/PendingReceipt/PendingReceipt.vue'),
     meta: {
       title: '待收货',
-      keepAlive: true,
+      keepAlive: false,
       index: 14
+    }
+  },
+  {
+    path: '/reviewsList',
+    name: 'reviewsList',
+    component: () => import('@/views/ReviewsList/ReviewsList.vue'),
+    meta: {
+      title: '商品评论',
+      keepAlive: false,
+      index: 15
     }
   }
 ]

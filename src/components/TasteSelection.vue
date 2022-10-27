@@ -55,7 +55,7 @@
 <script setup name="TasteSelection">
 import { watch, ref } from 'vue'
 import { sendAddCart } from '@/api/module/goods.js'
-import { Icon, Notify } from 'vant'
+import { Icon, Toast } from 'vant'
 const emit = defineEmits(['hide', 'changeHandler'])
 watch(
   () => props.show,
@@ -125,16 +125,10 @@ const addCart = async () => {
   const res = await sendAddCart(data)
   show.value = false
   if (res.code === 1) {
-    Notify({
-      type: 'success',
-      message: '添加成功'
-    })
+    Toast.success('添加成功')
     emit('changeHandler')
   } else {
-    Notify({
-      type: 'danger',
-      message: '添加失败'
-    })
+    Toast.fail('添加失败')
   }
 }
 </script>

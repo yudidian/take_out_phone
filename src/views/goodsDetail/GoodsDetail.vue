@@ -68,19 +68,22 @@
             />
           </div>
         </div>
-        <TabNav :description-info="descriptionInfo" />
+        <TabNav
+          :description-info="descriptionInfo"
+          :id="goodsInfo.id"
+        />
       </div>
     </CellGroup>
     <CartBottom :amount="cartInfo.amount" />
+    <TasteSelection
+      title="选择规格"
+      @hide="showDialog = $event"
+      :dish="goodsInfo"
+      :dish-type="$route.query.type"
+      :show="showDialog"
+      @change-handler="getCartList"
+    />
   </div>
-  <TasteSelection
-    title="选择规格"
-    @hide="showDialog = $event"
-    :dish="goodsInfo"
-    :dish-type="$route.query.type"
-    :show="showDialog"
-    @change-handler="getCartList"
-  />
 </template>
 
 <script setup name="GoodsDetail">

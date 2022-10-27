@@ -55,6 +55,9 @@ const props = defineProps({
   descriptionInfo: {
     type: Object,
     required: true
+  },
+  id: {
+    type: String
   }
 })
 const router = useRouter()
@@ -64,7 +67,7 @@ const changeActive = (item, index) => {
   active.value = index
   if (index === 1) {
     router.push({
-      name: '',
+      name: 'reviewsList',
       query: {
         id: props.id
       }
