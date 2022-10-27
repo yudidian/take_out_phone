@@ -21,7 +21,7 @@
         v-else
         inset
         class="history-wrapper"
-        v-for="item in orderList"
+        v-for="(item,index) in orderList"
         :key="item.id"
       >
         <Cell class="orders">
@@ -95,16 +95,26 @@
             </div>
           </li>
         </ul>
+        <Cell class="bottom-btn">
+          <Button
+            type="danger"
+            round
+            @click="confirmReceipt(item.number, false, index)"
+          >
+            删除订单
+          </Button>
+        </Cell>
       </CellGroup>
     </List>
   </div>
 </template>
 
 <script name="HistoryOrders" setup>
-import { NavBar, List, Icon, Toast, Image, CellGroup, Cell, Empty } from 'vant'
+import { NavBar, List, Icon, Toast, Image, CellGroup, Cell, Empty, Button, Dialog, Notify } from 'vant'
 import { ref } from 'vue'
 import useClipboard from 'vue-clipboard3'
-import { sendGetHistoryOrders } from '@/api/module/user'
+import { sendConfirmOrCancelOrders, sendGetHistoryOrders } from '@/api/module/user'
+
 const BASE_IMGE_URL = import.meta.env.VITE_LOCAL_SERVE_IMGE_URL
 const { toClipboard } = useClipboard()
 const orderList = ref([])
@@ -140,42 +150,74 @@ const copyOrderId = async (id) => {
     Toast(e.message)
   }
 }
+const confirmReceipt = (id, flag, index) => {
+  Dialog.confirm({
+    message: '是否删除订单，此操作不可逆！'
+  })
+    .then(async () => {
+      const res = await sendConfirmOrCancelOrders({
+        flag,
+        ordersId: id
+      })
+      if (res.code === 1) {
+        Toast.success('删除成功')
+        orderList.value.splice(index, 1)
+      } else {
+        Notify({
+          type: 'danger',
+          message: res.msg
+        })
+      }
+    })
+    .catch(() => {
+      // on cancel
+    })
+}
 </script>
 <style scoped lang="scss">
-.history-wrapper{
+.history-wrapper {
   margin-top: 20px;
   font-size: 14px;
   color: #737373;
-  .orders{
+
+  .orders {
     display: flex;
     padding-left: 20px;
     align-items: center;
-    .orders-id{
+
+    .orders-id {
       margin-left: 10px;
       margin-right: 10px;
     }
   }
-  .order-wrapper{
+
+  .order-wrapper {
     padding-left: 20px;
-    .order-item{
+
+    .order-item {
       margin-bottom: 10px;
       display: flex;
       justify-content: flex-start;
       align-items: center;
-      .van-image{
+
+      .van-image {
         overflow: hidden;
         border-radius: 10px;
       }
-      .order-name{
+
+      .order-name {
         margin-left: 20px;
       }
-      .order-num{
+
+      .order-num {
         margin-left: auto;
         margin-right: 20px;
-        .number-logo{
+
+        .number-logo {
           font-size: 12px;
         }
-        .count{
+
+        .count {
           font-size: 14px;
         }
       }
