@@ -9,7 +9,7 @@
       <ul class="harder-list">
         <li
           :class="index===active? 'header-item header-active':'header-item'"
-          v-for="(item,index) in headerList"
+          v-for="(item,index) in HEADER_LIST"
           :key="index"
           @click="active = index"
         >
@@ -17,41 +17,70 @@
         </li>
       </ul>
     </header>
-    <section class="reviews-content">
+    <CellGroup
+      inset
+      class="reviews-content"
+    >
       <div class="user-content">
         <div class="user-avatar">
           <Image
-            src="xxx"
+            width="100%"
+            height="100%"
+            src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
+            round
             fit="cover"
           />
         </div>
-        <div class="user-name">
-          123132
+        <div class="user-info">
+          <p class="user-name">
+            12300
+          </p>
+          <Rate
+            class="user-rete"
+            v-model="rate"
+            :size="18"
+            readonly
+            color="#ffd21e"
+            void-icon="star"
+            void-color="#eee"
+          />
+        </div>
+        <div class="reviews-times">
+          2020-10-28 10:10:10
         </div>
       </div>
-      <div class="reviews">
-        11231232323231231
-      </div>
+      <p class="reviews">
+        112312323232312311111111111111112222qqqqxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      </p>
       <div class="reviews-images">
         <Image
-          src=""
+          class="image-item"
+          width="100%"
+          height="100%"
+          src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
           fit="cover"
         />
         <Image
-          src=""
+          class="image-item"
+          width="100%"
+          height="100%"
+          src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
           fit="cover"
         />
         <Image
-          src=""
+          class="image-item"
+          width="100%"
+          height="100%"
+          src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
           fit="cover"
         />
       </div>
-    </section>
+    </CellGroup>
   </div>
 </template>
 
 <script setup name="ReviewsList">
-import { NavBar, Image } from 'vant'
+import { NavBar, Image, CellGroup, Rate } from 'vant'
 import { ref } from 'vue'
 defineProps({
   id: {
@@ -59,7 +88,8 @@ defineProps({
     required: true
   }
 })
-const headerList = [
+const rate = ref(1)
+const HEADER_LIST = [
   '全部评论', '最新', '好评', '一般', '差评'
 ]
 const active = ref(0)
@@ -71,7 +101,7 @@ const active = ref(0)
   .harder-list{
     width: 100%;
     height: 80px;
-    padding: 10px;
+    padding: 10px 20px 10px 10px;
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
@@ -102,15 +132,53 @@ const active = ref(0)
     justify-content: flex-start;
     align-items: center;
     .user-avatar{
-
+      width: 50px;
+      height: 50px;
+      border-radius: 60px;
+      background-color: black;
+    }
+    .reviews-times{
+      font-size: 12px;
+      margin-top: 20px;
+      margin-left: auto;
+    }
+    .user-info{
+      height: 50px;
+      display: flex;
+      justify-content: flex-start;
+      flex-direction:column;
+      margin-left: 20px;
+      .user-name{
+        font-size: 16px;
+        font-weight: 900;
+        text-align: left;
+      }
     }
   }
   .reviews{
-    @include text-warp(3)
+    width: 300px;
+    padding: 10px;
+    max-height: 70px;
+    font-size: 16px;
+    color: #9f9f9f;
+    white-space:normal;
+    word-break:break-all;
+    word-wrap:break-word;
+    @include text-warp(3);
   }
   .reviews-images{
+    height: 80px;
+    margin-top: 4px;
+    width: 100%;
     display: flex;
     justify-content: flex-start;
+    .image-item {
+      width: 100px;
+      height: 80px;
+      overflow: hidden;
+      border-radius: 4px;
+      margin-left: 4px;
+    }
   }
 }
 </style>

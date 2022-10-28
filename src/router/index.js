@@ -141,9 +141,19 @@ const routes = [
     name: 'reviewsList',
     component: () => import('@/views/ReviewsList/ReviewsList.vue'),
     meta: {
-      title: '商品评论',
+      title: '商品评论列表',
       keepAlive: false,
       index: 15
+    }
+  },
+  {
+    path: '/writeReview',
+    name: 'writeReview',
+    component: () => import('@/views/WriteReview/WriteReview.vue'),
+    meta: {
+      title: '写商品评论',
+      keepAlive: false,
+      index: 16
     }
   }
 ]

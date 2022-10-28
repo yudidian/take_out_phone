@@ -88,20 +88,37 @@
               {{ list.name }}
             </div>
             <div class="order-num">
-              <span class="number-logo">
-                x
-              </span>
-              <span class="count">{{ list.number }}</span>
+              <div>
+                <span class="number-logo">
+                  x
+                </span>
+                <span class="count">{{ list.number }}</span>
+              </div>
+              <Button
+                size="small"
+                round
+                icon="records"
+                @click="$router.push({
+                  name: 'writeReview',
+                  query: {
+                    id: list.dishId,
+                    name: list.name,
+                    image: list.image
+                  }
+                })"
+              />
             </div>
           </li>
         </ul>
         <Cell class="bottom-btn">
           <Button
-            type="danger"
+            style="margin-left: 20px"
+            size="small"
+            icon="delete-o"
             round
             @click="confirmReceipt(item.number, false, index)"
           >
-            删除订单
+            删除
           </Button>
         </Cell>
       </CellGroup>
@@ -180,6 +197,12 @@ const confirmReceipt = (id, flag, index) => {
   font-size: 14px;
   color: #737373;
 
+  .bottom-btn{
+    :deep(>.van-cell__value){
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
   .orders {
     display: flex;
     padding-left: 20px;
@@ -212,13 +235,14 @@ const confirmReceipt = (id, flag, index) => {
       .order-num {
         margin-left: auto;
         margin-right: 20px;
-
+        display: flex;
+        align-items: center;
         .number-logo {
           font-size: 12px;
         }
-
         .count {
           font-size: 14px;
+          margin-right: 20px;
         }
       }
     }
