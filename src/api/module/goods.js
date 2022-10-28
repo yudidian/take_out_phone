@@ -6,6 +6,13 @@ export const sendGoodsInfo = (id) => {
     method: 'get'
   })
 }
+// 获取商品详情
+export const sendSetmealInfo = (id) => {
+  return request({
+    url: `/setmeal/${id}`,
+    method: 'get'
+  })
+}
 // 改变收藏状态值
 export const sendChangeFavorites = (data) => {
   return request({

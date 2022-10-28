@@ -1,12 +1,9 @@
 <template>
   <router-view v-slot="{ Component }">
-    <keep-alive :include="includeRouter">
-      <transition name="router_animate">
-        <component
-          :is="Component"
-          :key="$route.name"
-        />
-      </transition>
+    <keep-alive>
+      <component
+        :is="Component"
+      />
     </keep-alive>
   </router-view>
   <MyLoading :show="store.getters.showLoading" />
@@ -16,7 +13,7 @@ import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import { reactive, watch } from 'vue'
 const store = useStore()
-const includeRouter = reactive(['SettlementPage'])
+const includeRouter = reactive(['SettlementPage', 'LayoutPage', 'GoodsDetail'])
 const route = useRoute()
 watch(route, (value) => {
   if (value.name === 'AddressChoose' || value.name === 'settlement') {
@@ -24,7 +21,8 @@ watch(route, (value) => {
       includeRouter.push('SettlementPage')
     }
   } else {
-    includeRouter.pop()
+    const index = includeRouter.findIndex(item => item === 'SettlementPage')
+    index !== -1 && includeRouter.splice(index, 1)
   }
 })
 </script>

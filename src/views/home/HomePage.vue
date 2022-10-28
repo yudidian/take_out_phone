@@ -137,7 +137,7 @@ const unWatch = watch(
 // 跳转详情页
 const toDetails = (item, e) => {
   router.push({
-    name: 'goodsDetail',
+    name: 'GoodsDetail',
     params: {
       id: item.id
     },

@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 import getters from './getters'
 import user from './module/user'
+import keepRouters from './module/keepRouters'
 export default createStore({
   namespace: true,
   state () {
@@ -20,6 +21,7 @@ export default createStore({
   },
   getters,
   modules: {
-    user
+    user,
+    keepRouters
   }
 })

@@ -10,10 +10,11 @@ const routes = [
     path: '/',
     component: () => import('@/layout/LayoutPage.vue'),
     redirect: '/home',
+    name: 'LayoutPage',
     children: [
       {
         path: 'home',
-        name: 'home',
+        name: 'HomePage',
         meta: {
           index: 1,
           title: '首页',
@@ -23,7 +24,7 @@ const routes = [
       },
       {
         path: 'cart',
-        name: 'cart',
+        name: 'CartPage',
         meta: {
           index: 2,
           title: '购物车'
@@ -32,7 +33,7 @@ const routes = [
       },
       {
         path: 'mine',
-        name: 'mine',
+        name: 'PersonalCenter',
         meta: {
           index: 3,
           title: '个人中心',
@@ -44,7 +45,7 @@ const routes = [
   },
   {
     path: '/address',
-    name: 'Address',
+    name: 'AddressPage',
     meta: {
       index: 5,
       title: '地址管理'
@@ -78,17 +79,17 @@ const routes = [
   },
   {
     path: '/goods/detail/:id',
-    name: 'goodsDetail',
+    name: 'GoodsDetail',
     meta: {
       index: 8,
       title: '商品详情',
-      keepAlive: false
+      keepAlive: true
     },
     component: () => import('@/views/goodsDetail/GoodsDetail.vue')
   },
   {
     path: '/settlement',
-    name: 'settlement',
+    name: 'SettlementPage',
     component: () => import('@/views/Settlement/SettlementPage.vue'),
     meta: {
       title: '提交订单',
@@ -98,7 +99,7 @@ const routes = [
   },
   {
     path: '/user/setting',
-    name: 'userSetting',
+    name: 'UserSetting',
     component: () => import('@/views/mine/UserSetting/UserSetting.vue'),
     meta: {
       title: '用户信息编辑',
@@ -108,7 +109,7 @@ const routes = [
   },
   {
     path: '/setting',
-    name: 'setting',
+    name: 'SettingPage',
     component: () => import('@/views/Setting/SettingPage.vue'),
     meta: {
       title: '用户设置',
@@ -118,7 +119,7 @@ const routes = [
   },
   {
     path: '/history/orders',
-    name: 'historyOrders',
+    name: 'HistoryOrders',
     component: () => import('@/views/mine/HistoryOrders/HistoryOrders.vue'),
     meta: {
       title: '历史订单',
@@ -128,7 +129,7 @@ const routes = [
   },
   {
     path: '/pendingReceipt',
-    name: 'pendingReceipt',
+    name: 'PendingReceipt',
     component: () => import('@/views/mine/PendingReceipt/PendingReceipt.vue'),
     meta: {
       title: '待收货',
@@ -138,7 +139,7 @@ const routes = [
   },
   {
     path: '/reviewsList',
-    name: 'reviewsList',
+    name: 'ReviewsList',
     component: () => import('@/views/ReviewsList/ReviewsList.vue'),
     meta: {
       title: '商品评论列表',
@@ -148,7 +149,7 @@ const routes = [
   },
   {
     path: '/writeReview',
-    name: 'writeReview',
+    name: 'WriteReview',
     component: () => import('@/views/WriteReview/WriteReview.vue'),
     meta: {
       title: '写商品评论',

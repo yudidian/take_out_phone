@@ -42,7 +42,7 @@
           <div class="price-left">
             <div class="left-info">
               <div class="sort">
-                月销售量 {{ goodsInfo.sort }}
+                月销售量 {{ goodsInfo.salesVolume }}
               </div>
               <div class="number">
                 ￥{{ (goodsInfo.price / 100).toFixed(2) }}
@@ -63,6 +63,7 @@
               icon="plus"
               type="primary"
               size="mini"
+              @click="addCart"
               round
               v-else
             />
@@ -76,6 +77,7 @@
     </CellGroup>
     <CartBottom :amount="cartInfo.amount" />
     <TasteSelection
+      v-if="$route.query.type === '1'"
       title="选择规格"
       @hide="showDialog = $event"
       :dish="goodsInfo"
@@ -87,7 +89,7 @@
 </template>
 
 <script setup name="GoodsDetail">
-import { Button, CellGroup, Notify } from 'vant'
+import { Button, CellGroup, Notify, Toast } from 'vant'
 import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
@@ -97,7 +99,7 @@ import {
   sendChangeFavorites,
   sendGetFavorites,
   sendGoodsInfo,
-  sendGetDishDescription
+  sendGetDishDescription, sendSetmealInfo, sendAddCart
 } from '@/api/module/goods'
 import { useCart } from '@/hooks/useCart'
 const IMG_URL = import.meta.env.VITE_LOCAL_SERVE_IMGE_URL
@@ -114,8 +116,14 @@ const isFavorites = ref(false)
 const showDialog = ref(false)
 // 购物车列表数据
 onMounted(async () => {
+  let getGoodsInfo = null
+  if (route.query.type === '1') {
+    getGoodsInfo = sendGoodsInfo(route.params.id)
+  } else {
+    getGoodsInfo = sendSetmealInfo(route.params.id)
+  }
   const res = await Promise.allSettled([
-    sendGoodsInfo(route.params.id),
+    getGoodsInfo,
     sendGetFavorites(route.params.id),
     getCartList(),
     sendGetDishDescription(route.params.id)
@@ -126,7 +134,7 @@ onMounted(async () => {
 watch(
   () => cartInfo.cartList,
   (value) => {
-    console.log(value)
+    // console.log(value)
   }
 )
 // 处理商品信息
@@ -166,6 +174,21 @@ const changeFavorites = async () => {
       type: 'danger',
       message: '操作失败'
     })
+  }
+}
+const addCart = async () => {
+  const data = {
+    name: goodsInfo.value.name,
+    number: 1,
+    amount: goodsInfo.value.price,
+    image: goodsInfo.value.image
+  }
+  const res = await sendAddCart(data)
+  if (res.code === 1) {
+    await getCartList()
+    Toast.success('添加成功')
+  } else {
+    Toast.fail('添加失败')
   }
 }
 </script>

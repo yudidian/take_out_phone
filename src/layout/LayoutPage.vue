@@ -1,18 +1,11 @@
 <template>
   <section>
     <RouterView v-slot="{ Component }">
-      <keep-alive>
+      <keep-alive :include="['HomePage','PersonalCenter']">
         <component
           :is="Component"
-          :key="$route.name"
-          v-if="$route.meta.keepAlive"
         />
       </keep-alive>
-      <component
-        :is="Component"
-        :key="$route.name"
-        v-if="!$route.meta.keepAlive"
-      />
     </RouterView>
     <Tabbar
       v-model="active"
@@ -20,21 +13,21 @@
       @change="tabChangeHandler"
     >
       <TabbarItem
-        name="home"
+        name="HomePage"
         to="/home"
         icon="home-o"
       >
         首页
       </TabbarItem>
       <TabbarItem
-        name="cart"
+        name="CartPage"
         to="/cart"
         icon="cart-o"
       >
         购物车
       </TabbarItem>
       <TabbarItem
-        name="mine"
+        name="PersonalCenter"
         icon="user-o"
         to="/mine"
       >
@@ -47,7 +40,7 @@
 import { Tabbar, TabbarItem } from 'vant'
 import { useRoute } from 'vue-router'
 import { onMounted, ref, watch } from 'vue'
-const active = ref('home')
+const active = ref('HomePage')
 const route = useRoute()
 watch(route, (val) => {
   active.value = val.name

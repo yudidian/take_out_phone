@@ -7,5 +7,8 @@ export default {
   },
   userId: (state) => {
     return state.user.userId
+  },
+  keepalive: (state) => {
+    return state.keepRouters.keepalive
   }
 }
