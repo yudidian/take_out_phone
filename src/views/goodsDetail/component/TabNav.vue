@@ -57,7 +57,13 @@ const props = defineProps({
     required: true
   },
   id: {
-    type: String
+    type: String,
+    default: ''
+  },
+  type: {
+    // 区别普通菜品和套餐
+    type: String,
+    required: true
   }
 })
 const router = useRouter()
@@ -67,9 +73,10 @@ const changeActive = (item, index) => {
   active.value = index
   if (index === 1) {
     router.push({
-      name: 'reviewsList',
+      name: 'ReviewsList',
       query: {
-        id: props.id
+        id: props.id,
+        type: props.type
       }
     })
   }

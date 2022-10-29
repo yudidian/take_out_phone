@@ -9,90 +9,169 @@
       <ul class="harder-list">
         <li
           :class="index===active? 'header-item header-active':'header-item'"
-          v-for="(item,index) in HEADER_LIST"
+          v-for="(item,index) in headerList"
           :key="index"
-          @click="active = index"
+          @click="chooseReviews(index,item.reta)"
         >
-          {{ item }}(999)
+          {{ `${item.name}(${item.count})` }}
         </li>
       </ul>
     </header>
-    <CellGroup
-      inset
-      class="reviews-content"
+    <Empty
+      image="https://fastly.jsdelivr.net/npm/@vant/assets/custom-empty-image.png"
+      image-size="80"
+      description="空空如也"
+      v-if="reviewListInfo.reviewList.length === 0"
+    />
+    <section
+      class="reviews-wrapper"
+      v-else
     >
-      <div class="user-content">
-        <div class="user-avatar">
-          <Image
-            width="100%"
-            height="100%"
-            src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
-            round
-            fit="cover"
-          />
-        </div>
-        <div class="user-info">
-          <p class="user-name">
-            12300
+      <List
+        v-model:loading="loading"
+        :finished="finished"
+        :immediate-check="false"
+        finished-text="没有更多了"
+        @load="onLoad"
+      >
+        <CellGroup
+          inset
+          class="reviews-content"
+          v-for="item in reviewListInfo.reviewList"
+          :key="item.id"
+        >
+          <div class="user-content">
+            <div class="user-avatar">
+              <Image
+                width="100%"
+                height="100%"
+                :src="BASE_URL + item.avatar"
+                round
+                fit="cover"
+                @click="viewImage([BASE_URL + item.avatar])"
+              />
+            </div>
+            <div class="user-info">
+              <p class="user-name">
+                {{ item.username }}
+              </p>
+              <Rate
+                class="user-rete"
+                v-model="item.rating"
+                :size="18"
+                readonly
+                color="#ffd21e"
+                void-icon="star"
+                void-color="#eee"
+              />
+            </div>
+            <div class="reviews-times">
+              {{ item.createTime }}
+            </div>
+          </div>
+          <p class="reviews">
+            {{ item.text }}
           </p>
-          <Rate
-            class="user-rete"
-            v-model="rate"
-            :size="18"
-            readonly
-            color="#ffd21e"
-            void-icon="star"
-            void-color="#eee"
-          />
-        </div>
-        <div class="reviews-times">
-          2020-10-28 10:10:10
-        </div>
-      </div>
-      <p class="reviews">
-        112312323232312311111111111111112222qqqqxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-      </p>
-      <div class="reviews-images">
-        <Image
-          class="image-item"
-          width="100%"
-          height="100%"
-          src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
-          fit="cover"
-        />
-        <Image
-          class="image-item"
-          width="100%"
-          height="100%"
-          src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
-          fit="cover"
-        />
-        <Image
-          class="image-item"
-          width="100%"
-          height="100%"
-          src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
-          fit="cover"
-        />
-      </div>
-    </CellGroup>
+          <div class="reviews-images">
+            <Image
+              class="image-item"
+              width="100px"
+              height="80px"
+              :src="BASE_URL + imag"
+              fit="cover"
+              v-for="imag in item.images"
+              :key="imag"
+              @click="viewImage([BASE_URL + imag])"
+            />
+          </div>
+        </CellGroup>
+      </List>
+    </section>
   </div>
 </template>
 
 <script setup name="ReviewsList">
-import { NavBar, Image, CellGroup, Rate } from 'vant'
-import { ref } from 'vue'
-defineProps({
-  id: {
-    type: String,
-    required: true
-  }
+import { NavBar, Image, CellGroup, Rate, Empty, ImagePreview, List } from 'vant'
+import { onMounted, reactive, ref } from 'vue'
+import { sendGetReviewCount, sendGetReviewList } from '@/api/module/reviews'
+import { useRoute } from 'vue-router'
+const BASE_URL = import.meta.env.VITE_LOCAL_SERVE_IMGE_URL
+const loading = ref(false)
+const finished = ref(false)
+const reviewListInfo = reactive({
+  total: 0,
+  reviewList: [],
+  currentPage: 0
 })
-const rate = ref(1)
-const HEADER_LIST = [
-  '全部评论', '最新', '好评', '一般', '差评'
-]
+const headerList = reactive([
+  { name: '全部评论', reta: 0, count: 0 },
+  { name: '好评', reta: 5, count: 0 },
+  { name: '还不错', reta: 4, count: 0 },
+  { name: '中等', reta: 3, count: 0 },
+  { name: '一般', reta: 2, count: 0 },
+  { name: '差评', reta: 1, count: 0 }
+])
+onMounted(() => {
+  getReviewList(0)
+  getReviewsCount()
+})
 const active = ref(0)
+const route = useRoute()
+const getReviewList = async (reta, page = 0, pageSize = 10) => {
+  const data = {
+    reta,
+    page,
+    pageSize
+  }
+  if (route.query.type === '1') {
+    data.dishId = route.query.id
+  } else {
+    data.setmealId = route.query.id
+  }
+  const res = await sendGetReviewList(data)
+  loading.value = false
+  if (res.code === 1) {
+    reviewListInfo.reviewList.push(...res.info.records)
+    reviewListInfo.total = res.info.total
+    reviewListInfo.currentPage = res.info.pages
+    if (reviewListInfo.reviewList.length >= res.info.total) {
+      finished.value = true
+    }
+  }
+}
+const onLoad = () => {
+  getReviewList(0)
+}
+const chooseReviews = (index, reta) => {
+  active.value = index
+  reviewListInfo.reviewList = []
+  getReviewList(reta)
+}
+const getReviewsCount = async () => {
+  const data = {}
+  if (route.query.type === '1') {
+    data.dishId = route.query.id
+  } else {
+    data.setmealId = route.query.id
+  }
+  const res = await sendGetReviewCount(data)
+  if (res.code === 1) {
+    const count = res.data
+    headerList[0].count = count.all
+    headerList[1].count = count.rate_5
+    headerList[2].count = count.rate_4
+    headerList[3].count = count.rate_3
+    headerList[4].count = count.rate_2
+    headerList[5].count = count.rate_1
+  }
+}
+const viewImage = (images) => {
+  ImagePreview({
+    images, // 预览图片的那个数组
+    showIndex: true,
+    loop: false
+  })
+}
 </script>
 
 <style scoped lang="scss">
@@ -125,8 +204,14 @@ const active = ref(0)
     }
   }
 }
+.reviews-wrapper{
+  width: 100%;
+  height: 520px;
+  overflow-y: auto;
+}
 .reviews-content{
   padding: 10px;
+  margin-bottom: 20px;
   .user-content{
     display: flex;
     justify-content: flex-start;

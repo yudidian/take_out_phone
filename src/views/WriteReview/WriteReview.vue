@@ -71,8 +71,9 @@ import { NavBar, Toast, Button, Form, Field, CellGroup, Uploader, Rate } from 'v
 import { reactive, ref } from 'vue'
 import { sendUploadImage } from '@/api/module/user'
 import { sendSaveReviews } from '@/api/module/reviews'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
+const router = useRouter()
 const BASE_URL = import.meta.env.VITE_LOCAL_SERVE_IMGE_URL
 const text = ref('')
 const fileList = ref([])
@@ -83,14 +84,20 @@ const reviews = reactive({
 })
 const onSubmit = async (val) => {
   const data = {
-    dishId: route.query.id,
     rating: reviews.rate,
     text: text.value,
     image: reviews.image.join(',')
   }
+  if (route.query.dishId) {
+    console.log(123)
+    data.dishId = route.query.dishId
+  } else {
+    data.setmealId = route.query.setmealId
+  }
   const res = await sendSaveReviews(data)
   if (res.code === 1) {
     Toast.success('评论成功')
+    router.back()
   } else {
     Toast.fail(res.msg)
   }
@@ -108,10 +115,6 @@ const afterRead = async (file) => {
   imgFile.append('file', file.file)
   const res = await sendUploadImage(imgFile)
   if (res.code === 1) {
-    fileList.value = []
-    fileList.value.push({
-      url: BASE_URL + res.msg
-    })
     reviews.image.push(res.msg)
     Toast.success('上传成功')
   } else {

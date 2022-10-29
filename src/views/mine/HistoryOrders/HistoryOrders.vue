@@ -99,9 +99,10 @@
                 round
                 icon="records"
                 @click="$router.push({
-                  name: 'writeReview',
+                  name: 'WriteReview',
                   query: {
-                    id: list.dishId,
+                    dishId: list.dishId,
+                    setmealId: list.setmealId,
                     name: list.name,
                     image: list.image
                   }
