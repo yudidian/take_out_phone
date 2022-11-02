@@ -5,121 +5,127 @@
       left-arrow
       @click-left="$router.back()"
     />
-    <List
-      v-model:loading="loading"
-      :finished="finished"
-      finished-text="没有更多了"
-      @load="onLoad"
+    <PullRefresh
+      v-model="refreshLoading"
+      @refresh="onRefresh"
+      success-text="刷新成功"
     >
-      <Empty
-        image="/src/assets/image/empty.png"
-        image-size="80"
-        description="空空如也~"
-        v-if="orderList.length === 0"
-      />
-      <CellGroup
-        v-else
-        inset
-        class="history-wrapper"
-        v-for="(item,index) in orderList"
-        :key="item.id"
+      <List
+        v-model:loading="loading"
+        :finished="finished"
+        finished-text="没有更多了"
+        @load="onLoad"
       >
-        <Cell class="orders">
-          <Icon
-            name="orders-o"
-            size="20px"
-            @click="copyOrderId(item.number)"
-          />
-          <span class="orders-id">
-            {{ item.number }}
-          </span>
-        </Cell>
-        <Cell class="orders">
-          <Icon
-            name="manager-o"
-            size="20px"
-          />
-          <span class="orders-id">
-            {{ item.consignee }}
-          </span>
-        </Cell>
-        <Cell class="orders">
-          <Icon
-            name="phone-o"
-            size="20px"
-          />
-          <span class="orders-id">
-            {{ item.phone }}
-          </span>
-        </Cell>
-        <Cell class="orders">
-          <Icon
-            name="underway-o"
-            size="20px"
-          />
-          <span class="orders-id">
-            {{ item.checkoutTime }}
-          </span>
-        </Cell>
-        <Cell class="orders">
-          <Icon
-            name="logistics"
-            size="20px"
-          />
-          <span class="orders-id">
-            {{ item.address }}
-          </span>
-        </Cell>
-        <ul
-          class="order-wrapper"
-          v-for="list in item.orderDetailList"
-          :key="list.id"
+        <Empty
+          image="/src/assets/image/empty.png"
+          image-size="80"
+          description="空空如也~"
+          v-if="orderList.length === 0"
+        />
+        <CellGroup
+          v-else
+          inset
+          class="history-wrapper"
+          v-for="(item,index) in orderList"
+          :key="item.id"
         >
-          <li
-            class="order-item"
-          >
-            <Image
-              width="1.2rem"
-              height="1.2rem"
-              fit="cover"
-              :src="BASE_IMGE_URL + list.image"
+          <Cell class="orders">
+            <Icon
+              name="orders-o"
+              size="20px"
+              @click="copyOrderId(item.number)"
             />
-            <div class="order-name">
-              {{ list.name }}
-            </div>
-            <div class="order-num">
-              <span class="number-logo">
-                x
-              </span>
-              <span class="count">{{ list.number }}</span>
-            </div>
-          </li>
-        </ul>
-        <Cell class="bottom-btn">
-          <Button
-            round
-            @click="confirmReceipt(item.number, false, index)"
-            style="margin-right: 20px"
+            <span class="orders-id">
+              {{ item.number }}
+            </span>
+          </Cell>
+          <Cell class="orders">
+            <Icon
+              name="manager-o"
+              size="20px"
+            />
+            <span class="orders-id">
+              {{ item.consignee }}
+            </span>
+          </Cell>
+          <Cell class="orders">
+            <Icon
+              name="phone-o"
+              size="20px"
+            />
+            <span class="orders-id">
+              {{ item.phone }}
+            </span>
+          </Cell>
+          <Cell class="orders">
+            <Icon
+              name="underway-o"
+              size="20px"
+            />
+            <span class="orders-id">
+              {{ item.checkoutTime }}
+            </span>
+          </Cell>
+          <Cell class="orders">
+            <Icon
+              name="logistics"
+              size="20px"
+            />
+            <span class="orders-id">
+              {{ item.address }}
+            </span>
+          </Cell>
+          <ul
+            class="order-wrapper"
+            v-for="list in item.orderDetailList"
+            :key="list.id"
           >
-            取消订单
-          </Button>
-          <Button
-            round
-            @click="showOrderStep(item.number)"
-            style="margin-right: 20px"
-          >
-            查看状态
-          </Button>
-          <Button
-            type="danger"
-            round
-            @click="confirmReceipt(item.number, true, index)"
-          >
-            确定收货
-          </Button>
-        </Cell>
-      </CellGroup>
-    </List>
+            <li
+              class="order-item"
+            >
+              <Image
+                width="1.2rem"
+                height="1.2rem"
+                fit="cover"
+                :src="BASE_IMGE_URL + list.image"
+              />
+              <div class="order-name">
+                {{ list.name }}
+              </div>
+              <div class="order-num">
+                <span class="number-logo">
+                  x
+                </span>
+                <span class="count">{{ list.number }}</span>
+              </div>
+            </li>
+          </ul>
+          <Cell class="bottom-btn">
+            <Button
+              round
+              @click="confirmReceipt(item.number, false, index)"
+              style="margin-right: 20px"
+            >
+              取消订单
+            </Button>
+            <Button
+              round
+              @click="showOrderStep(item.number)"
+              style="margin-right: 20px"
+            >
+              查看状态
+            </Button>
+            <Button
+              type="danger"
+              round
+              @click="confirmReceipt(item.number, true, index)"
+            >
+              确定收货
+            </Button>
+          </Cell>
+        </CellGroup>
+      </List>
+    </PullRefresh>
     <VanDialog
       v-model:show="isShowDialog"
       title="物流信息"
@@ -133,7 +139,7 @@
 </template>
 
 <script setup name="PendingReceipt">
-import { NavBar, List, Icon, Toast, Image, CellGroup, Cell, Button, Dialog, Empty, Notify } from 'vant'
+import { NavBar, List, Icon, Toast, Image, CellGroup, Cell, Button, Dialog, Empty, Notify, PullRefresh } from 'vant'
 import { ref } from 'vue'
 import useClipboard from 'vue-clipboard3'
 import OrderSteps from './component/OrderSteps.vue'
@@ -142,6 +148,7 @@ const BASE_IMGE_URL = import.meta.env.VITE_LOCAL_SERVE_IMGE_URL
 const { toClipboard } = useClipboard()
 const orderList = ref([])
 const loading = ref(false)
+const refreshLoading = ref(false)
 const finished = ref(false)
 const orderState = ref(1)
 const isShowDialog = ref(false)
@@ -219,6 +226,10 @@ const showOrderStep = async (number) => {
       message: res.msg
     })
   }
+}
+const onRefresh = () => {
+  refreshLoading.value = false
+  onLoad()
 }
 </script>
 <style scoped lang="scss">

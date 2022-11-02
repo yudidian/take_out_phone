@@ -1,9 +1,9 @@
 ## 格式化
-
 ```text
 # eslint 检测代码
 npm run lint:eslint
-
+# 启动
+npm run dev
 # prettier 格式化代码
 npm run lint:prettier
 
