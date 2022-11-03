@@ -136,7 +136,7 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 100vh;
   overflow: hidden;
-  background: url("src/assets/image/veer-402681504.jpg") no-repeat;
+  background: url("../../assets/image/veer-402681504.jpg") no-repeat;
   background-size: cover;
   &::before {
     content: "";

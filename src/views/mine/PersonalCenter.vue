@@ -15,6 +15,7 @@
             alt="用户头像"
             v-else
             :src="BASE_IMGE_URL + userInfo.avatar"
+            crossOrigin="anonymous"
           >
         </div>
         <span class="user-name">{{ userInfo.name }}</span>
