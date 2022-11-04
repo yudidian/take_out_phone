@@ -72,7 +72,7 @@
         <TabNav
           :description-info="descriptionInfo"
           :id="goodsInfo.id"
-          :type="route.query.type"
+          :type="$route.query.type"
         />
       </div>
     </CellGroup>

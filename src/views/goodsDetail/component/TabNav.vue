@@ -63,7 +63,8 @@ const props = defineProps({
   type: {
     // 区别普通菜品和套餐
     type: String,
-    required: true
+    required: false,
+    default: ''
   }
 })
 const router = useRouter()
@@ -84,7 +85,7 @@ const changeActive = (item, index) => {
 </script>
 
 <style scoped lang="scss">
-@import "@/style/util.scss";
+@import "../../../style/util.scss";
 .content {
   .header-tab {
     display: flex;

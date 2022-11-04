@@ -65,7 +65,7 @@
         <CellGroup inset>
           <Cell
             title="最新订单"
-            style="height: 280px"
+            style="height: 300px"
           >
             <template #label>
               <LatestOrder :latest-order-list="latestOrderList" />
