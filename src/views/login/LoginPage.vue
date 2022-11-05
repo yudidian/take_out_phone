@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="title">
-      Kola
+      Koala
     </div>
     <Form @submit="onSubmit">
       <CellGroup inset>
@@ -48,72 +48,49 @@
         </Button>
       </div>
     </Form>
-    <Slider
-      v-if="isSlider"
-      @check-flag="checkFlagHandler"
-    />
-    <Overlay :show="show">
-      <template #default>
-        <div class="loading-warpper">
-          <Loading :size="30" />
-        </div>
-      </template>
-    </Overlay>
   </div>
 </template>
 
 <script setup name="LoginPage">
-import { Form, Field, CellGroup, Button, Notify, Overlay, Loading } from 'vant'
-import Slider from './components/SliderIndex.vue'
+import { Form, Field, CellGroup, Button, Notify } from 'vant'
 import { onBeforeUnmount, ref } from 'vue'
 import { sendCode } from '@/api/module/user'
 import { useStore } from 'vuex'
-
-const show = ref(false)
 const store = useStore()
 const time = ref(60)
 const code = ref(null)
 const form = ref({
   phone: '1554254032@qq.com',
-  code: 'xolu5f'
+  code: ''
 })
-const isSlider = ref(false)
 // 表单提交
 const onSubmit = () => {
   store.dispatch('toLogin', form.value)
 }
 // 发送验证码
-const sendCodeHandler = () => {
-  isSlider.value = true
-}
-const checkFlagHandler = async (val) => {
-  if (val) {
-    isSlider.value = false
-    show.value = true
-    const res = await sendCode({
-      email: form.value.phone
+const sendCodeHandler = async () => {
+  const res = await sendCode({
+    email: form.value.phone
+  })
+  if (res.code === 1) {
+    Notify({
+      type: 'success',
+      message: '发送成功'
     })
-    show.value = false
-    if (res.code === 1) {
-      Notify({
-        type: 'success',
-        message: '发送成功'
-      })
-      const timer = setInterval(() => {
-        if (time.value > 0) {
-          time.value--
-          code.value.$el.innerText = time.value + 's'
-        } else {
-          clearInterval(timer)
-          code.value.$el.innerText = '发送验证码'
-        }
-      }, 1000)
-    } else {
-      Notify({
-        type: 'danger',
-        message: '发送失败'
-      })
-    }
+    const timer = setInterval(() => {
+      if (time.value > 0) {
+        time.value--
+        code.value.$el.innerText = time.value + 's'
+      } else {
+        clearInterval(timer)
+        code.value.$el.innerText = '发送验证码'
+      }
+    }, 1000)
+  } else {
+    Notify({
+      type: 'danger',
+      message: '发送失败'
+    })
   }
 }
 const validator = (val) => {

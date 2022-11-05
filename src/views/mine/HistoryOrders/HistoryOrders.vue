@@ -12,7 +12,7 @@
       @load="onLoad"
     >
       <Empty
-        image="/src/assets/image/empty.png"
+        :image="require('@/assets/image/empty.png')"
         image-size="80"
         description="空空如也~"
         v-if="orderList.length === 0"

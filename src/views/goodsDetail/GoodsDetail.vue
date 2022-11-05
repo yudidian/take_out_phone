@@ -9,7 +9,6 @@
     <img
       class="goods-image"
       :src="IMG_URL + goodsInfo.image"
-      alt="info"
     >
     <CellGroup>
       <div class="content">
@@ -181,6 +180,7 @@ const addCart = async () => {
   const data = {
     name: goodsInfo.value.name,
     number: 1,
+    setmealId: goodsInfo.value.id,
     amount: goodsInfo.value.price,
     image: goodsInfo.value.image
   }
@@ -201,7 +201,7 @@ const addCart = async () => {
     top: 0;
     width: 100%;
     height: 40px;
-    background-color: rgba(131, 126, 126, 0.1);
+    background-color: rgba(122, 122 ,122, 0.1);
     .nav-left {
       font-size: 20px;
       margin-left: 10px;
