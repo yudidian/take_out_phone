@@ -42,7 +42,6 @@
       </div>
     </template>
   </AddressEdit>
-  <my-loading :show="isLoading" />
 </template>
 
 <script setup name="AddressAdd">
@@ -61,7 +60,6 @@ onMounted(() => {
     getAddressById(route.query.id)
   }
 })
-const isLoading = ref(false)
 const route = useRoute()
 const router = useRouter()
 const addAddressEdit = ref(null)
@@ -88,7 +86,7 @@ const onSave = async (content) => {
   }
   if (res.code === 1) {
     Toast.success(res.msg)
-    router.back()
+    await router.replace('/address')
   } else {
     Toast.fail(res.msg)
   }
@@ -107,7 +105,6 @@ const onChangeDetail = (val) => {
 }
 
 const getAddressById = async (id) => {
-  isLoading.value = true
   const res = await getAddress(id)
   addressInfo.value = {
     id: res.info.id,
@@ -120,7 +117,6 @@ const getAddressById = async (id) => {
     addressDetail: res.info.detail
   }
   checked.value = res.info.label
-  isLoading.value = false
 }
 </script>
 

@@ -73,11 +73,13 @@
 </template>
 
 <script setup name="OrderList">
-import { CellGroup, Cell, Icon, ActionSheet, Field } from 'vant'
+import { CellGroup, Cell, Icon, ActionSheet, Field, Dialog } from 'vant'
 import { getDefaultAddress } from '@/api/module/address'
 import { onMounted, ref, getCurrentInstance, onBeforeUnmount, reactive } from 'vue'
+import { useRouter } from 'vue-router'
 const { proxy } = getCurrentInstance()
 defineEmits(['getPrice'])
+const router = useRouter()
 // 支付方式
 const actions = [
   { name: '微信', pay: 1 },
@@ -114,6 +116,13 @@ const selectHandler = (item) => {
 const getUserDefaultAddress = async () => {
   const res = await getDefaultAddress()
   if (res.code === 1) {
+    if (res.info === null) {
+      Dialog.alert({
+        message: '还没有设置收货地址哦，快去设置吧~'
+      }).then(() => {
+        return router.push('/address')
+      })
+    }
     sendInfo.addressBookId = res.info.id
     userAddress.value = {
       address:

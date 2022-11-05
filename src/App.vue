@@ -1,12 +1,5 @@
 <template>
-  <router-view v-slot="{ Component }">
-    <keep-alive>
-      <component
-        :is="Component"
-        :key="$route.fullPath"
-      />
-    </keep-alive>
-  </router-view>
+  <router-view />
   <MyLoading :show="store.getters.showLoading" />
 </template>
 <script setup>

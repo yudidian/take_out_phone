@@ -130,8 +130,10 @@ const themeVars = {
 const unWatch = watch(
   () => categoryList.value,
   (val) => {
-    getDishById(val[0].id)
-    unWatch()
+    if (val.length > 0) {
+      getDishById(val[0].id)
+      unWatch()
+    }
   }
 )
 // 跳转详情页
