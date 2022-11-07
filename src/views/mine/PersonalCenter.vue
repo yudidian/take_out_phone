@@ -54,6 +54,12 @@
             </template>
           </Cell>
           <Cell
+            icon="star-o"
+            title="我的收藏"
+            is-link
+            to="/history/orders"
+          />
+          <Cell
             icon="records"
             title="历史订单"
             is-link
@@ -65,7 +71,7 @@
         <CellGroup inset>
           <Cell
             title="最新订单"
-            style="height: 300px"
+            style="height: 285px"
           >
             <template #label>
               <LatestOrder :latest-order-list="latestOrderList" />

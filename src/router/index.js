@@ -156,6 +156,16 @@ const routes = [
       keepAlive: false,
       index: 16
     }
+  },
+  {
+    path: '/storeUp',
+    name: 'StoreUp',
+    component: () => import('@/views/StoreUp/StoreUp.vue'),
+    meta: {
+      title: '写商品评论',
+      keepAlive: false,
+      index: 16
+    }
   }
 ]
 

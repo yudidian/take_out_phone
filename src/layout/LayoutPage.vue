@@ -4,7 +4,7 @@
       <keep-alive :include="['HomePage']">
         <component
           :is="Component"
-          :key="$route.fullPath"
+          :key="$route.name"
         />
       </keep-alive>
     </RouterView>

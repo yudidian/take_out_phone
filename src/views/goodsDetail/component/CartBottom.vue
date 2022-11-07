@@ -3,6 +3,9 @@
     class="cart-bottom"
     @click="$router.push('/cart')"
   >
+    <div class="price">
+      ￥{{ amount.toFixed(2) }}
+    </div>
     <div class="logo">
       <svg
         class="icon"
@@ -11,15 +14,10 @@
         <use xlink:href="#icon-lahuoche" />
       </svg>
     </div>
-    <div class="price">
-      ￥{{ amount.toFixed(2) }}
-    </div>
-    <Icon name="arrow" />
   </div>
 </template>
 
 <script setup name="CartBottom">
-import { Icon } from 'vant'
 defineProps({
   amount: {
     type: Number,
@@ -41,24 +39,15 @@ defineProps({
   .logo {
     width: 54px;
     height: 54px;
-    font-size: 54px;
+    font-size: 38px;
     .icon {
-      margin-bottom: 14px;
-      margin-left: 18px;
+      margin-bottom: 3px;
     }
   }
   .price {
     width: 100px;
     margin-left: auto;
-    margin-right: 10px;
     color: red;
-  }
-  .Settlement {
-    color: #ffffff;
-    font-size: 18px;
-    margin-left: auto;
-    font-weight: 900;
-    margin-right: 14px;
   }
 }
 </style>

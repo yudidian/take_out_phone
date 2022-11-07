@@ -24,7 +24,7 @@
 <script setup name="SettlementPage">
 import OrderList from './component/OrderList.vue'
 import { sendSubmitOrders } from '@/api/module/orders.js'
-import { NavBar, ConfigProvider, SubmitBar, Toast } from 'vant'
+import { NavBar, ConfigProvider, SubmitBar, Toast, Dialog } from 'vant'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 const orderList = ref(null)
@@ -37,15 +37,19 @@ const themeVars = {
   navBarIconColor: '#000'
 }
 // 提交信息
-const onSubmit = async () => {
-  const res = await sendSubmitOrders(orderList.value.sendInfo)
-  if (res.code === 1) {
-    Toast.success(res.msg)
-    await router.replace('/mine')
-  } else {
-    Toast.fail(res.msg)
-  }
-  console.log(res)
+const onSubmit = () => {
+  Dialog.alert({
+    title: '用户需知',
+    message: '本网站仅供学习使用，下单不会有任何实际效果！'
+  }).then(async () => {
+    const res = await sendSubmitOrders(orderList.value.sendInfo)
+    if (res.code === 1) {
+      Toast.success(res.msg)
+      await router.replace('/mine')
+    } else {
+      Toast.fail(res.msg)
+    }
+  })
 }
 </script>
 

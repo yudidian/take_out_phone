@@ -1,6 +1,26 @@
 <template>
   <header>
-    <div class="main">
+    <Swipe
+      class="my-swipe"
+      :autoplay="3000"
+      indicator-color="white"
+    >
+      <SwipeItem>
+        <img src="https://fastly.jsdelivr.net/npm/@vant/assets/custom-empty-image.png">
+      </SwipeItem>
+      <SwipeItem>
+        <img src="https://fastly.jsdelivr.net/npm/@vant/assets/custom-empty-image.png">
+      </SwipeItem>
+      <SwipeItem>
+        <img src="https://fastly.jsdelivr.net/npm/@vant/assets/custom-empty-image.png">
+      </SwipeItem>
+      <SwipeItem>
+        <img src="https://fastly.jsdelivr.net/npm/@vant/assets/custom-empty-image.png">
+      </SwipeItem>
+    </Swipe>
+    <div
+      class="main"
+    >
       <div class="go-mine">
         <img
           src="../../assets/image/user.png"
@@ -40,7 +60,10 @@
   </header>
   <main>
     <div class="type">
-      <ul class="type-list">
+      <ul
+        class="type-list"
+        ref="listScroll"
+      >
         <li
           :class="index !== defaultIndex ? 'type-item' : 'type-item active'"
           v-for="(item, index) in categoryList"
@@ -95,7 +118,7 @@ import useMap from '@/hooks/useMap'
 import { getCategory, getDish, getSetmeal } from '@/api/module/homeIndex'
 import { onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { Card, Button, ConfigProvider, Icon } from 'vant'
+import { Card, Button, ConfigProvider, Icon, Swipe, SwipeItem } from 'vant'
 const router = useRouter()
 const AMap = window.AMap
 const IMG_URL = import.meta.env.VITE_LOCAL_SERVE_IMGE_URL
@@ -197,9 +220,17 @@ header {
   position: relative;
   width: 100%;
   height: 152px;
-  background-image: url("../../assets/image/mainBg.png");
-  background-repeat: no-repeat;
-  background-size: contain;
+  .my-swipe{
+    .van-swipe-item {
+      width: 100%;
+      height: 152px;
+      background-color: #39a9ed;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
   .go-mine {
     position: absolute;
     top: -26%;
