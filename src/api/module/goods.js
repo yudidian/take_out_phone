@@ -22,9 +22,9 @@ export const sendChangeFavorites = (data) => {
   })
 }
 // 改变收藏状态值
-export const sendGetFavorites = (id) => {
+export const sendGetFavorites = (id, type) => {
   return request({
-    url: `/favorites/${id}`,
+    url: `/favorites/${id}/${type}`,
     method: 'get'
   })
 }

@@ -92,7 +92,6 @@
 import { Button, CellGroup, Notify, Toast } from 'vant'
 import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { useStore } from 'vuex'
 import TabNav from './component/TabNav.vue'
 import CartBottom from './component/CartBottom.vue'
 import {
@@ -103,7 +102,6 @@ import {
 } from '@/api/module/goods'
 import { useCart } from '@/hooks/useCart'
 const IMG_URL = import.meta.env.VITE_LOCAL_SERVE_IMGE_URL
-const store = useStore()
 const route = useRoute()
 const { cartInfo, getCartList } = useCart()
 // 商品描述信息
@@ -124,7 +122,7 @@ onMounted(async () => {
   }
   const res = await Promise.allSettled([
     getGoodsInfo,
-    sendGetFavorites(route.params.id),
+    sendGetFavorites(route.params.id, route.query.type),
     getCartList(),
     sendGetDishDescription(route.params.id)
   ])
@@ -160,12 +158,12 @@ const chooseFlavors = () => {
 // 取消或收藏
 const changeFavorites = async () => {
   const res = await sendChangeFavorites({
-    dishId: route.params.id,
-    userId: store.getters.userId
+    id: route.params.id,
+    type: route.query.type
   })
   if (res.code === 1) {
     isFavorites.value = !isFavorites.value
-    Notify({
+    Toast({
       type: 'success',
       message: '操作成功'
     })
