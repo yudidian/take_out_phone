@@ -8,6 +8,7 @@
         />
       </keep-alive>
     </RouterView>
+    <div>{{ $route.name }}</div>
     <Tabbar
       v-model="active"
       router

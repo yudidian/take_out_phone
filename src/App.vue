@@ -1,24 +1,19 @@
 <template>
-  <router-view />
+  <router-view v-slot="{ Component }">
+    <transition name="router_animate">
+      <keep-alive :include="store.getters.keepalive">
+        <component
+          :is="Component"
+          :key="$route.name"
+        />
+      </keep-alive>
+    </transition>
+  </router-view>
   <MyLoading :show="store.getters.showLoading" />
 </template>
 <script setup>
 import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
-import { reactive, watch } from 'vue'
 const store = useStore()
-const includeRouter = reactive(['SettlementPage', 'LayoutPage', 'GoodsDetail'])
-const route = useRoute()
-watch(route, (value) => {
-  if (value.name === 'AddressChoose' || value.name === 'settlement') {
-    if (includeRouter.indexOf('SettlementPage') === -1) {
-      includeRouter.push('SettlementPage')
-    }
-  } else {
-    const index = includeRouter.findIndex(item => item === 'SettlementPage')
-    index !== -1 && includeRouter.splice(index, 1)
-  }
-})
 </script>
 
 <style scoped>

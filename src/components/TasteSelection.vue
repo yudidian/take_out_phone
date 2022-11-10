@@ -2,7 +2,6 @@
   <transition name="fade">
     <div
       class="wrapper"
-      v-if="show"
     >
       <div class="content">
         <p class="title">
@@ -20,7 +19,7 @@
             <ul class="flavors-content">
               <li
                 :class="item.active ? 'flavors-item active' : 'flavors-item'"
-                v-for="(item, index) in Cpflavors[f]"
+                v-for="(item, index) in CpFlavors[f]"
                 :key="item.value"
                 @click="chooseHandler(item, f, index)"
               >
@@ -81,12 +80,12 @@ const props = defineProps({
     default: '1'
   }
 })
-const Cpflavors = ref([])
+const CpFlavors = ref([])
 const show = ref(false)
-const unWatch = watch(
+watch(
   () => props.dish,
   (val) => {
-    Cpflavors.value = val.flavors.map((item) => {
+    CpFlavors.value = val.flavors.map((item) => {
       return JSON.parse(item.value).map((v) => {
         return {
           value: v,
@@ -94,16 +93,14 @@ const unWatch = watch(
         }
       })
     })
-    unWatch()
-  }
+  }, { immediate: true }
 )
 const chooseHandler = (item, j, index) => {
-  console.log(Cpflavors.value[j][index].active)
-  Cpflavors.value[j][index].active = true
+  CpFlavors.value[j][index].active = true
 }
 const addCart = async () => {
   const flavorList = []
-  Cpflavors.value.forEach((item) => {
+  CpFlavors.value.forEach((item) => {
     item.forEach((f) => {
       if (f.active) {
         flavorList.push(f.value)
@@ -127,6 +124,7 @@ const addCart = async () => {
   if (res.code === 1) {
     Toast.success('添加成功')
     emit('changeHandler')
+    emit('hide')
   } else {
     Toast.fail('添加失败')
   }

@@ -82,7 +82,7 @@
           :desc="item.description"
           :title="item.name"
           :thumb="IMG_URL + item.image"
-          @click.stop="toDetails(item,$event)"
+          @click="toDetails(item,$event)"
         >
           <template #price>
             <span>￥{{ item.price / 100 }}</span>
@@ -94,7 +94,6 @@
               round
               v-if="item.flavors"
               data-flag="no"
-              @click="chooseFlavors(item)"
             >
               选择规格
             </Button>
@@ -111,6 +110,14 @@
       </ConfigProvider>
     </div>
   </main>
+  <TasteSelection
+    v-if="showDialog"
+    title="选择规格"
+    @hide="showDialog = $event"
+    :dish="dish"
+    :dish-type="dishType.toString()"
+    @change-handler="getCartList"
+  />
 </template>
 
 <script setup name="HomePage">
@@ -161,6 +168,12 @@ const unWatch = watch(
 )
 // 跳转详情页
 const toDetails = (item, e) => {
+  if (e.target.nodeName === 'BUTTON') {
+    showDialog.value = true
+    dish.value = item
+    console.log(showDialog.value, dishType.value)
+    return
+  }
   router.push({
     name: 'GoodsDetail',
     params: {
@@ -209,9 +222,8 @@ const getSetmealById = async (categoryId) => {
   })
   dishList.value = res.info
 }
-const chooseFlavors = (val) => {
-  showDialog.value = true
-  dish.value = val
+const getCartList = () => {
+  console.log(123)
 }
 </script>
 

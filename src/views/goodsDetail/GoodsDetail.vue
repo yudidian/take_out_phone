@@ -6,10 +6,10 @@
         @click="$router.back()"
       />
     </div>
-    <img
+    <Image
       class="goods-image"
       :src="IMG_URL + goodsInfo.image"
-    >
+    />
     <CellGroup>
       <div class="content">
         <div class="header">
@@ -77,19 +77,18 @@
     </CellGroup>
     <CartBottom :amount="cartInfo.amount" />
     <TasteSelection
-      v-if="$route.query.type === '1'"
+      v-if="showDialog"
       title="选择规格"
       @hide="showDialog = $event"
       :dish="goodsInfo"
       :dish-type="$route.query.type"
-      :show="showDialog"
       @change-handler="getCartList"
     />
   </div>
 </template>
 
 <script setup name="GoodsDetail">
-import { Button, CellGroup, Notify, Toast } from 'vant'
+import { Button, CellGroup, Notify, Toast, Image } from 'vant'
 import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import TabNav from './component/TabNav.vue'
@@ -199,6 +198,7 @@ const addCart = async () => {
     top: 0;
     width: 100%;
     height: 40px;
+    z-index: 99;
     background-color: rgba(122, 122 ,122, 0.1);
     .nav-left {
       font-size: 20px;

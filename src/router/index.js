@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import store from '@/store'
 
 const routes = [
   {
@@ -13,7 +14,7 @@ const routes = [
     name: 'LayoutPage',
     children: [
       {
-        path: 'home',
+        path: '/home',
         name: 'HomePage',
         meta: {
           index: 1,
@@ -23,7 +24,7 @@ const routes = [
         component: () => import('@/views/home/HomePage.vue')
       },
       {
-        path: 'cart',
+        path: '/cart',
         name: 'CartPage',
         meta: {
           index: 2,
@@ -32,7 +33,7 @@ const routes = [
         component: () => import('@/views/cart/CartPage.vue')
       },
       {
-        path: 'mine',
+        path: '/mine',
         name: 'PersonalCenter',
         meta: {
           index: 3,
@@ -176,6 +177,13 @@ const myRouter = createRouter({
 myRouter.beforeEach((to, from, next) => {
   if (to.meta.title) {
     document.title = to.meta.title
+  }
+  // 如果结算页面去选择地址则缓存该路由
+  if (from.name === 'SettlementPage' && to.name === 'AddressChoose') {
+    store.dispatch('saveOrRemoveRouters', 'SettlementPage')
+  }
+  if (from.name === 'SettlementPage' && (to.name === 'CartPage' || to.name === 'PersonalCenter')) {
+    store.dispatch('saveOrRemoveRouters', 'SettlementPage')
   }
   next()
 })

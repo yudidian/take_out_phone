@@ -57,7 +57,7 @@
             icon="star-o"
             title="我的收藏"
             is-link
-            to="/history/orders"
+            to="/storeUp"
           />
           <Cell
             icon="records"

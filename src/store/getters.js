@@ -9,6 +9,6 @@ export default {
     return state.user.userId
   },
   keepalive: (state) => {
-    return state.keepRouters.keepalive
+    return state.keepRouters.keepAliveRouters
   }
 }

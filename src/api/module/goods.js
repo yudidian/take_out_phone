@@ -66,10 +66,21 @@ export const sendDeleteCartOne = (data) => {
     data
   })
 }
-// 删除菜品
+/**
+ * 获取菜品描述
+ * @param id 菜品ID
+ * @returns {*}
+ */
 export const sendGetDishDescription = (id) => {
   return request({
     url: `/goods/description/${id}`,
     method: 'get'
+  })
+}
+export const sendGetStoreUpList = (params) => {
+  return request({
+    url: '/favorites/list',
+    method: 'get',
+    params
   })
 }
