@@ -27,9 +27,11 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   (res) => {
     store.dispatch('changShowLoading', false)
-    if (res.data.msg === 'token过期') {
+    if (res.data.msg === '无token') {
+      // 登录过期的时候清除路由对HomePage的缓存
+      store.dispatch('removeRouters', 'HomePage')
       Notify({
-        message: res.data.msg,
+        message: '用户信息过期',
         type: 'warning'
       })
       router.replace('/login')

@@ -160,7 +160,7 @@ const themeVars = {
 const unWatch = watch(
   () => categoryList.value,
   (val) => {
-    if (val.length > 0) {
+    if (val && val.length > 0) {
       getDishById(val[0].id)
       unWatch()
     }

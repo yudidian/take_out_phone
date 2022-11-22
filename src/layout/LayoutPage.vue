@@ -1,7 +1,7 @@
 <template>
   <section>
     <RouterView v-slot="{ Component }">
-      <keep-alive :include="['HomePage']">
+      <keep-alive :include="store.getters.keepalive">
         <component
           :is="Component"
           :key="$route.name"
@@ -42,6 +42,8 @@
 import { Tabbar, TabbarItem } from 'vant'
 import { useRoute } from 'vue-router'
 import { onMounted, ref, watch } from 'vue'
+import { useStore } from 'vuex'
+const store = useStore()
 const active = ref('HomePage')
 const route = useRoute()
 watch(route, (val) => {

@@ -2,22 +2,24 @@ export default {
   namespace: true,
   state () {
     return {
-      keepAliveRouters: ['LayoutPage']
+      keepAliveRouters: ['HomePage']
     }
   },
   mutations: {
-    setRouters (state, routerName) {
+    addRouters (state, routerName) {
+      state.keepAliveRouters.push(routerName)
+    },
+    removeRouters (state, routerName) {
       const index = state.keepAliveRouters.findIndex(item => item === routerName)
-      if (index === -1) {
-        state.keepAliveRouters.push(routerName)
-      } else {
-        state.keepAliveRouters.splice(index, 1)
-      }
+      state.keepAliveRouters.splice(index, 1)
     }
   },
   actions: {
-    async saveOrRemoveRouters ({ commit }, routerName) {
-      commit('setRouters', routerName)
+    async addRouters ({ commit }, routerName) {
+      commit('addRouters', routerName)
+    },
+    async removeRouters ({ commit }, routerName) {
+      commit('removeRouters', routerName)
     }
   }
 }

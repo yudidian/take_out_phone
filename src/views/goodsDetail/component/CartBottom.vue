@@ -1,23 +1,13 @@
 <template>
-  <div
-    class="cart-bottom"
-    @click="$router.push('/cart')"
-  >
-    <div class="price">
-      ￥{{ amount.toFixed(2) }}
-    </div>
-    <div class="logo">
-      <svg
-        class="icon"
-        aria-hidden="true"
-      >
-        <use xlink:href="#icon-lahuoche" />
-      </svg>
-    </div>
-  </div>
+  <SubmitBar
+    :price="amount * 100"
+    button-text="去购物车"
+    @submit="$router.push('/cart')"
+  />
 </template>
 
 <script setup name="CartBottom">
+import { SubmitBar } from 'vant'
 defineProps({
   amount: {
     type: Number,

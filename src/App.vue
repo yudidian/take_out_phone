@@ -1,6 +1,6 @@
 <template>
   <router-view v-slot="{ Component }">
-    <keep-alive :include="store.getters.keepalive">
+    <keep-alive :include="['LayoutPage']">
       <component
         :is="Component"
         :key="$route.name"
@@ -11,5 +11,9 @@
 </template>
 <script setup>
 import { useStore } from 'vuex'
+import { watch } from 'vue'
 const store = useStore()
+watch(store.getters.keepalive, (val) => {
+  console.log(val)
+})
 </script>

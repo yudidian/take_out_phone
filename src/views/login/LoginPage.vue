@@ -94,7 +94,6 @@ const sendCodeHandler = async () => {
   }
 }
 const validator = (val) => {
-  console.log(/^[a-zA-z0-9]{6}$/.test(val))
   return /^[a-zA-z0-9]{6}$/.test(val)
 }
 // 组件销毁时清除所有定时器
