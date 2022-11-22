@@ -29,7 +29,7 @@ request.interceptors.response.use(
     store.dispatch('changShowLoading', false)
     if (res.data.msg === '无token') {
       // 登录过期的时候清除路由对HomePage的缓存
-      store.dispatch('removeRouters', 'HomePage')
+      store.dispatch('removeChildRouters', 'HomePage')
       Notify({
         message: '用户信息过期',
         type: 'warning'
@@ -40,7 +40,6 @@ request.interceptors.response.use(
   },
   (error) => {
     store.dispatch('changShowLoading', false).then((r) => {
-      console.log(r)
     })
     let { message } = error
     if (message === 'Network Error') {

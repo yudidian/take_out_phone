@@ -25,8 +25,7 @@ export default {
         localStorage.setItem('token', res.info.token)
         localStorage.setItem('userId', res.info.userId)
         // 登录成功开启对HomePage 的缓存
-        store.dispatch('addRouters', 'HomePage')
-        console.log(store.getters.keepalive)
+        store.dispatch('addChildRouters', 'HomePage')
         await router.replace('/')
         Notify({
           type: 'success',

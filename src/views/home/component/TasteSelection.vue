@@ -76,7 +76,6 @@ const unWatch = watch(
   }
 )
 const chooseHandler = (item, j, index) => {
-  console.log(Cpflavors.value[j][index].active)
   Cpflavors.value[j][index].active = true
 }
 const addCart = () => {
@@ -88,7 +87,6 @@ const addCart = () => {
       }
     })
   })
-  console.log(flavorList)
 }
 </script>
 

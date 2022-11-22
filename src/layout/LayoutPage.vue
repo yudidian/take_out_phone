@@ -1,7 +1,7 @@
 <template>
   <section>
     <RouterView v-slot="{ Component }">
-      <keep-alive :include="store.getters.keepalive">
+      <keep-alive :include="store.getters.childKeepalive">
         <component
           :is="Component"
           :key="$route.name"

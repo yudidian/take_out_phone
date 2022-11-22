@@ -60,7 +60,6 @@ const useMap = (AMap) => {
   // 根据两地经纬度计算两地之间的距离
   // 计算两地距离
   const computedLine = (lat2, lng2, lat1 = 121.59996, lng1 = 31.197646) => {
-    console.log(lat2, lng2)
     const res = getDistances(lat2, lng2, lat1, lng1)
     distance.value = res.distance
   }

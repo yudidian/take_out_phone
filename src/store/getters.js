@@ -8,7 +8,10 @@ export default {
   userId: (state) => {
     return state.user.userId
   },
-  keepalive: (state) => {
-    return state.keepRouters.keepAliveRouters
+  childKeepalive: (state) => {
+    return state.keepRouters.childKeepAliveRouters
+  },
+  parentKeepalive: (state) => {
+    return state.keepRouters.parentKeepAliveRouters
   }
 }

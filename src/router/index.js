@@ -180,10 +180,10 @@ myRouter.beforeEach((to, from, next) => {
   }
   // 如果结算页面去选择地址则缓存该路由
   if (from.name === 'SettlementPage' && to.name === 'AddressChoose') {
-    store.dispatch('saveOrRemoveRouters', 'SettlementPage')
+    store.dispatch('addParentRouters', 'SettlementPage')
   }
   if (from.name === 'SettlementPage' && (to.name === 'CartPage' || to.name === 'PersonalCenter')) {
-    store.dispatch('saveOrRemoveRouters', 'SettlementPage')
+    store.dispatch('removeParentRouters', 'SettlementPage')
   }
   next()
 })

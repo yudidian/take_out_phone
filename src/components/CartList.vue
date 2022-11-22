@@ -146,7 +146,6 @@ const getCartList = async () => {
   }
 }
 watch(cartInfoList, (val) => {
-  console.log(val.length)
   emits('getCartLength', val.length)
 }, { deep: true })
 </script>

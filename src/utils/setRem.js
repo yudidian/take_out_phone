@@ -7,7 +7,6 @@ function setRem () {
   const scale = document.documentElement.clientWidth / 375 // 当前设计稿为1920  如果是750则 替换为 750
   // 设置页面根节点字体大小（“Math.min(scale, 2)” 指最高放大比例为2，可根据实际业务需求调整）
   document.documentElement.style.fontSize = 10 * Math.min(scale, 2) + 'px'
-  console.log(document.documentElement.clientWidth)
 }
 // 初始化
 setRem()

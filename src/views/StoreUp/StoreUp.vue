@@ -46,7 +46,8 @@
 import { NavBar, List, Toast, CellGroup, Empty, Image } from 'vant'
 import { ref } from 'vue'
 import { sendGetStoreUpList } from '@/api/module/goods'
-
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const BASE_IMGE_URL = import.meta.env.VITE_LOCAL_SERVE_IMGE_URL
 const storeUpList = ref([])
 const loading = ref(false)
@@ -73,8 +74,17 @@ const getStoreUpList = async (page, pageSize) => {
   }
 }
 // 跳转详情页
-const toDetails = (item, e) => {
-  console.log(e.target)
+const toDetails = (item) => {
+  router.push({
+    name: 'GoodsDetail',
+    params: {
+      id: item.dishId ? item.dishId : item.setmealId
+    },
+    query: {
+      title: item.name,
+      type: item.type
+    }
+  })
 }
 </script>
 <style scoped lang="scss">
