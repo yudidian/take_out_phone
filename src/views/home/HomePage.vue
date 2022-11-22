@@ -6,16 +6,28 @@
       indicator-color="white"
     >
       <SwipeItem>
-        <img src="https://fastly.jsdelivr.net/npm/@vant/assets/custom-empty-image.png">
+        <img
+          src="./component/image/img_3.png"
+          alt=""
+        >
       </SwipeItem>
       <SwipeItem>
-        <img src="https://fastly.jsdelivr.net/npm/@vant/assets/custom-empty-image.png">
+        <img
+          src="./component/image/img_2.png"
+          alt=""
+        >
       </SwipeItem>
       <SwipeItem>
-        <img src="https://fastly.jsdelivr.net/npm/@vant/assets/custom-empty-image.png">
+        <img
+          src="./component/image/img_1.png"
+          alt=""
+        >
       </SwipeItem>
       <SwipeItem>
-        <img src="https://fastly.jsdelivr.net/npm/@vant/assets/custom-empty-image.png">
+        <img
+          src="./component/image/img.png"
+          alt=""
+        >
       </SwipeItem>
     </Swipe>
     <div
@@ -24,41 +36,43 @@
       <div class="go-mine">
         <img
           src="../../assets/image/user.png"
-          @click="$router.push('/mine')"
+          @click="showHeader = !showHeader"
           alt="kola"
         >
       </div>
-      <div class="title">
-        <div class="title-logo">
-          <img
-            src="@/assets/image/logo.png"
-            alt="logo"
-          >
-        </div>
-        <div class="title-name">
-          <h3>koala</h3>
-          <ul class="description">
-            <li
-              class="description-item"
-              @click="getDistance"
+      <div :class="showHeader ? 'main-content show-main': 'main-content hid-main'">
+        <div class="title">
+          <div class="title-logo">
+            <img
+              src="@/assets/image/logo.png"
+              alt="logo"
             >
-              <Icon
-                name="location-o"
-                v-if="distance === 0"
+          </div>
+          <div class="title-name">
+            <h3>koala</h3>
+            <ul class="description">
+              <li
+                class="description-item"
+                @click="getDistance"
               >
-                点击获取距离
-              </Icon>
-              <span v-else>距离kola外卖店:{{ distance.toFixed(2) }}km</span>
-            </li>
-          </ul>
+                <Icon
+                  name="location-o"
+                  v-if="distance === 0"
+                >
+                  点击获取距离
+                </Icon>
+                <span v-else>距离kola外卖店:{{ distance.toFixed(2) }}km</span>
+              </li>
+            </ul>
+          </div>
         </div>
+        <p class="intro">
+          当前位置:{{ formattedAddress }}
+        </p>
       </div>
-      <p class="intro">
-        当前位置:{{ formattedAddress }}
-      </p>
     </div>
   </header>
-  <main>
+  <main :class="showHeader ? 'top-40-main' : 'top-0-main'">
     <div class="type">
       <ul
         class="type-list"
@@ -116,7 +130,6 @@
     @hide="showDialog = $event"
     :dish="dish"
     :dish-type="dishType.toString()"
-    @change-handler="getCartList"
   />
 </template>
 
@@ -127,6 +140,7 @@ import { onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { Card, Button, ConfigProvider, Icon, Swipe, SwipeItem } from 'vant'
 const router = useRouter()
+const showHeader = ref(false)
 const AMap = window.AMap
 const IMG_URL = import.meta.env.VITE_LOCAL_SERVE_IMGE_URL
 const dishList = ref([])
@@ -222,9 +236,6 @@ const getSetmealById = async (categoryId) => {
   })
   dishList.value = res.info
 }
-const getCartList = () => {
-  console.log(123)
-}
 </script>
 
 <style scoped lang="scss">
@@ -233,6 +244,11 @@ header {
   width: 100%;
   height: 152px;
   .my-swipe{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px;
     .van-swipe-item {
       width: 100%;
       height: 152px;
@@ -260,15 +276,22 @@ header {
     font-size: 12px;
   }
   .main {
+    opacity: 1;
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -10%);
     width: 90%;
     height: 120px;
-    background-color: #ffffff;
     border-radius: 4px;
-    box-shadow: 0 1px 10px #646363;
+    z-index: 999;
+    .main-content{
+      width: 100%;
+      height: 100%;
+      background-color: #ffffff;
+      box-shadow: 0 1px 10px #646363;
+      transition: opacity 0.8s;
+    }
     .title {
       display: flex;
       padding: 10px;
@@ -304,12 +327,19 @@ header {
       }
     }
   }
+  .show-main{
+    opacity: 1;
+  }
+  .hid-main {
+    opacity: 0;
+  }
 }
 main {
   width: 100%;
   height: calc(100vh - 240px);
   display: flex;
   margin-top: 40px;
+  transition: all 0.4s;
   .type {
     width: 100px;
     background-color: #ffffff;
@@ -331,5 +361,13 @@ main {
     background-color: #f3f5f3;
     overflow-y: scroll;
   }
+}
+.top-0-main{
+  margin-top: 8px;
+  height: calc(100vh - 210px);
+}
+.top-40-main {
+  margin-top: 30px;
+  height: calc(100vh - 240px);
 }
 </style>
