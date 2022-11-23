@@ -39,7 +39,7 @@
         <li class="wrapper-item">
           <span class="left">口味</span>
           <p class="right">
-            {{ descriptionInfo.taste ? escriptionInfo.taste : '暂无' }}
+            {{ descriptionInfo.taste ? descriptionInfo.taste : '暂无' }}
           </p>
         </li>
       </ul>
