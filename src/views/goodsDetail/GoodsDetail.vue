@@ -137,7 +137,7 @@ watch(
 // 处理商品信息
 const setGoodsInfo = (res) => {
   const goods = res[0].value
-  const description = res[0].value
+  const description = res[4].value
   const favorites = res[1].value
   if (goods.code === 1 && favorites.code === 1 && description.code === 1) {
     goodsInfo.value = goods.info
