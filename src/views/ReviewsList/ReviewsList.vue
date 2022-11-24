@@ -84,6 +84,15 @@
               @click="viewImage([BASE_URL + imag])"
             />
           </div>
+          <div
+            class="store-review"
+            v-if="item.storeReview !== null"
+          >
+            <span class="review-left">店家回复：</span>
+            <p class="review">
+              {{ item.storeReview }}
+            </p>
+          </div>
         </CellGroup>
       </List>
     </section>
@@ -187,6 +196,7 @@ const viewImage = (images) => {
     .header-item{
       width: 100px;
       height: 30px;
+      border-radius: 4px;
       margin-bottom: 10px;
       font-size: 12px;
       color: #7c7c7c;
@@ -195,7 +205,7 @@ const viewImage = (images) => {
       text-align: center;
       background-color: #ffffff;
       transition: background-color 0.3s;
-      box-shadow: 2px 2px #d0d0d0, 1px 2px #b6b6b6;
+      box-shadow: 2px 2px #d0d0d0, 1px 2px #b6b6b6, 2px 2px #9f9f9f;
     }
     .header-active {
       background-color: #ffc200;
@@ -263,6 +273,19 @@ const viewImage = (images) => {
       overflow: hidden;
       border-radius: 4px;
       margin-left: 4px;
+    }
+  }
+  .store-review{
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    .review-left{
+      font-weight: 900;
+      width: 60px;
+      font-size: 12px;
+    }
+    .review{
+      font-size: 14px;
     }
   }
 }
