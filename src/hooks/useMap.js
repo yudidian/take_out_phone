@@ -29,6 +29,7 @@ const useMap = (AMap) => {
       position: 'RB'
     })
     Geolocation.getCurrentPosition((status, result) => {
+      console.log(status, result)
       if (status === 'complete') {
         const { position } = result
         center[0] = position.lng

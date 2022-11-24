@@ -63,6 +63,8 @@ const routes = [
     beforeEnter: (to, from, next) => {
       if (from.path !== '/address') {
         next('/address')
+      } else {
+        next()
       }
     },
     component: () => import('@/views/mine/components/AddressAdd.vue')
@@ -94,6 +96,8 @@ const routes = [
     beforeEnter: (to, from, next) => {
       if (from.path !== '/cart') {
         next('/cart')
+      } else {
+        next()
       }
     },
     meta: {

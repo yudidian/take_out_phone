@@ -45,6 +45,7 @@ onMounted(() => {
 const router = useRouter()
 const addressList = ref([])
 const onEdit = (item) => {
+  console.log(123)
   router.push({
     name: 'AddressAdd',
     query: {
