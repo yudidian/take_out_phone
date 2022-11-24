@@ -24,3 +24,9 @@ export function throttle (fn, delay) {
     }, delay)
   }
 }
+export const isWeiXin = function () {
+  // window.navigator.userAgent属性包含了浏览器类型、版本、操作系统类型、浏览器引擎类型等信息，这个属性可以用来判断浏览器类型
+  const ua = window.navigator.userAgent.toLowerCase()
+  const reg = /micromessenger|WeChat/i
+  return reg.test(ua)
+}
