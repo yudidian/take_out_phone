@@ -13,8 +13,6 @@ request.interceptors.request.use(
     const token = localStorage.getItem('token')
     if (token) {
       config.headers.token = token
-    } else {
-      router.replace('/login')
     }
     return config
   },
@@ -27,9 +25,12 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   (res) => {
     store.dispatch('changShowLoading', false)
-    if (res.data.msg === '无token') {
+    if (res.data.msg.includes('token')) {
       // 登录过期的时候清除路由对HomePage的缓存
       store.dispatch('removeChildRouters', 'HomePage')
+      if (router.currentRoute.value.path !== '/login') {
+        store.commit('setUserAction', router.currentRoute.value.fullPath)
+      }
       Notify({
         message: '用户信息过期',
         type: 'warning'
@@ -39,6 +40,7 @@ request.interceptors.response.use(
     return res.data
   },
   (error) => {
+    console.log(error)
     store.dispatch('changShowLoading', false).then((r) => {
     })
     let { message } = error
@@ -46,11 +48,11 @@ request.interceptors.response.use(
       message = '后端接口连接异常'
     } else if (message.includes('timeout')) {
       message = '系统接口请求超时'
+    } else if (message.includes('Request failed with status code 403')) {
+      message = error.response.data.msg
+      router.push('/login')
     } else if (message.includes('Request failed with status code')) {
       message = '系统接口异常'
-    } else if (message.includes('token')) {
-      message = '登录异常请重新登录'
-      router.push('/login')
     }
     Notify({
       message,

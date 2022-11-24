@@ -64,7 +64,6 @@ const routes = [
       if (from.path !== '/address') {
         next('/address')
       }
-      next()
     },
     component: () => import('@/views/mine/components/AddressAdd.vue')
   },
@@ -92,6 +91,11 @@ const routes = [
     path: '/settlement',
     name: 'SettlementPage',
     component: () => import('@/views/Settlement/SettlementPage.vue'),
+    beforeEnter: (to, from, next) => {
+      if (from.path !== '/cart') {
+        next('/cart')
+      }
+    },
     meta: {
       title: '提交订单',
       keepAlive: false,

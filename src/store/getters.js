@@ -13,5 +13,6 @@ export default {
   },
   parentKeepalive: (state) => {
     return state.keepRouters.parentKeepAliveRouters
-  }
+  },
+  action: (state) => state.user.action
 }

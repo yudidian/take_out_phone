@@ -4,7 +4,6 @@
       <keep-alive :include="store.getters.childKeepalive">
         <component
           :is="Component"
-          :key="$route.name"
         />
       </keep-alive>
     </RouterView>
@@ -18,7 +17,7 @@
         to="/home"
         icon="home-o"
       >
-        首页
+        首页1
       </TabbarItem>
       <TabbarItem
         name="CartPage"

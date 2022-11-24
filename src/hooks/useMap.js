@@ -16,9 +16,9 @@ const useMap = (AMap) => {
     // 异步加载插件
     const Geolocation = new AMap.Geolocation({
       // 是否使用高精度定位，默认：true
-      enableHighAccuracy: true,
+      enableHighAccuracy: false,
       // 设置定位超时时间，默认：无穷大
-      timeout: 6000,
+      timeout: 10,
       useNative: true,
       // 定位按钮的停靠位置的偏移量
       offset: [10, 20],
@@ -37,6 +37,8 @@ const useMap = (AMap) => {
         // 危险通知
         Notify({ type: 'danger', message: '获取失败' })
       }
+    }, (res) => {
+      console.log(res)
     })
   }
   const getAddress = (AMap, center) => {

@@ -8,13 +8,18 @@ export default {
   state () {
     return {
       token: localStorage.getItem('token') || '',
-      userId: localStorage.getItem('userId') || ''
+      userId: localStorage.getItem('userId') || '',
+      action: localStorage.getItem('action') || '/'
     }
   },
   mutations: {
     setToken (state, value) {
       state.token = value.token
       state.userId = value.id
+    },
+    setUserAction (state, value) {
+      localStorage.setItem('action', value)
+      state.action = value
     }
   },
   actions: {
@@ -26,7 +31,8 @@ export default {
         localStorage.setItem('userId', res.info.userId)
         // 登录成功开启对HomePage 的缓存
         store.dispatch('addChildRouters', 'HomePage')
-        await router.replace('/')
+        console.log(store.getters.action)
+        await router.replace(store.getters.action)
         Notify({
           type: 'success',
           message: '登录成功'
@@ -37,6 +43,9 @@ export default {
           message: res.msg
         })
       }
+    },
+    userAction ({ commit }, data) {
+      commit('setUserAction', data)
     }
   }
 }
