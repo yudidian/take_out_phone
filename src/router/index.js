@@ -185,9 +185,13 @@ const myRouter = createRouter({
   history: createWebHashHistory(),
   routes
 })
+const NoPermissionsPath = ['login', 'HomePage', 'GoodsDetail']
 myRouter.beforeEach((to, from, next) => {
   if (to.meta.title) {
     document.title = to.meta.title
+  }
+  if (!NoPermissionsPath.includes(to.name) && store.getters.token === '') {
+    next('/login')
   }
   // 如果结算页面去选择地址则缓存该路由
   if (from.name === 'SettlementPage' && to.name === 'AddressChoose') {
