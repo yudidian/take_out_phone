@@ -60,7 +60,7 @@ const store = useStore()
 const time = ref(60)
 const code = ref(null)
 const form = ref({
-  phone: '1554254032@qq.com',
+  phone: '',
   code: ''
 })
 // 表单提交
