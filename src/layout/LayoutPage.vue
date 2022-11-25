@@ -17,7 +17,7 @@
         to="/home"
         icon="home-o"
       >
-        首页1
+        首页
       </TabbarItem>
       <TabbarItem
         name="CartPage"

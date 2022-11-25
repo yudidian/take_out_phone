@@ -15,6 +15,7 @@
             alt="用户头像"
             v-else
             :src="BASE_IMGE_URL + userInfo.avatar"
+            @click="ImagePreview([BASE_IMGE_URL + userInfo.avatar])"
             crossOrigin="anonymous"
           >
         </div>
@@ -91,7 +92,7 @@
 </template>
 
 <script setup name="PersonalCenter">
-import { CellGroup, Cell, Toast, Icon, Badge } from 'vant'
+import { CellGroup, Cell, Toast, Icon, Badge, ImagePreview } from 'vant'
 import { onMounted, ref } from 'vue'
 import { sendGetNewOrders, sendGetUserInfo, sendPendingReceipt } from '@/api/module/user'
 import LatestOrder from './components/LatestOrder.vue'
@@ -114,7 +115,6 @@ const getNewOrders = async () => {
 // 获取用户信息
 const getUserInfo = async () => {
   const res = await sendGetUserInfo()
-  console.log(res)
   if (res.code === 1) {
     userInfo.value = res.info
   } else {

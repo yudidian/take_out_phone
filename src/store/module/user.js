@@ -31,7 +31,6 @@ export default {
         localStorage.setItem('userId', res.info.userId)
         // 登录成功开启对HomePage 的缓存
         store.dispatch('addChildRouters', 'HomePage')
-        console.log(store.getters.action)
         await router.replace(store.getters.action)
         Notify({
           type: 'success',

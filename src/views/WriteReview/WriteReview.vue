@@ -89,7 +89,6 @@ const onSubmit = async (val) => {
     image: reviews.image.join(',')
   }
   if (route.query.dishId) {
-    console.log(123)
     data.dishId = route.query.dishId
   } else {
     data.setmealId = route.query.setmealId

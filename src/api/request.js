@@ -40,7 +40,6 @@ request.interceptors.response.use(
     return res.data
   },
   (error) => {
-    console.log(error)
     store.dispatch('changShowLoading', false).then((r) => {
     })
     let { message } = error
