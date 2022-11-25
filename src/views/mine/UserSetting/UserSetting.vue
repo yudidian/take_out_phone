@@ -90,7 +90,6 @@ const getUserInfo = async () => {
         url: BASE_URL + res.info.avatar
       })
     }
-    console.log(fileList.value)
   } else {
     Toast.fail('用户信息获取失败')
   }

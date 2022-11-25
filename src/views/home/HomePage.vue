@@ -35,8 +35,9 @@
     >
       <div class="go-mine">
         <img
+          id="show-home-header"
           src="../../assets/image/user.png"
-          @click="showHeader = !showHeader"
+          @click="isShowHeader"
           alt="kola"
         >
       </div>
@@ -185,7 +186,6 @@ const toDetails = (item, e) => {
   if (e.target.nodeName === 'BUTTON') {
     showDialog.value = true
     dish.value = item
-    console.log(showDialog.value, dishType.value)
     return
   }
   router.push({
@@ -235,6 +235,10 @@ const getSetmealById = async (categoryId) => {
     categoryId
   })
   dishList.value = res.info
+}
+// 是否显示头部组件
+const isShowHeader = () => {
+  showHeader.value = !showHeader.value
 }
 </script>
 
@@ -286,11 +290,12 @@ header {
     border-radius: 4px;
     z-index: 999;
     .main-content{
+      position: absolute;
       width: 100%;
       height: 100%;
       background-color: #ffffff;
       box-shadow: 0 1px 10px #646363;
-      transition: opacity 0.8s;
+      transition: all 0.8s;
     }
     .title {
       display: flex;

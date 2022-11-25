@@ -8,7 +8,8 @@
     </div>
     <Image
       class="goods-image"
-      :src="IMG_URL + goodsInfo.image"
+      :src="goodsInfo.image !== undefined ? IMG_URL + goodsInfo.image : ''"
+      @click="ImagePreview([IMG_URL + goodsInfo.image])"
     />
     <CellGroup>
       <div class="content">
@@ -88,7 +89,7 @@
 </template>
 
 <script setup name="GoodsDetail">
-import { Button, CellGroup, Notify, Toast, Image } from 'vant'
+import { Button, CellGroup, Notify, Toast, Image, ImagePreview } from 'vant'
 import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import TabNav from './component/TabNav.vue'
