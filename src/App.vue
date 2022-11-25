@@ -42,7 +42,7 @@ const isWeChat = ref(isWeiXin())
   justify-content: center;
 
   img {
-    width: 80px;
+    width: 50px;
     margin-bottom: 10px;
   }
 

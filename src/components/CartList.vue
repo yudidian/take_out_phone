@@ -62,6 +62,8 @@ import {
   sendLessCartCount
 } from '@/api/module/goods.js'
 import { computed, onMounted, ref, watch } from 'vue'
+import { useStore } from 'vuex'
+const store = useStore()
 const emits = defineEmits(['getPrice', 'getCartLength'])
 const IMG_URL = import.meta.env.VITE_LOCAL_SERVE_IMGE_URL
 // 购物车列表
@@ -134,6 +136,10 @@ const addOrLessHandler = async (item, flag, index) => {
 
 // 获取购物车列表
 const getCartList = async () => {
+  if (store.getters.token === '') {
+    cartInfoList.value = []
+    return
+  }
   const res = await sendGetCartList()
   if (res.code === 1) {
     cartInfoList.value = res.info
