@@ -6,6 +6,12 @@
       left-arrow
       @click-left="$router.back()"
     />
+    <Empty
+      image="https://fastly.jsdelivr.net/npm/@vant/assets/custom-empty-image.png"
+      image-size="80"
+      description="描述文字"
+      v-if="addressList.length === 0"
+    />
     <AddressList
       :switchable="false"
       :list="addressList"
@@ -35,7 +41,7 @@
   </section>
 </template>
 <script setup name="AddressPage">
-import { AddressList, NavBar, Cell, Switch, Notify } from 'vant'
+import { AddressList, NavBar, Cell, Switch, Notify, Empty } from 'vant'
 import { useRouter } from 'vue-router'
 import { onMounted, ref } from 'vue'
 import { getAddressList, setDefaultAddress } from '@/api/module/address'
@@ -45,7 +51,6 @@ onMounted(() => {
 const router = useRouter()
 const addressList = ref([])
 const onEdit = (item) => {
-  console.log(123)
   router.push({
     name: 'AddressAdd',
     query: {
@@ -60,6 +65,9 @@ const sendAddressList = async () => {
       type: 'danger',
       message: res.msg
     })
+  }
+  if (res.info === null) {
+    return
   }
   res.info.forEach((item) => {
     addressList.value.push({
