@@ -103,7 +103,7 @@
           <Cell class="bottom-btn">
             <Button
               round
-              @click="confirmReceipt(item.number, false, index)"
+              @click="cancelReceipt(item.number, index)"
               style="margin-right: 20px"
             >
               取消订单
@@ -143,7 +143,7 @@ import { NavBar, List, Icon, Toast, Image, CellGroup, Cell, Button, Dialog, Empt
 import { ref } from 'vue'
 import useClipboard from 'vue-clipboard3'
 import OrderSteps from './component/OrderSteps.vue'
-import { sendConfirmOrCancelOrders, sendGetHistoryOrders, sendGetOrderStates } from '@/api/module/user'
+import { sendCancelOrders, sendConfirmOrCancelOrders, sendGetHistoryOrders, sendGetOrderStates } from '@/api/module/user'
 const BASE_IMGE_URL = import.meta.env.VITE_LOCAL_SERVE_IMGE_URL
 const { toClipboard } = useClipboard()
 const orderList = ref([])
@@ -182,7 +182,18 @@ const copyOrderId = async (id) => {
   }
 }
 // 确认收货
-const confirmReceipt = (id, flag, index) => {
+const confirmReceipt = async (id, flag, index) => {
+  const res = await sendGetOrderStates({
+    number: id,
+    flag: 0
+  })
+  if (res.code === 1 && res.data.state === 2) {
+    Toast({
+      type: 'fail',
+      message: '商家还未发货'
+    })
+    return
+  }
   let msg = ''
   if (flag) {
     msg = '是否确认收货'
@@ -211,7 +222,30 @@ const confirmReceipt = (id, flag, index) => {
       // on cancel
     })
 }
-
+// 取消订单
+const cancelReceipt = (number, index) => {
+  Dialog.confirm({
+    message: '是否取消订单'
+  })
+    .then(async () => {
+      const res = await sendCancelOrders({
+        number
+      })
+      if (res.code === 1) {
+        if (res.info.cancel) {
+          Toast.success(res.msg)
+          orderList.value.splice(index, 1)
+        } else {
+          Toast.fail(res.msg)
+        }
+      } else {
+        Notify({
+          type: 'danger',
+          message: res.msg
+        })
+      }
+    })
+}
 const showOrderStep = async (number) => {
   isShowDialog.value = true
   const res = await sendGetOrderStates({

@@ -67,11 +67,19 @@ export const sendPendingReceipt = () => {
     url: '/orders/unfinished'
   })
 }
-// 取消或确认订单
+// 确认订单
 export const sendConfirmOrCancelOrders = (params) => {
   return request({
     method: 'get',
     url: '/orders/confirmOrCancel',
+    params
+  })
+}
+// 取消订单
+export const sendCancelOrders = (params) => {
+  return request({
+    method: 'get',
+    url: '/orders/cancel',
     params
   })
 }
