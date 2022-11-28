@@ -153,8 +153,8 @@ const finished = ref(false)
 const orderState = ref(1)
 const isShowDialog = ref(false)
 const onLoad = () => {
-  const page = orderList.value.length
   const pageSize = 10
+  const page = (orderList.value.length / pageSize) + 1
   getHistoryOrders(page, pageSize)
 }
 const getHistoryOrders = async (page, pageSize) => {

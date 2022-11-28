@@ -109,7 +109,7 @@ onMounted(() => {
 const getNewOrders = async () => {
   const res = await sendGetNewOrders()
   if (res.code === 1) {
-    latestOrderList.value = res.info === null ? [] : res.info
+    latestOrderList.value = res.info ?? []
   }
 }
 // 获取用户信息

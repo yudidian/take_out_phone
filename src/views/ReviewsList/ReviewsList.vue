@@ -149,7 +149,8 @@ const getReviewList = async (reta, page = 0, pageSize = 10) => {
   }
 }
 const onLoad = () => {
-  getReviewList(0)
+  const page = (reviewListInfo.reviewList.length / 10) + 1
+  getReviewList(0, page)
 }
 const chooseReviews = (index, reta) => {
   active.value = index

@@ -45,19 +45,22 @@ const sendAddressList = async () => {
       message: res.msg
     })
   }
-  res.info.forEach((item) => {
-    addressList.value.push({
-      id: item.id,
-      name: item.consignee,
-      tel: item.phone,
-      address:
-        item.provinceName + item.cityName + item.districtName + item.detail,
-      isDefault: item.isDefault === 1
+  if (res.info) {
+    res.info.forEach((item) => {
+      addressList.value.push({
+        id: item.id,
+        name: item.consignee,
+        tel: item.phone,
+        address:
+            item.provinceName + item.cityName + item.districtName + item.detail,
+        isDefault: item.isDefault === 1
+      })
+      if (item.isDefault === 1) {
+        chooseId.value = item.id
+      }
     })
-    if (item.isDefault === 1) {
-      chooseId.value = item.id
-    }
-  })
+    chooseInfo.value = addressList.value[0]
+  }
 }
 </script>
 

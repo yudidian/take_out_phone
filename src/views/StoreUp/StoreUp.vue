@@ -54,8 +54,8 @@ const loading = ref(false)
 const finished = ref(false)
 
 const onLoad = () => {
-  const page = storeUpList.value.length
   const pageSize = 10
+  const page = (storeUpList.value.length / pageSize) + 1
   getStoreUpList(page, pageSize)
 }
 const getStoreUpList = async (page, pageSize) => {

@@ -8,7 +8,7 @@ const request = axios.create({
 })
 request.interceptors.request.use(
   (config) => {
-    store.dispatch('changShowLoading', true)
+    store.commit('changShowLoading', true)
     // get请求映射params参数
     const token = localStorage.getItem('token')
     if (token) {
@@ -17,14 +17,14 @@ request.interceptors.request.use(
     return config
   },
   (error) => {
-    store.dispatch('changShowLoading', false)
+    store.commit('changShowLoading', false)
     Promise.reject(error)
   }
 )
 
 request.interceptors.response.use(
   (res) => {
-    store.dispatch('changShowLoading', false)
+    store.commit('changShowLoading', false)
     if (res.data.msg.includes('token')) {
       // 登录过期的时候清除路由对HomePage的缓存
       store.dispatch('removeChildRouters', 'HomePage')
@@ -40,8 +40,7 @@ request.interceptors.response.use(
     return res.data
   },
   (error) => {
-    store.dispatch('changShowLoading', false).then((r) => {
-    })
+    store.commit('changShowLoading', false)
     let { message } = error
     if (message === 'Network Error') {
       message = '后端接口连接异常'

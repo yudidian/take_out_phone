@@ -10,13 +10,8 @@ export default createStore({
     }
   },
   mutations: {
-    setShowLoading (state, value) {
+    changShowLoading (state, value) {
       state.showLoading = value
-    }
-  },
-  actions: {
-    changShowLoading ({ commit }, value) {
-      commit('setShowLoading', value)
     }
   },
   getters,

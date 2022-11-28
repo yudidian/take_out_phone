@@ -94,10 +94,11 @@ const routes = [
     name: 'SettlementPage',
     component: () => import('@/views/Settlement/SettlementPage.vue'),
     beforeEnter: (to, from, next) => {
-      if (from.path !== '/cart') {
-        next('/cart')
-      } else {
+      console.log(to, from)
+      if (from.path === '/cart' || from.path === '/address/choose') {
         next()
+      } else {
+        next('/cart')
       }
     },
     meta: {

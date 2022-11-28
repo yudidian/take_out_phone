@@ -140,8 +140,8 @@ const loading = ref(false)
 const finished = ref(false)
 
 const onLoad = () => {
-  const page = orderList.value.length
   const pageSize = 10
+  const page = (orderList.value.length / pageSize) + 1
   getHistoryOrders(page, pageSize)
 }
 const getHistoryOrders = async (page, pageSize) => {
@@ -153,6 +153,7 @@ const getHistoryOrders = async (page, pageSize) => {
   loading.value = false
   if (res.code === 1) {
     orderList.value.push(...res.info.records)
+    // 列表长度和总数一样择停止查找
     if (orderList.value.length >= res.info.total) {
       finished.value = true
     }

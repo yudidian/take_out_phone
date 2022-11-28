@@ -23,6 +23,7 @@
       class="exit-out"
       type="danger"
       round
+      @click="exitOut"
     >
       退出登录
     </Button>
@@ -30,7 +31,23 @@
 </template>
 
 <script setup name="SettingPage">
-import { Cell, CellGroup, NavBar, Button } from 'vant'
+import { Cell, CellGroup, NavBar, Button, Dialog } from 'vant'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+const exitOut = () => {
+  Dialog({
+    showCancelButton: true,
+    message:
+        '是否要退出？'
+  })
+    .then(() => {
+      router.replace('/login')
+      localStorage.clear()
+    })
+    .catch(() => {
+      // on cancel
+    })
+}
 </script>
 
 <style scoped lang="scss">
