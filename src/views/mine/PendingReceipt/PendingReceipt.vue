@@ -11,10 +11,12 @@
       success-text="刷新成功"
     >
       <List
+        ref="list"
         v-model:loading="loading"
         :finished="finished"
         finished-text="没有更多了"
         @load="onLoad"
+        class="list-wrapper"
       >
         <Empty
           image="https://fastly.jsdelivr.net/npm/@vant/assets/custom-empty-image.png"
@@ -135,16 +137,22 @@
     >
       <OrderSteps :state="orderState" />
     </VanDialog>
+    <ToTop
+      v-if="isShowScroll"
+      @click="returnTop(list.$el)"
+    />
   </div>
 </template>
 
 <script setup name="PendingReceipt">
 import { NavBar, List, Icon, Toast, Image, CellGroup, Cell, Button, Dialog, Empty, Notify, PullRefresh } from 'vant'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import useClipboard from 'vue-clipboard3'
 import OrderSteps from './component/OrderSteps.vue'
 import { sendCancelOrders, sendConfirmOrCancelOrders, sendGetHistoryOrders, sendGetOrderStates } from '@/api/module/user'
+import useScroll from '@/hooks/useScroll'
 const BASE_IMGE_URL = import.meta.env.VITE_LOCAL_SERVE_IMGE_URL
+const list = ref(null)
 const { toClipboard } = useClipboard()
 const orderList = ref([])
 const loading = ref(false)
@@ -152,6 +160,10 @@ const refreshLoading = ref(false)
 const finished = ref(false)
 const orderState = ref(1)
 const isShowDialog = ref(false)
+const { listenScroll, isShowScroll, returnTop } = useScroll()
+onMounted(() => {
+  listenScroll(list.value.$el)
+})
 const onLoad = () => {
   const pageSize = 10
   const page = (orderList.value.length / pageSize) + 1
@@ -218,9 +230,6 @@ const confirmReceipt = async (id, flag, index) => {
         })
       }
     })
-    .catch(() => {
-      // on cancel
-    })
 }
 // 取消订单
 const cancelReceipt = (number, index) => {
@@ -267,6 +276,13 @@ const onRefresh = () => {
 }
 </script>
 <style scoped lang="scss">
+.pending-receipt{
+  .list-wrapper{
+    width: 100%;
+    height: calc(100vh - 46px);
+    overflow-y: auto;
+  }
+}
 .history-wrapper{
   margin-top: 20px;
   font-size: 14px;

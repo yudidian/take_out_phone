@@ -150,13 +150,6 @@ const routes = [
   {
     path: '/reviewsList',
     name: 'ReviewsList',
-    beforeEnter: (to, from, next) => {
-      if (!from.path.includes('/goods/detail')) {
-        next('/')
-      } else {
-        next()
-      }
-    },
     component: () => import('@/views/ReviewsList/ReviewsList.vue'),
     meta: {
       title: '商品评论列表',

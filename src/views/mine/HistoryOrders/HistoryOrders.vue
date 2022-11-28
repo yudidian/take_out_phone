@@ -6,10 +6,12 @@
       @click-left="$router.back()"
     />
     <List
+      ref="list"
       v-model:loading="loading"
       :finished="finished"
       finished-text="没有更多了"
       @load="onLoad"
+      class="list-wrapper"
     >
       <Empty
         image="https://fastly.jsdelivr.net/npm/@vant/assets/custom-empty-image.png"
@@ -124,20 +126,30 @@
         </Cell>
       </CellGroup>
     </List>
+    <ToTop
+      v-if="isShowScroll"
+      @click="returnTop(list.$el)"
+    />
   </div>
 </template>
 
 <script name="HistoryOrders" setup>
 import { NavBar, List, Icon, Toast, Image, CellGroup, Cell, Empty, Button, Dialog, Notify } from 'vant'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import useScroll from '@/hooks/useScroll'
 import useClipboard from 'vue-clipboard3'
 import { sendConfirmOrCancelOrders, sendGetHistoryOrders } from '@/api/module/user'
-
 const BASE_IMGE_URL = import.meta.env.VITE_LOCAL_SERVE_IMGE_URL
 const { toClipboard } = useClipboard()
 const orderList = ref([])
 const loading = ref(false)
 const finished = ref(false)
+const list = ref(null)
+const { listenScroll, isShowScroll, returnTop } = useScroll()
+
+onMounted(() => {
+  listenScroll(list.value.$el)
+})
 
 const onLoad = () => {
   const pageSize = 10
@@ -188,17 +200,18 @@ const confirmReceipt = (id, flag, index) => {
         })
       }
     })
-    .catch(() => {
-      // on cancel
-    })
 }
 </script>
 <style scoped lang="scss">
+.list-wrapper{
+  width: 100%;
+  height: calc(100vh - 46px);
+  overflow-y: auto;
+}
 .history-wrapper {
   margin-top: 20px;
   font-size: 14px;
   color: #737373;
-
   .bottom-btn{
     :deep(>.van-cell__value){
       display: flex;
