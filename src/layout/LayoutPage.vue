@@ -39,20 +39,47 @@
 <script setup name="LayoutPage">
 import { Tabbar, TabbarItem } from 'vant'
 import { useRoute } from 'vue-router'
-import { onMounted, ref, watch } from 'vue'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useStore } from 'vuex'
+import SocketService from '@/utils/websocket'
 const store = useStore()
 const active = ref('HomePage')
 const route = useRoute()
 watch(route, (val) => {
   active.value = val.name
 })
+
 onMounted(() => {
   active.value = route.name
+})
+onBeforeUnmount(() => {
+  localStorage.setItem('reload', 'true')
 })
 const tabChangeHandler = (val) => {
   active.value = val
 }
+const init = () => {
+  if (store.getters.token) {
+    if (localStorage.getItem('reload') === null) {
+      console.log(localStorage.getItem('reload'))
+      localStorage.setItem('reload', 'true')
+      window.location.reload()
+      return
+    }
+    if (localStorage.getItem('reload') === 'true') {
+      console.log(localStorage.getItem('reload'))
+      localStorage.setItem('reload', 'false')
+      window.location.reload()
+      return
+    }
+    const socket = new SocketService()
+    socket.send({
+      userId: store.getters.userId
+    })
+    socket.getMessage()
+  }
+}
+init()
 </script>
 
 <style scoped></style>

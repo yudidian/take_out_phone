@@ -26,7 +26,6 @@
 import { useStore } from 'vuex'
 import { isWeiXin } from '@/utils/common'
 import { ref } from 'vue'
-
 const store = useStore()
 const isWeChat = ref(isWeiXin())
 </script>

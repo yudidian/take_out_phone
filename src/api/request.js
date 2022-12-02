@@ -28,6 +28,7 @@ request.interceptors.response.use(
     if (res.data.msg.includes('token')) {
       // 登录过期的时候清除路由对HomePage的缓存
       store.dispatch('removeChildRouters', 'HomePage')
+      store.dispatch('removeParentRouters', 'LayoutPage')
       if (router.currentRoute.value.path !== '/login') {
         store.commit('setUserAction', router.currentRoute.value.fullPath)
       }
@@ -41,6 +42,9 @@ request.interceptors.response.use(
   },
   (error) => {
     store.commit('changShowLoading', false)
+    // 登录过期的时候清除路由对HomePage的缓存
+    store.dispatch('removeChildRouters', 'HomePage')
+    store.dispatch('removeParentRouters', 'LayoutPage')
     let { message } = error
     if (message === 'Network Error') {
       message = '后端接口连接异常'

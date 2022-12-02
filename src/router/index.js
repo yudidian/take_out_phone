@@ -189,6 +189,8 @@ myRouter.beforeEach((to, from, next) => {
     document.title = to.meta.title
   }
   if (!NoPermissionsPath.includes(to.name) && store.getters.token === '') {
+    store.dispatch('removeChildRouters', 'HomePage')
+    store.dispatch('removeParentRouters', 'LayoutPage')
     next('/login')
   }
   // 如果结算页面去选择地址则缓存该路由
