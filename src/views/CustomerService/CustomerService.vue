@@ -117,7 +117,7 @@ const sendMessage = () => {
           margin-left: 10px;
           justify-self: flex-start;
           width: 100%;
-          height: 80px;
+          height: auto;
           display: flex;
           align-items: center;
           justify-content: flex-start;
@@ -151,7 +151,7 @@ const sendMessage = () => {
         .right-review{
           margin-right: 10px;
           width: 100%;
-          height: 80px;
+          height: auto;
           display: flex;
           align-items: center;
           margin-left: auto;
