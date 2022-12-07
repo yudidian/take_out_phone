@@ -67,12 +67,11 @@ const init = () => {
       return
     }
     if (localStorage.getItem('reload') === 'true') {
-      console.log(localStorage.getItem('reload'))
       localStorage.setItem('reload', 'false')
       window.location.reload()
       return
     }
-    const socket = new SocketService()
+    const socket = new SocketService('ws://localhost:8089/websocket')
     socket.send({
       userId: store.getters.userId
     })

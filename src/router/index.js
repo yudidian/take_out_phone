@@ -176,6 +176,16 @@ const routes = [
       keepAlive: false,
       index: 16
     }
+  },
+  {
+    path: '/customerService',
+    name: 'CustomerService',
+    component: () => import('@/views/CustomerService/CustomerService.vue'),
+    meta: {
+      title: '客服中心',
+      keepAlive: false,
+      index: 17
+    }
   }
 ]
 

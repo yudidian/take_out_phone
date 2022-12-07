@@ -1,6 +1,7 @@
 import { Toast } from 'vant'
 export default class SocketService {
-  constructor () {
+  constructor (url) {
+    this.url = url
     this.connect()
   }
 
@@ -28,8 +29,7 @@ export default class SocketService {
     if (!window.WebSocket) {
       return console.log('您的浏览器不支持WebSocket')
     }
-    const url = 'ws://localhost:8089/websocket'
-    this.ws = new WebSocket(url)
+    this.ws = new WebSocket(this.url)
     // 连接成功的事件
     this.ws.onopen = () => {
       console.log('连接服务端成功了')
@@ -37,20 +37,6 @@ export default class SocketService {
       // 重置重新连接的次数
       this.connectRetryCount = 0
     }
-    // // 1.连接服务端失败
-    // // 2.当连接成功之后, 服务器关闭的情况
-    // this.ws.onclose = () => {
-    //   console.log('连接服务端失败')
-    //   this.connected = false
-    //   this.connectRetryCount++
-    //   setTimeout(() => {
-    //     this.connect()
-    //   }, 500 * this.connectRetryCount)
-    // }
-    // // 得到服务端发送过来的数据
-    // this.ws.onmessage = msg => {
-    //   console.log(msg.data, '从服务端获取到了数据')
-    // }
   }
 
   // 回调函数的注册
@@ -87,7 +73,7 @@ export default class SocketService {
       console.log(msg)
       const res = JSON.parse(msg.data)
       console.log(res)
-      if (!res.flag) {
+      if (res.flag && !res.flag) {
         Toast.fail({
           duration: 0,
           closeOnClick: true,

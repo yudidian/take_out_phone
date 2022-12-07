@@ -18,6 +18,12 @@
         is-link
         to="/address"
       />
+      <Cell
+        icon="guide-o"
+        title="联系客服"
+        is-link
+        to="/customerService"
+      />
     </CellGroup>
     <Button
       class="exit-out"

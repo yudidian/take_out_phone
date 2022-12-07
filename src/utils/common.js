@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 export function debounce (fn, delay) {
   let timer = null
   return function (e) {
@@ -29,4 +30,7 @@ export const isWeiXin = function () {
   const ua = window.navigator.userAgent.toLowerCase()
   const reg = /micromessenger|WeChat/i
   return reg.test(ua)
+}
+export const formatDate = (time) => {
+  return dayjs(time).format('YYYY-MM-DD HH:mm:ss')
 }
