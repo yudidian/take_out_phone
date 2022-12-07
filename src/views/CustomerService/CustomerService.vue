@@ -127,6 +127,7 @@ const sendMessage = () => {
             margin-right: 10px;
           }
           .review-right {
+            width: 70%;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
@@ -136,9 +137,11 @@ const sendMessage = () => {
               font-weight: 900;
             }
             .review-message{
+              padding: 10px;
               font-size: 14px;
-              background-color: #e1e1e1;
+              background-color: #eeeeee;
               border-radius: 5px;
+              overflow-wrap: anywhere;
             }
             .review-time{
               font-size: 12px;
@@ -159,6 +162,7 @@ const sendMessage = () => {
             margin-left: 10px;
           }
           .review-right {
+            width: 70%;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
@@ -168,9 +172,11 @@ const sendMessage = () => {
               font-size: 12px;
             }
             .review-message{
+              padding: 10px;
               font-size: 14px;
-              background-color: #e1e1e1;
+              background-color: #eeeeee;
               border-radius: 5px;
+              overflow-wrap: anywhere;
             }
             .review-time{
               font-size: 12px;
