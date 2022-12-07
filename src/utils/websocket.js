@@ -73,7 +73,7 @@ export default class SocketService {
       console.log(msg)
       const res = JSON.parse(msg.data)
       console.log(res)
-      if (res.flag && !res.flag) {
+      if (res.flag !== undefined && !res.flag) {
         Toast.fail({
           duration: 0,
           closeOnClick: true,
