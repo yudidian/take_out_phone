@@ -42,6 +42,7 @@ import { useRoute } from 'vue-router'
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import SocketService from '@/utils/websocket'
+const WEB_SOCKET_URL = import.meta.env.DEV ? import.meta.env.VITE_LOCAL_WEBSOCK : import.meta.env.VITE_SERVER_WEBSOCK
 const store = useStore()
 const active = ref('HomePage')
 const route = useRoute()
@@ -71,7 +72,7 @@ const init = () => {
       window.location.reload()
       return
     }
-    const socket = new SocketService('ws://localhost:8089/websocket')
+    const socket = new SocketService(`${WEB_SOCKET_URL}/websocket`)
     socket.send({
       userId: store.getters.userId
     })

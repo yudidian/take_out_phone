@@ -72,12 +72,13 @@ import { useStore } from 'vuex'
 import { nextTick, onMounted, ref, watch } from 'vue'
 const messageContent = ref()
 const IMG_URL = import.meta.env.VITE_LOCAL_SERVE_IMGE_URL
+const WEB_SOCKET_URL = import.meta.env.DEV ? import.meta.env.VITE_LOCAL_WEBSOCK : import.meta.env.VITE_SERVER_WEBSOCK
 const store = useStore()
 const socket = ref(null)
 const message = ref('')
 const messageList = ref([])
 const init = () => {
-  socket.value = new SocketService(`ws://localhost:8089/websocket/chart?userId=${store.getters.userId}`)
+  socket.value = new SocketService(`${WEB_SOCKET_URL}/websocket/chart?userId=${store.getters.userId}`)
   socket.value.ws.onmessage = msg => {
     messageList.value = JSON.parse(msg.data)
   }
