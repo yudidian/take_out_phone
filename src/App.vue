@@ -27,7 +27,7 @@ import { useStore } from 'vuex'
 import { isWeiXin } from '@/utils/common'
 import { ref } from 'vue'
 import SocketService from '@/utils/websocket'
-const WEB_SOCKET_URL = import.meta.env.DEV ? import.meta.env.VITE_LOCAL_WEBSOCK : import.meta.env.VITE_SERVER_WEBSOCKs
+const WEB_SOCKET_URL = import.meta.env.DEV ? import.meta.env.VITE_LOCAL_WEBSOCK : import.meta.env.VITE_SERVER_WEBSOCK
 const store = useStore()
 const isWeChat = ref(isWeiXin())
 const init = () => {
