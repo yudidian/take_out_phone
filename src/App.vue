@@ -26,8 +26,29 @@
 import { useStore } from 'vuex'
 import { isWeiXin } from '@/utils/common'
 import { ref } from 'vue'
+import SocketService from '@/utils/websocket'
+const WEB_SOCKET_URL = import.meta.env.DEV ? import.meta.env.VITE_LOCAL_WEBSOCK : import.meta.env.VITE_SERVER_WEBSOCKs
 const store = useStore()
 const isWeChat = ref(isWeiXin())
+const init = () => {
+  if (store.getters.token) {
+    if (localStorage.getItem('reload') === null) {
+      console.log(localStorage.getItem('reload'))
+      localStorage.setItem('reload', 'true')
+      window.location.reload()
+      return
+    }
+    if (localStorage.getItem('reload') === 'true') {
+      localStorage.setItem('reload', 'false')
+      window.location.reload()
+      return
+    }
+    console.log(store.getters.userId)
+    const socket = new SocketService(`${WEB_SOCKET_URL}/websocket?userId=${store.getters.userId}`)
+    socket.getMessage()
+  }
+}
+init()
 </script>
 <style lang="scss" scoped>
 .error-open {

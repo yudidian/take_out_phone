@@ -41,8 +41,6 @@ import { Tabbar, TabbarItem } from 'vant'
 import { useRoute } from 'vue-router'
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useStore } from 'vuex'
-import SocketService from '@/utils/websocket'
-const WEB_SOCKET_URL = import.meta.env.DEV ? import.meta.env.VITE_LOCAL_WEBSOCK : import.meta.env.VITE_SERVER_WEBSOCK
 const store = useStore()
 const active = ref('HomePage')
 const route = useRoute()
@@ -59,27 +57,6 @@ onBeforeUnmount(() => {
 const tabChangeHandler = (val) => {
   active.value = val
 }
-const init = () => {
-  if (store.getters.token) {
-    if (localStorage.getItem('reload') === null) {
-      console.log(localStorage.getItem('reload'))
-      localStorage.setItem('reload', 'true')
-      window.location.reload()
-      return
-    }
-    if (localStorage.getItem('reload') === 'true') {
-      localStorage.setItem('reload', 'false')
-      window.location.reload()
-      return
-    }
-    const socket = new SocketService(`${WEB_SOCKET_URL}/websocket`)
-    socket.send({
-      userId: store.getters.userId
-    })
-    socket.getMessage()
-  }
-}
-init()
 </script>
 
 <style scoped></style>
