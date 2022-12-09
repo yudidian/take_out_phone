@@ -9,7 +9,13 @@
       class="message-content"
       ref="messageContent"
     >
+      <Empty
+        v-if="messageList.length === 0"
+        :image="IMG_URL+'empty.png'"
+        description="暂无消息"
+      />
       <div
+        v-else
         class="message-item"
         v-for="item in messageList"
         :key="item.id"
@@ -65,7 +71,7 @@
 </template>
 
 <script name="CustomerService" setup>
-import { NavBar, Field, Button } from 'vant'
+import { NavBar, Field, Button, Empty } from 'vant'
 import SocketService from '@/utils/websocket'
 import { formatDate } from '@/utils/common'
 import { useStore } from 'vuex'

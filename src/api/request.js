@@ -8,7 +8,9 @@ const request = axios.create({
 })
 request.interceptors.request.use(
   (config) => {
-    store.commit('changShowLoading', true)
+    if (!store.getters.showLoading) {
+      store.commit('changShowLoading', true)
+    }
     // get请求映射params参数
     const token = localStorage.getItem('token')
     if (token) {
