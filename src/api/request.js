@@ -2,12 +2,16 @@ import axios from 'axios'
 import { Notify } from 'vant'
 import router from '@/router/index'
 import store from '@/store'
+import { AxiosCanceler } from './helper'
+const axiosCanceler = new AxiosCanceler()
 const request = axios.create({
   baseURL: '/api',
   timeout: 100000
 })
 request.interceptors.request.use(
   (config) => {
+    axiosCanceler.addPending(config)
+    // 一个页面有大量请求时只展示一次遮罩
     if (!store.getters.showLoading) {
       store.commit('changShowLoading', true)
     }
