@@ -27,12 +27,12 @@ export default class SocketService {
   connect () {
     // 连接服务器
     if (!window.WebSocket) {
-      return console.log('您的浏览器不支持WebSocket')
+      Toast.fail('您的浏览器不支持WebSocket')
+      return
     }
     this.ws = new WebSocket(this.url)
     // 连接成功的事件
     this.ws.onopen = () => {
-      console.log('连接服务端成功了')
       this.connected = true
       // 重置重新连接的次数
       this.connectRetryCount = 0
@@ -70,9 +70,7 @@ export default class SocketService {
   // 获取数据
   getMessage () {
     this.ws.onmessage = msg => {
-      console.log(msg)
       const res = JSON.parse(msg.data)
-      console.log(res)
       if (res.flag !== undefined && !res.flag) {
         Toast.fail({
           duration: 0,
