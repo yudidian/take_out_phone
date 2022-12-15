@@ -20,3 +20,9 @@ export const getSetmeal = (params) => {
     params
   })
 }
+export const sendGetSwiperList = () => {
+  return request({
+    url: '/swiper',
+    method: 'GET'
+  })
+}

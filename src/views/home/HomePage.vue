@@ -5,27 +5,12 @@
       :autoplay="3000"
       indicator-color="white"
     >
-      <SwipeItem>
+      <SwipeItem
+        v-for="item in swiperList"
+        :key="item.id"
+      >
         <img
-          src="./component/image/img_3.png"
-          alt=""
-        >
-      </SwipeItem>
-      <SwipeItem>
-        <img
-          src="./component/image/img_2.png"
-          alt=""
-        >
-      </SwipeItem>
-      <SwipeItem>
-        <img
-          src="./component/image/img_1.png"
-          alt=""
-        >
-      </SwipeItem>
-      <SwipeItem>
-        <img
-          src="./component/image/img.png"
+          :src="IMG_URL + item.imageUrl"
           alt=""
         >
       </SwipeItem>
@@ -136,10 +121,10 @@
 
 <script setup name="HomePage">
 import useMap from '@/hooks/useMap'
-import { getCategory, getDish, getSetmeal } from '@/api/module/homeIndex'
+import { getCategory, getDish, getSetmeal, sendGetSwiperList } from '@/api/module/homeIndex'
 import { onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { Card, Button, ConfigProvider, Icon, Swipe, SwipeItem } from 'vant'
+import { Card, Button, ConfigProvider, Icon, Swipe, SwipeItem, Toast } from 'vant'
 const router = useRouter()
 const showHeader = ref(false)
 const AMap = window.AMap
@@ -150,6 +135,7 @@ const defaultIndex = ref(0)
 const categoryList = ref([])
 const dish = ref([])
 const showDialog = ref(false)
+const swiperList = ref([])
 const {
   getUserPosition,
   computedLine,
@@ -160,6 +146,7 @@ const {
 } = useMap(AMap)
 onMounted(() => {
   sendCategory()
+  getSwiperList()
 })
 watch(center, () => {
   if (center[0] && center[1]) {
@@ -239,6 +226,14 @@ const getSetmealById = async (categoryId) => {
 // 是否显示头部组件
 const isShowHeader = () => {
   showHeader.value = !showHeader.value
+}
+const getSwiperList = async () => {
+  const res = await sendGetSwiperList()
+  if (res.code === 1) {
+    swiperList.value = res.info
+  } else {
+    Toast.fail(res.msg)
+  }
 }
 </script>
 
