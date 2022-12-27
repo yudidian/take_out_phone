@@ -6,12 +6,15 @@
     <Form @submit="onSubmit">
       <CellGroup inset>
         <Field
-          v-model="form.phone"
+          v-model="form.email"
           :label-width="60"
-          name="用户名"
-          label="用户名"
-          placeholder="用户名"
-          :rules="[{ required: true, message: '请填写用户名' }]"
+          name="邮箱"
+          label="邮箱"
+          placeholder="邮箱"
+          :rules="[
+            { required: true, message: '请输入邮箱' },
+            { validator: validatorEmail, message: '请检查邮箱格式' }
+          ]"
         >
           <template #button>
             <Button
@@ -33,7 +36,7 @@
           placeholder="验证码"
           :rules="[
             { required: true, message: '请填验证码' },
-            { validator, message: '验证码为6位' },
+            { validator: validatorCode, message: '验证码为6位' }
           ]"
         />
       </CellGroup>
@@ -60,7 +63,7 @@ const store = useStore()
 const time = ref(60)
 const code = ref(null)
 const form = ref({
-  phone: '',
+  email: '',
   code: ''
 })
 // 表单提交
@@ -70,7 +73,7 @@ const onSubmit = () => {
 // 发送验证码
 const sendCodeHandler = async () => {
   const res = await sendCode({
-    email: form.value.phone
+    email: form.value.email
   })
   if (res.code === 1) {
     Notify({
@@ -93,8 +96,12 @@ const sendCodeHandler = async () => {
     })
   }
 }
-const validator = (val) => {
+const validatorCode = (val) => {
   return /^[a-zA-z0-9]{6}$/.test(val)
+}
+
+const validatorEmail = (val) => {
+  return /^[a-z\d]+(\.[a-z\d]+)*@([\da-z](-[\da-z])?)+(\.{1,2}[a-z]+)+$/.test(val)
 }
 // 组件销毁时清除所有定时器
 onBeforeUnmount(() => {
